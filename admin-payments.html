@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#c1502e"><title>Payment review · PRINTFY 3D</title>
+<style>
+:root{--bg:#f7f3ea;--card:#fff;--ink:#1f1b16;--sub:#6b6253;--line:#e7dfcd;--brand:#c1502e;--ok:#1f7a3d;--bad:#b3261e;--warn:#9a6700}
+*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+button,select,input,textarea{font:inherit;color:inherit;border:1px solid var(--line);background:#fff;border-radius:10px;min-height:44px;padding:0 .9rem}
+button{cursor:pointer;font-weight:650}button:disabled{opacity:.55;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.btn-pri{background:var(--brand);border-color:var(--brand);color:#fff}.btn-ok{background:var(--ok);border-color:var(--ok);color:#fff}.btn-no{color:var(--bad);border-color:#e3b8b4}.btn-ghost{background:transparent}
+header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line)}
+.bar{max-width:880px;margin:0 auto;padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
+.brand{font-weight:800;letter-spacing:.02em}.brand b{color:var(--brand)}.brand small{font-weight:600;color:var(--sub);margin-inline-start:.5rem}
+main{max-width:880px;margin:0 auto;padding:1rem 1rem 4rem}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:1rem}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem}.tile span{display:block;color:var(--sub);font-size:.85rem}.tile b{font-size:1.6rem}
+.tools{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem}.tools input{flex:1;min-width:180px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem;margin-bottom:1rem}
+.top{display:flex;justify-content:space-between;gap:.75rem;flex-wrap:wrap;align-items:flex-start}
+.num{font-weight:800;font-size:1.05rem}.amt{font-weight:800;font-size:1.5rem;color:var(--brand)}
+.badge{display:inline-block;font-size:.75rem;font-weight:700;padding:.1rem .6rem;border-radius:99px;margin-inline-start:.4rem;vertical-align:middle}
+.b-pending_review{background:#fdf1d6;color:var(--warn)}.b-approved{background:#dcf1e2;color:var(--ok)}.b-rejected{background:#f8dedb;color:var(--bad)}
+.meta{color:var(--sub);font-size:.92rem;margin:.25rem 0}.meta a{color:var(--brand);font-weight:600}
+.grid{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:.8rem}
+@media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
+.items{margin:0;padding:0;list-style:none;border:1px solid var(--line);border-radius:10px}.items li{display:flex;justify-content:space-between;gap:1rem;padding:.5rem .8rem;border-bottom:1px solid var(--line);font-size:.95rem}.items li:last-child{border:0}
+.shot{display:block;width:100%;max-height:420px;object-fit:contain;background:#f3eee0;border:1px solid var(--line);border-radius:10px}
+.actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.9rem}.actions button{flex:1;min-width:150px}
+.empty{text-align:center;color:var(--sub);padding:3rem 1rem}
+#login{max-width:360px;margin:12vh auto;padding:0 1rem;display:grid;gap:.8rem}#login h1{font-size:1.2rem;margin:0 0 .3rem}#err{color:var(--bad);min-height:1.4em;font-size:.92rem}
+dialog{border:0;border-radius:16px;padding:1.2rem;width:min(92vw,420px)}dialog::backdrop{background:rgba(0,0,0,.45)}dialog h2{font-size:1.1rem;margin:0 0 .6rem}dialog textarea{width:100%;min-height:80px;padding:.6rem .9rem}
+.chips{display:flex;gap:.4rem;flex-wrap:wrap;margin:.5rem 0}.chips button{min-height:36px;font-size:.85rem;font-weight:600}
+#toast{position:fixed;inset-inline:0;bottom:1rem;display:flex;justify-content:center;pointer-events:none}#toast div{background:#1f1b16;color:#fff;padding:.7rem 1.1rem;border-radius:10px;opacity:0;transition:opacity .2s}#toast div.on{opacity:1}
+</style></head><body>
+<section id="login" hidden><h1>PRINTFY <b style="color:var(--brand)">3D</b> · Admin</h1><div class="meta">Sign in to review InstaPay payments.</div>
+<input id="em" type="email" placeholder="Email" autocomplete="username"><input id="pw" type="password" placeholder="Password" autocomplete="current-password">
+<button class="btn-pri" id="go">Sign in</button><div id="err" role="alert"></div></section>
+<div id="app" hidden>
+<header><div class="bar"><div class="brand">PRINTFY <b>3D</b><small>Payment review</small></div><div style="display:flex;gap:.5rem"><button class="btn-ghost" id="rf">Refresh</button><button class="btn-ghost" id="out">Sign out</button></div></div></header>
+<main>
+<div class="tiles"><div class="tile"><span>Waiting for review</span><b id="cnt">–</b></div><div class="tile"><span>Amount waiting (EGP)</span><b id="sum">–</b></div></div>
+<div class="tools"><select id="flt" aria-label="Status"><option value="pending_review">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select><input id="q" type="search" placeholder="Search order number, name or phone"></div>
+<div id="list"><div class="empty">Loading…</div></div></main></div>
+<dialog id="dlg"><h2>Reject this payment</h2><div class="meta">The customer will see this reason.</div>
+<div class="chips"><button type="button" data-r="Payment not received">Not received</button><button type="button" data-r="Amount does not match the order total">Wrong amount</button><button type="button" data-r="The screenshot is unclear, please upload it again">Unclear</button></div>
+<textarea id="rsn" maxlength="200" placeholder="Reason"></textarea>
+<div class="actions"><button class="btn-ghost" id="dc">Cancel</button><button class="btn-no" id="dr">Reject</button></div></dialog>
+<div id="toast"><div></div></div>
+<script>
+const SB="https://bnctkequiekxznkbntzd.supabase.co",KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJuY3RrZXF1aWVreHpua2JudHpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3ODg3MjMsImV4cCI6MjEwNTM2NDcyM30.ACSOu3xHIrykmdKJSiHD7hMndd-xirN0aohTj2XNTZo";
+const $=id=>document.getElementById(id);let tok=sessionStorage.getItem('p3d_admin')||'',rows=[],rejId=null;
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LBL={pending_review:'Pending',approved:'Approved',rejected:'Rejected'};
+function toast(m){const t=$('toast').firstElementChild;t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2800)}
+async function api(body){const r=await fetch(SB+'/functions/v1/admin-review-payment',{method:'POST',headers:{'Content-Type':'application/json',apikey:KEY,Authorization:'Bearer '+tok},body:JSON.stringify(body)});let d={};try{d=await r.json()}catch(e){}return{s:r.status,d}}
+function show(on){$('login').hidden=on;$('app').hidden=!on}
+function ago(t){const m=Math.round((Date.now()-new Date(t))/60000);if(m<1)return'just now';if(m<60)return m+' min ago';const h=Math.round(m/60);return h<24?h+' h ago':Math.round(h/24)+' d ago'}
+function draw(){const q=$('q').value.trim().toLowerCase();
+ const v=rows.filter(p=>{const o=p.order||{};return !q||[o.number,o.customer_name,o.customer_mobile].some(x=>String(x||'').toLowerCase().includes(q))});
+ $('list').innerHTML=v.length?v.map(p=>{const o=p.order||{};
+  const it=(o.items||[]).map(i=>`<li><span>${esc(i.name)} × ${esc(i.qty)}</span><b>${esc(i.price*i.qty)} EGP</b></li>`).join('');
+  const addr=[o.governorate,o.address,o.building&&'Bldg '+o.building,o.floor&&'Floor '+o.floor,o.apartment&&'Apt '+o.apartment].filter(Boolean).map(esc).join(', ');
+  const wa=String(o.customer_wa||o.customer_mobile||'').replace(/\D/g,'');
+  return `<article class="card"><div class="top"><div><span class="num">${esc(o.number)}</span><span class="badge b-${esc(p.status)}">${esc(LBL[p.status]||p.status)}</span>
+  <div class="meta">${esc(o.customer_name)} · <a href="tel:${esc(o.customer_mobile)}">${esc(o.customer_mobile)}</a> · <a target="_blank" rel="noopener" href="https://wa.me/${esc(wa)}">WhatsApp</a></div>
+  <div class="meta">Submitted ${esc(ago(p.submitted_at))}${p.reject_reason?' · Reason: '+esc(p.reject_reason):''}</div></div><div class="amt">${esc(p.amount_expected)} EGP</div></div>
+  <div class="grid"><div><ul class="items">${it||'<li>No items</li>'}</ul><div class="meta" style="margin-top:.6rem">${addr||'No address'}${o.delivery_notes?'<br>Note: '+esc(o.delivery_notes):''}</div></div>
+  <div>${p.image_url?`<a href="${esc(p.image_url)}" target="_blank" rel="noopener"><img class="shot" loading="lazy" src="${esc(p.image_url)}" alt="Payment proof for ${esc(o.number)}"></a>`:'<div class="meta">Image unavailable. Press Refresh.</div>'}</div></div>
+  ${p.status==='pending_review'?`<div class="actions"><button class="btn-ok" data-a="approve" data-id="${esc(p.id)}">Approve · money received</button><button class="btn-no" data-a="reject" data-id="${esc(p.id)}">Reject</button></div>`:''}</article>`}).join(''):'<div class="empty">Nothing here.</div>'}
+async function load(){const{s,d}=await api({action:'list',filter:$('flt').value});
+ if(s===401||s===403){tok='';sessionStorage.removeItem('p3d_admin');show(false);$('err').textContent=s===403?'This account is not an admin.':'Session ended. Please sign in again.';return}
+ if(!d.ok){$('list').innerHTML='<div class="empty">Could not load. Press Refresh.</div>';return}
+ rows=d.proofs||[];$('cnt').textContent=d.pending_count;
+ $('sum').textContent=$('flt').value==='pending_review'?rows.reduce((a,p)=>a+Number(p.amount_expected||0),0):'–';draw()}
+$('list').addEventListener('click',async e=>{const b=e.target.closest('button[data-a]');if(!b)return;
+ if(b.dataset.a==='reject'){rejId=b.dataset.id;$('rsn').value='';$('dlg').showModal();return}
+ if(!confirm('Approve only if the money is really in your InstaPay account. Continue?'))return;
+ b.disabled=true;const{s,d}=await api({action:'approve',proof_id:b.dataset.id});toast(d.ok?'Payment approved':(d.error||'Failed ('+s+')'));load()});
+$('dlg').addEventListener('click',e=>{if(e.target.dataset&&e.target.dataset.r)$('rsn').value=e.target.dataset.r});
+$('dc').onclick=()=>$('dlg').close();
+$('dr').onclick=async()=>{const reason=$('rsn').value.trim();if(!reason){$('rsn').focus();return}$('dr').disabled=true;
+ const{s,d}=await api({action:'reject',proof_id:rejId,reason});$('dr').disabled=false;$('dlg').close();toast(d.ok?'Payment rejected':(d.error||'Failed ('+s+')'));load()};
+$('go').onclick=async()=>{$('err').textContent='';$('go').disabled=true;
+ try{const r=await fetch(SB+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'Content-Type':'application/json',apikey:KEY},body:JSON.stringify({email:$('em').value.trim(),password:$('pw').value})});const d=await r.json().catch(()=>({}));
+ if(!d.access_token){$('err').textContent='Wrong email or password.';return}tok=d.access_token;sessionStorage.setItem('p3d_admin',tok);$('pw').value='';show(true);load()}
+ catch(e){$('err').textContent='No connection. Try again.'}finally{$('go').disabled=false}};
+$('pw').addEventListener('keydown',e=>{if(e.key==='Enter')$('go').click()});
+$('rf').onclick=load;$('flt').onchange=load;$('q').oninput=draw;$('out').onclick=()=>{tok='';sessionStorage.removeItem('p3d_admin');show(false)};
+setInterval(()=>{if(tok&&!document.hidden&&!$('dlg').open)load()},60000);
+if(tok){show(true);load()}else show(false);
+</script></body></html>
