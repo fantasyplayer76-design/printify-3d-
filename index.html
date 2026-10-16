@@ -613,7 +613,7 @@
       </ol>
       <div class="flex flex-col sm:flex-row gap-3">
         <a href="https://wa.me/201063870873?text=Start%20a%20custom%20order" target="_blank" rel="noopener noreferrer" class="btn-outline px-6 text-sm" data-i18n="customBtn1">Order via WhatsApp instead</a>
-        <a href="https://makerworld.com/en" target="_blank" rel="noopener noreferrer" class="btn-outline hover-lift px-6 text-sm">
+        <a href="#custom" class="btn-outline hover-lift px-6 text-sm">
           <span data-i18n="customBtn2">Browse Designs on MakerWorld</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
         </a>
@@ -652,6 +652,7 @@
             <input id="customColor" type="text" data-i18n-placeholder="customColorPh" placeholder="e.g. black, white, red" class="field">
           </div>
         </div>
+        <div class="mb-4"><label class="field-label" for="customFile" data-i18n="customFileLabel">Reference file (optional)</label><input id="customFile" class="field" type="file" accept=".stl,.3mf,.obj,.jpg,.jpeg,.png,.pdf"><p class="text-xs sub mt-1" data-i18n="customFileHelp">STL, 3MF, OBJ, JPG, PNG or PDF · up to 5 MB.</p></div>
         <input id="customWebsite" type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
         <p id="customFormError" role="alert" class="hidden text-sm font-medium mb-3" style="color:var(--brand-text);"></p>
         <div id="customFormSuccess" class="hidden mb-3 rounded-lg p-3 text-sm" style="background:rgba(47,125,79,.1); color:#1f5a38;" role="status">
@@ -1287,7 +1288,12 @@
     customFormSubmit:{en:"Send Request",ar:"أرسل الطلب"},
     customContinueWa:{en:"Continue on WhatsApp",ar:"كمّل على واتساب"},
     customReply:{en:"We typically reply on WhatsApp within a few hours.",ar:"بنرد غالباً على واتساب خلال ساعات قليلة."},
-    customFormPhotoNote:{en:"This form does not upload files. After submitting, tap “Continue on WhatsApp” and attach your photos or STL file in the chat.",ar:"النموذج ده مش بيرفع ملفات. بعد الإرسال اضغط «كمّل على واتساب» وأرفق صورك أو ملف STL في المحادثة."},
+    customFormPhotoNote:{en:"Your file is sent securely with the quote request. WhatsApp is available as a fallback.",ar:"يتم إرسال ملفك بأمان مع طلب عرض السعر. واتساب متاح كخيار بديل."},
+    customFileLabel:{en:"Reference file (optional)",ar:"ملف مرجعي (اختياري)"},
+    customFileHelp:{en:"STL, 3MF, OBJ, JPG, PNG or PDF · up to 5 MB. If upload fails, attach it in WhatsApp.",ar:"STL أو 3MF أو OBJ أو JPG أو PNG أو PDF · حتى 5 ميجابايت. إذا تعذّر الرفع، أرفقه عبر واتساب."},
+    customFileError:{en:"Choose a supported file no larger than 5 MB.",ar:"اختر ملفًا مدعومًا لا يتجاوز 5 ميجابايت."},
+    customFileUploadError:{en:"Your quote was saved, but the file could not upload. Please attach it in WhatsApp.",ar:"تم حفظ طلب عرض السعر، لكن تعذّر رفع الملف. يُرجى إرفاقه عبر واتساب."},
+    customFallbackReady:{en:"You can also continue directly in WhatsApp.",ar:"يمكنك أيضًا متابعة الطلب مباشرة عبر واتساب."},
     customColorPh:{en:"e.g. black, white, red",ar:"مثلاً: أسود، أبيض، أحمر"},
     chargesTitle:{en:"Customization charges",ar:"رسوم التخصيص"},
     chargesSub:{en:"Base prices stay low — these apply only to work that takes extra time.",ar:"الأسعار الأساسية بسيطة — دي بس للشغل اللي بياخد وقت إضافي."},
@@ -2301,6 +2307,23 @@
     if(kind==='success'){ $('customFormSuccessMsg').textContent = msg; okEl.classList.remove('hidden'); }
   }
   let customKey = null, customBusy = false;
+  const CUSTOM_FILE_TYPES={stl:'model/stl','3mf':'model/3mf',obj:'model/obj',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',pdf:'application/pdf'};
+  function buildCustomWhatsAppUrl(f,extra=''){
+    const ar=getLang()==='ar',lines=[ar?'طلب عرض سعر مخصص من الموقع':'Custom quote request from website','',
+      (ar?'الاسم':'Name')+': '+f.name,(ar?'رقم الهاتف':'Phone')+': '+f.phone,(ar?'الوصف':'Description')+': '+f.desc,
+      (ar?'المقاس':'Size')+': '+f.size,(ar?'اللون':'Color')+': '+(f.color||'-')];
+    if(extra)lines.push('',extra);
+    return 'https://wa.me/'+WHATSAPP_ORDER+'?text='+encodeURIComponent(lines.join('\\n'));
+  }
+  async function uploadCustomReference(file,id){
+    if(!file)return null;
+    const ext=(file.name.split('.').pop()||'').toLowerCase();
+    const path='custom-quotes/'+id+'/'+newKey()+'.'+ext;
+    const url=SUPABASE_URL+'/storage/v1/object/reference-uploads/'+path.split('/').map(encodeURIComponent).join('/');
+    const resp=await fetch(url,{method:'POST',headers:{apikey:SUPABASE_ANON_KEY,Authorization:'Bearer '+SUPABASE_ANON_KEY,'Content-Type':CUSTOM_FILE_TYPES[ext],'x-upsert':'false'},body:file});
+    if(!resp.ok)throw new Error('upload-failed');
+    return path;
+  }
   $('customSubmitBtn').addEventListener('click', async function(){
     if(customBusy) return;
     const lang = getLang();
@@ -2311,7 +2334,9 @@
     const desc = $('customDesc').value.trim();
     const size = $('customSize').value;
     const color = $('customColor').value.trim();
+    const file=$('customFile').files[0]||null, ext=file?(file.name.split('.').pop()||'').toLowerCase():'';
     ['customName','customPhone','customDesc'].forEach(id => markInvalid($(id), false));
+    if(file&&(!CUSTOM_FILE_TYPES[ext]||file.size>5*1024*1024)){setCustomMsg('error',T('customFileError'));$('customFile').focus();return;}
 
     if(name.length < 2){ markInvalid($('customName'), true); setCustomMsg('error', lang==='ar' ? 'اكتب اسمك.' : 'Please enter your name.'); $('customName').focus(); return; }
     if(!validPhone(phone)){ markInvalid($('customPhone'), true); setCustomMsg('error', lang==='ar' ? 'اكتب رقم موبايل صحيح.' : 'Please enter a valid phone number.'); $('customPhone').focus(); return; }
@@ -2322,23 +2347,19 @@
     customBusy = true; btn.disabled = true; btn.textContent = lang==='ar' ? 'جاري الإرسال…' : 'Sending…';
     setCustomMsg(null, '');
     if(!customKey) customKey = newKey();     // kept across retries; renewed after success
+    const waFields={name,phone,desc,size,color};
+    $('customWaLink').href=buildCustomWhatsAppUrl(waFields,file?(lang==='ar'?'سأرفق الملف إذا تعذّر رفعه.':'I will attach the file if upload fails.'):'');
 
     try{
       const r = await postFn('create-custom-order', { name, phone, whatsapp: phone, size, color, description: desc, client_request_id: customKey }, 25000);
       if(r.ok){
-        const label = lang==='ar' ? 'طلب مخصص من الموقع' : 'Custom order request from website';
-        const nameLabel = lang==='ar' ? 'الاسم' : 'Name';
-        const descLabel = lang==='ar' ? 'الوصف' : 'Description';
-        const sizeLabel = lang==='ar' ? 'المقاس' : 'Size';
-        const colorLabel = lang==='ar' ? 'اللون' : 'Color';
-        const filesNote = lang==='ar' ? 'هبعتلكم الصور / ملف STL هنا في المحادثة.' : "I'll send my photos / STL file here in this chat.";
-        const waText = [label, '', `${nameLabel}: ${name}`, `${descLabel}: ${desc}`, `${sizeLabel}: ${size}`, `${colorLabel}: ${color || '-'}`, '', filesNote].join('\n');
-        const waUrl = `https://wa.me/${WHATSAPP_ORDER}?text=${encodeURIComponent(waText)}`;
-        $('customWaLink').href = waUrl;
-        setCustomMsg('success', T('customSentMsg'));
-        customKey = null;
-        $('customForm').reset();
-        openWhatsApp(waUrl);
+        let path=null,failed=false;
+        try{path=await uploadCustomReference(file,customKey);}catch(e){console.error(e);failed=!!file;}
+        const note=failed?(lang==='ar'?'تعذّر رفع الملف؛ سأرفقه هنا.':'File upload failed; I will attach it here.'):path?(lang==='ar'?'مسار الملف المرفوع: ':'Uploaded file path: ')+path:'';
+        const waUrl=buildCustomWhatsAppUrl(waFields,note);
+        $('customWaLink').href=waUrl;
+        setCustomMsg('success',failed?T('customFileUploadError'):T('customSentMsg'));
+        customKey=null;$('customForm').reset();openWhatsApp(waUrl);
       } else if(r.status === 429){
         setCustomMsg('error', M('limit'));
       } else if(r.status === 400 && r.data.error){
@@ -2350,6 +2371,7 @@
       console.error(err);
       setCustomMsg('error', M('network'));
     }finally{
+      if(!$('customFormSuccess').classList.contains('hidden')){} 
       customBusy = false; btn.disabled = false; btn.textContent = prevLabel;
     }
   });
