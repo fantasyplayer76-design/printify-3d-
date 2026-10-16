@@ -45,15 +45,15 @@ You can contact PRINTFY 3D about: custom 3D printing requests, product questions
 
 ## Shop (ready-made pieces)
 
-URL: https://www.printfy3d-eg.com/#shop
+URL: https://www.printfy3d-eg.com/shop/
 
-Ready-made pieces from the workshop, typically printed within 24-72 hours after ordering. The shop supports product search, sorting (newest, price low to high, price high to low) and min/max price filters (EGP). The full catalog with all products and prices is at https://www.printfy3d-eg.com/#catalog. Customers can ask for any item not listed.
+Ready-made pieces from the workshop, typically printed within 24-72 hours after ordering. The shop supports product search, sorting (newest, price low to high, price high to low) and min/max price filters (EGP). The full catalog with all products and prices is at https://www.printfy3d-eg.com/shop/. Customers can ask for any item not listed.
 
 All catalog products are printed after an order is placed. Base prices cover the standard product; extra charges may apply for extra colors, gift packaging, logo conversion, new custom designs or rush orders.
 
 ## Gifts
 
-URL: https://www.printfy3d-eg.com/#gifts
+URL: https://www.printfy3d-eg.com/gifts/
 
 Personalized gifts including name items, couple sets and keychains. Every item is printed to order; custom gifts are quoted separately.
 
@@ -61,13 +61,13 @@ Personalized gifts including name items, couple sets and keychains. Every item i
 
 ## Custom orders
 
-URL: https://www.printfy3d-eg.com/#custom
+URL: https://www.printfy3d-eg.com/custom-orders/
 
 Customers can bring their own design and PRINTFY 3D will print it.
 
 How it works:
 1. The customer describes the item and approximate size using the request form on the website (name, phone/WhatsApp, description, size: small/medium/large, color).
-2. The customer sends photos, sketches or an STL file on WhatsApp. The website form cannot upload files.
+2. Upload an STL, 3MF, OBJ, JPG, PNG or PDF file (up to 5 MB) in the custom quote form, or continue through WhatsApp as a fallback. / ارفع ملف STL أو 3MF أو OBJ أو JPG أو PNG أو PDF (حتى 5 ميجابايت) من نموذج عرض السعر المخصص، أو تابع عبر واتساب كخيار بديل.
 3. PRINTFY 3D reviews the idea, size and materials, quotes in EGP and confirms details. The customer approves the quote before printing. Then the item is printed in-house and delivered across Egypt.
 
 Replies to custom requests typically come on WhatsApp within a few hours. Custom orders are priced separately after review. Customers can also order through WhatsApp directly: https://wa.me/201063870873?text=Start%20a%20custom%20order
@@ -105,7 +105,7 @@ A: Yes. Send an STL file, photos or sketches on WhatsApp after submitting the cu
 
 ## Terms of Service (summary of full terms)
 
-Last updated: September 2026. URL: https://www.printfy3d-eg.com/#terms
+Last updated: September 2026. URL: https://www.printfy3d-eg.com/terms/
 
 1. About: PRINTFY 3D is an online 3D printing business based in Cairo, Egypt that designs, prints and delivers 3D-printed décor, figures, toys, accessories, personalized products and custom prints. Using the site or placing an order means agreeing to the terms.
 2. Products and custom orders: Both ready-made catalog products and fully custom printing are offered. Custom orders are made from the description, images, files or specifications the customer provides, typically through the website or WhatsApp.
@@ -124,7 +124,7 @@ Last updated: September 2026. URL: https://www.printfy3d-eg.com/#terms
 
 ## Privacy Policy (summary of full policy)
 
-Last updated: September 2026. URL: https://www.printfy3d-eg.com/#privacy
+Last updated: September 2026. URL: https://www.printfy3d-eg.com/privacy/
 
 - Information collected: Name and phone number; delivery information (address, area, delivery notes); order details (products, quantities, sizes, colors); custom-order information (descriptions, reference images, logos or files). Only information the customer chooses to provide through the website, WhatsApp or Instagram is collected.
 - Use of information: To process orders, provide customer support, and handle custom images and files solely to produce the requested item.
@@ -139,7 +139,7 @@ Last updated: September 2026. URL: https://www.printfy3d-eg.com/#privacy
 
 ## Refund and Returns Policy (summary of full policy)
 
-Last updated: September 2026. URL: https://www.printfy3d-eg.com/#refund
+Last updated: September 2026. URL: https://www.printfy3d-eg.com/refund-policy/
 
 Every catalog item is printed after an order is placed. Custom orders are quoted and priced separately before production.
 
@@ -157,7 +157,7 @@ Every catalog item is printed after an order is placed. Custom orders are quoted
 
 ## Copyright notice
 
-URL: https://www.printfy3d-eg.com/#copyright
+URL: https://www.printfy3d-eg.com/copyright/
 
 Copyright 2026 PRINTFY 3D. All rights reserved. Website content, including the name, branding and logo, site design, product photographs, descriptions, graphics, original 3D designs and website code, is owned by PRINTFY 3D and may not be copied, reproduced, modified, distributed, sold or commercially used without prior written permission. Third-party trademarks, characters and designs belong to their respective owners, and their appearance does not imply endorsement. Customers are responsible for having the rights to any content they submit for custom orders. Intellectual property concerns can be reported by contacting PRINTFY 3D.
 
@@ -174,5 +174,5 @@ Orders are confirmed directly with the PRINTFY 3D team. Customers can message on
 
 ## Related resources
 
-- Browse 3D designs on MakerWorld (third-party site, for finding models to bring to PRINTFY 3D for printing): https://makerworld.com/en
+The current custom order page does not link to an external model catalog. / صفحة الطلبات المخصصة لا تتضمن رابطًا إلى كتالوج نماذج خارجي.
 
