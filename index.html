@@ -360,8 +360,11 @@
   #productSearch:focus{box-shadow:0 0 0 3px rgba(182,83,52,.13),0 6px 18px rgba(32,33,31,.08);}
   .search-icon{position:absolute;inset-inline-start:.9rem;top:50%;transform:translateY(-50%);color:var(--sub);pointer-events:none;}
   .nav-link[aria-current="location"]{color:var(--brand-text);border-color:var(--brand);}
-  .mm-link[aria-current="location"]{color:var(--brand-text);}</style>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How long does an order take?", "acceptedAnswer": {"@type": "Answer", "text": "Catalog items are typically printed within 24–72 hours. Custom orders can take longer depending on complexity, and we share an estimated timeline when your order is confirmed."}}, {"@type": "Question", "name": "Do you deliver across Egypt?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Delivery is charged separately depending on your location, and we confirm it with you on WhatsApp."}}, {"@type": "Question", "name": "How can I pay?", "acceptedAnswer": {"@type": "Answer", "text": "Cash on delivery requires a 50% deposit of the product total before production; the remaining 50% is due on delivery. Delivery is charged separately. Full payment via InstaPay is also available."}}, {"@type": "Question", "name": "Can you print my own design?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Fill in the custom order request, then send your STL file, photos or sketches on WhatsApp. We quote in EGP and confirm the details before printing."}}, {"@type": "Question", "name": "Can I change or cancel my order?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, before production has started, at no charge. Once printing has begun, especially for custom or personalized items, changes or cancellations may no longer be possible."}}]}</script>
+  .mm-link[aria-current="location"]{color:var(--brand-text);}
+  .shop-controls{display:flex;flex-wrap:wrap;align-items:end;gap:.75rem;margin:-.7rem 0 1.2rem}.shop-controls label{display:grid;gap:.35rem;min-width:10rem;font-size:.78rem;font-weight:700;color:var(--sub)}.shop-controls .field{min-height:42px;padding:.55rem .75rem}.shop-controls button{min-height:42px}.mobile-bottom-nav{display:none}.gift-groups{display:grid;gap:1rem}.gift-group{border:1px solid var(--line-soft);border-radius:16px;padding:1.1rem;background:var(--surface-2)}.gift-items{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:.75rem}.gift-items a{border:1px solid var(--line-soft);padding:.5rem .8rem;border-radius:999px;font-size:.85rem}
+  @media(max-width:767px){#socialFabs{bottom:5.35rem}.mobile-bottom-nav{display:grid;position:fixed;inset-inline:0;bottom:0;z-index:50;grid-template-columns:repeat(3,1fr);padding:.45rem .5rem calc(.45rem + env(safe-area-inset-bottom,0px));background:var(--surface-2);border-top:1px solid var(--line-soft);box-shadow:0 -5px 18px rgba(27,20,13,.09)}.mobile-bottom-nav a,.mobile-bottom-nav button{display:grid;justify-items:center;align-content:center;gap:.15rem;border:0;background:none;color:var(--ink);font-size:.75rem;font-weight:600;min-height:46px;text-decoration:none}.mobile-bottom-nav svg{width:20px;height:20px}body{padding-bottom:calc(4.4rem + env(safe-area-inset-bottom,0px))}.cart-bar.show{bottom:4.6rem}}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How long does an order take?", "acceptedAnswer": {"@type": "Answer", "text": "Catalog items are typically printed within 24–72 hours. Custom orders can take longer depending on complexity, and we share an estimated timeline when your order is confirmed."}}, {"@type": "Question", "name": "Do you deliver across Egypt?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Delivery is charged separately depending on your location, and we confirm it with you on WhatsApp."}}, {"@type": "Question", "name": "How can I pay?", "acceptedAnswer": {"@type": "Answer", "text": "Cash on delivery requires a 50% deposit of the product total before production; the remaining 50% is due on delivery. Delivery is charged separately. Full payment via InstaPay is also available."}}, {"@type": "Question", "name": "Can you print my own design?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Fill in the custom order request, then send your STL file, photos or sketches on WhatsApp. We quote in EGP and confirm the details before printing."}}, {"@type": "Question", "name": "Can I change or cancel my order?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, before production has started, at no charge. Once printing has begun, especially for custom or personalized items, changes or cancellations may no longer be possible."}}, {"@type": "Question", "name": "Are products made to order?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Catalog products are printed after you place an order. Custom orders are reviewed and priced separately before production."}}]}</script>
 
 <style>
   .catalog-accordion{border:1px solid rgba(32,33,31,.12);border-radius:18px;background:rgba(255,255,255,.74);box-shadow:0 5px 18px rgba(32,33,31,.035);overflow:hidden}
@@ -401,6 +404,8 @@
     <nav class="hidden md:flex items-center gap-7" aria-label="Main">
       <a href="#home" class="nav-link" data-i18n="navHome">Home</a>
       <a href="#shop" class="nav-link" data-i18n="navShop">Shop</a>
+      <a href="#gifts" class="nav-link policyLink" data-page="gifts" data-i18n="navGifts">Gifts</a>
+      <a href="#custom-order" class="nav-link policyLink" data-page="customOrder" data-i18n="navCustomPage">Custom order</a>
       <a href="#catalog" class="nav-link" data-i18n="navCatalog">Full Catalog</a>
       <a href="#custom" class="nav-link" data-i18n="navCustom">Custom Orders</a>
       <a href="#faq" class="nav-link" data-i18n="navFaq">FAQ</a>
@@ -419,6 +424,8 @@
   <div id="mobileMenu" class="md:hidden">
     <a href="#home" class="mm-link" data-i18n="navHome">Home</a>
     <a href="#shop" class="mm-link" data-i18n="navShop">Shop</a>
+    <a href="#gifts" class="mm-link policyLink" data-page="gifts" data-i18n="navGifts">Gifts</a>
+    <a href="#custom-order" class="mm-link policyLink" data-page="customOrder" data-i18n="navCustomPage">Custom order</a>
     <a href="#catalog" class="mm-link" data-i18n="navCatalog">Full Catalog</a>
     <a href="#custom" class="mm-link" data-i18n="navCustom">Custom Orders</a>
     <a href="#faq" class="mm-link" data-i18n="navFaq">FAQ</a>
@@ -496,6 +503,12 @@
     </div>
     <p id="productSearchStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
     <div id="filterChips" class="flex gap-2 overflow-x-auto no-scrollbar mb-7 -mx-5 px-5 sm:mx-0 sm:px-0" role="group" aria-label="Filter by category"></div>
+    <div class="shop-controls" aria-label="Product filters">
+      <label><span data-i18n="sortLabel">Sort by</span><select id="productSort" class="field"><option value="newest" data-i18n="sortNewest">Newest</option><option value="price-asc" data-i18n="sortLow">Price: low to high</option><option value="price-desc" data-i18n="sortHigh">Price: high to low</option></select></label>
+      <label><span data-i18n="priceMinLabel">Min price (EGP)</span><input id="priceMin" class="field" type="number" min="0" inputmode="numeric" placeholder="0"></label>
+      <label><span data-i18n="priceMaxLabel">Max price (EGP)</span><input id="priceMax" class="field" type="number" min="0" inputmode="numeric" placeholder="Any"></label>
+      <button id="clearFilters" type="button" class="btn-outline px-4" data-i18n="clearFilters">Clear filters</button>
+    </div>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5" id="productGrid" aria-live="polite"></div>
   </div>
 </section>
@@ -623,6 +636,7 @@
       <details class="faq-item"><summary data-i18n="faq3q"></summary><p data-i18n="faq3a"></p></details>
       <details class="faq-item"><summary data-i18n="faq4q"></summary><p data-i18n="faq4a"></p></details>
       <details class="faq-item"><summary data-i18n="faq5q"></summary><p data-i18n="faq5a"></p></details>
+      <details class="faq-item"><summary data-i18n="faq6q">Are products made to order?</summary><p data-i18n="faq6a">Yes. We print catalog products after you order. Custom orders are priced separately after we review your idea, size and materials.</p></details>
     </div>
   </div>
 </section>
@@ -641,6 +655,7 @@
 </section>
 </main>
 
+</div><!-- /mainContent -->
 <!-- FOOTER -->
 <footer id="footer" class="border-t ink-line py-12 surface">
   <div class="max-w-6xl mx-auto px-5 sm:px-6 grid gap-10 md:grid-cols-3">
@@ -649,7 +664,7 @@
         <span class="logo-mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></span>
         <span class="wordmark display text-lg font-bold tracking-tight">PRINTFY <span class="brand">3D</span></span>
       </div>
-      <p class="font-semibold text-sm mb-1">Turn Ideas Into Reality.</p>
+      <p class="font-semibold text-sm mb-1">Your Ideas. Printed.</p>
       <p class="sub text-sm mb-5" data-i18n="footerDesc">Custom 3D prints, made in Cairo.</p>
       <div class="flex items-center gap-2.5">
         <a href="https://wa.me/201063870873" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="w-11 h-11 rounded-lg border flex items-center justify-center hover-lift" style="border-color:var(--line-field);">
@@ -667,6 +682,9 @@
       <p class="eyebrow mb-3" data-i18n="footExplore">Explore</p>
       <ul class="space-y-2">
         <li><a href="#shop" class="foot-link" data-i18n="navShop">Shop</a></li>
+        <li><a href="#gifts" class="foot-link policyLink" data-page="gifts" data-i18n="navGifts">Gifts</a></li>
+        <li><a href="#custom-order" class="foot-link policyLink" data-page="customOrder" data-i18n="navCustomPage">Custom order</a></li>
+        <li><a href="/3d-printing-cost-egypt.html" class="foot-link" data-i18n="navGuide">3D printing cost guide</a></li>
         <li><a href="#catalog" class="foot-link" data-i18n="navCatalog">Full Catalog</a></li>
         <li><a href="#custom" class="foot-link" data-i18n="navCustom">Custom Orders</a></li>
       </ul>
@@ -675,6 +693,8 @@
       <p class="eyebrow mb-3" data-i18n="footContactTitle">Contact</p>
       <ul class="space-y-2">
         <li><a href="https://wa.me/201063870873" target="_blank" rel="noopener noreferrer" class="foot-link"><span dir="ltr" style="unicode-bidi:isolate;">+20 10 63870873</span> · WhatsApp</a></li>
+        <li><a class="foot-link" href="tel:+201063870873">Call +20 10 63870873</a></li>
+        <li><a class="foot-link" href="mailto:printify3d.eg@gmail.com">printify3d.eg@gmail.com</a></li>
         <li><a href="https://instagram.com/3d_printingcairo" target="_blank" rel="noopener noreferrer" class="foot-link">Instagram @3d_printingcairo</a></li>
         <li class="foot-link" data-i18n="footLocation">Cairo, Egypt</li>
         <li class="foot-link" data-i18n="footPay">Cash on delivery or InstaPay</li>
@@ -692,7 +712,6 @@
     <div data-i18n="footerCopyright" class="order-1 sm:order-2">© 2026 PRINTFY 3D</div>
   </div>
 </footer>
-</div><!-- /mainContent -->
 
 
 <!-- POLICY PAGES (single-file hash routes) -->
@@ -805,6 +824,7 @@
 <p class="text-xs font-bold uppercase tracking-widest brand mb-3" style="letter-spacing:.1em;">Legal</p>
   <h2 class="legal-title">Refund &amp; Returns Policy</h2>
   <p class="sub text-sm mb-10">Last updated: September 2026</p>
+    <p>Every catalog item is printed after an order is placed. Custom orders are quoted and priced separately before production begins.</p>
   
     <h2>1. Returns for Standard Products</h2>
     <p>For standard, non-personalized catalog products, if you're not satisfied with an item, please contact us within 3 days of delivery so we can review your case and find a fair solution.</p>
@@ -915,6 +935,9 @@
       <li><strong>Location:</strong> Cairo, Egypt</li>
     </ul>
   </section>
+  <section id="page-gifts" class="legal-body hidden" dir="ltr" lang="en"><p class="eyebrow brand mb-3">PRINTFY 3D · GIFTS</p><h1 class="legal-title">Gifts made personal</h1><p class="sub text-sm mb-8">Find name items, couple sets and keychains. Every item is printed to order; custom gifts are quoted separately.</p><div id="giftProductGroups" class="gift-groups"></div><p class="mt-8"><a class="btn-primary px-6" href="#shop">Browse all products</a></p></section>
+  <section id="page-customorder" class="legal-body hidden" dir="ltr" lang="en"><p class="eyebrow brand mb-3">PRINTFY 3D · CUSTOM PRINTING</p><h1 class="legal-title">Bring your idea to life</h1><p class="sub text-sm mb-5">Tell us what you want printed. Send photos, sketches or an STL file on WhatsApp. We review your idea, size and materials and send a separate quote in EGP before production.</p><ol class="mb-8"><li>Describe the item and approximate size.</li><li>Send photos, sketches or an STL file on WhatsApp.</li><li>Review and approve the quote before printing.</li></ol><a class="btn-primary px-6" href="#custom">Request a custom quote</a></section>
+  <section id="page-account" class="legal-body hidden" dir="ltr" lang="en"><p class="eyebrow brand mb-3">PRINTFY 3D · ORDER SUPPORT</p><h1 class="legal-title">Your orders</h1><p class="sub text-sm mb-5">Orders are confirmed with our team directly. Message us on WhatsApp with the phone number used for your order and we’ll help with its status.</p><a class="btn-primary px-6" href="https://wa.me/201063870873?text=I%20would%20like%20help%20with%20my%20order" target="_blank" rel="noopener noreferrer">Contact us about an order</a><p class="mt-5 text-sm sub">Your cart is saved in this browser so you can continue shopping on this device.</p></section>
 </div>
 
 <!-- CART DRAWER -->
@@ -991,6 +1014,7 @@
   </button>
 </div>
 
+<nav class="mobile-bottom-nav" aria-label="Quick navigation"><a href="#shop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10h18M5 10l1 11h12l1-11M9 10V6a3 3 0 016 0v4"/></svg><span data-i18n="navShop">Shop</span></a><button id="bottomCartBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.5 3h2l2.4 12.4a2 2 0 002 1.6h8.6a2 2 0 002-1.6L21 8H6"/></svg><span data-i18n="bottomCart">Cart</span></button><a href="#account" class="policyLink" data-page="account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3-7 8-7s8 3 8 7"/></svg><span data-i18n="bottomAccount">Account</span></a></nav>
 <!-- STORAGE / COOKIE CONSENT BANNER -->
 <div id="consentBanner" class="hidden fixed bottom-0 inset-x-0 z-[80] surface-2 border-t ink-line px-5 py-3" style="padding-bottom:calc(.75rem + env(safe-area-inset-bottom,0px)); box-shadow:0 -6px 20px rgba(27,20,13,.1);">
   <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-3">
@@ -1001,7 +1025,7 @@
 
 <!-- FLOATING WHATSAPP BUTTON -->
 <div id="socialFabs">
-  <a href="https://wa.me/201063870873" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="w-12 h-12 rounded-full btn-primary shadow-lg hover-lift" style="min-height:48px;">
+  <a href="https://wa.me/201063870873?text=I%20have%20a%20question%20about%20your%20products" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="w-12 h-12 rounded-full btn-primary shadow-lg hover-lift" style="min-height:48px;">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
   </a>
 </div>
@@ -1093,8 +1117,10 @@
     faq4a:{en:"Yes. Fill in the custom order request, then send your STL file, photos or sketches on WhatsApp. We quote in EGP and confirm the details before printing.",ar:"أيوه. املا طلب التصميم المخصص وبعدين ابعت ملف STL أو صور أو اسكتشات على واتساب. بنقولك السعر بالجنيه ونأكد التفاصيل قبل الطباعة."},
     faq5q:{en:"Can I change or cancel my order?",ar:"أقدر أعدّل أو ألغي طلبي؟"},
     faq5a:{en:"Yes, before production has started, at no charge. Once printing has begun, especially for custom or personalized items, changes or cancellations may no longer be possible.",ar:"أيوه، قبل ما الطباعة تبدأ وبدون أي رسوم. بعد بداية الطباعة، خصوصاً للقطع المخصصة، ممكن التعديل أو الإلغاء ما يبقاش متاح."},
+    faq6q:{en:"Are products made to order?",ar:"هل المنتجات بتتطبع عند الطلب؟"}, faq6a:{en:"Yes. We print catalog products after you order. Custom orders are priced separately after we review your idea, size and materials.",ar:"أيوه، بنطبع منتجات الكتالوج بعد الطلب. الطلبات المخصصة بيكون لها سعر منفصل بعد مراجعة الفكرة والحجم والخامات."},
     navHome:{en:"Home",ar:"الرئيسية"}, navShop:{en:"Shop",ar:"المتجر"}, navCatalog:{en:"Full Catalog",ar:"الكتالوج الكامل"}, navCustom:{en:"Custom Orders",ar:"طلبات مخصصة"},
-    navContact:{en:"Contact",ar:"تواصل معنا"}, navShopNow:{en:"Shop Now",ar:"تسوق الآن"}, mmWhatsApp:{en:"Chat on WhatsApp",ar:"كلمنا على واتساب"},
+    navContact:{en:"Contact",ar:"تواصل معنا"}, navGifts:{en:"Gifts",ar:"هدايا"}, navCustomPage:{en:"Custom order",ar:"طلب مخصص"}, navGuide:{en:"3D printing cost guide",ar:"دليل تكلفة الطباعة ثلاثية الأبعاد"}, bottomCart:{en:"Cart",ar:"العربة"}, bottomAccount:{en:"Account",ar:"حسابي"},
+    sortLabel:{en:"Sort by",ar:"ترتيب حسب"}, sortNewest:{en:"Newest",ar:"الأحدث"}, sortLow:{en:"Price: low to high",ar:"السعر: من الأقل للأعلى"}, sortHigh:{en:"Price: high to low",ar:"السعر: من الأعلى للأقل"}, priceMinLabel:{en:"Min price (EGP)",ar:"أقل سعر (جنيه)"}, priceMaxLabel:{en:"Max price (EGP)",ar:"أعلى سعر (جنيه)"}, clearFilters:{en:"Clear filters",ar:"مسح الفلاتر"}, navShopNow:{en:"Shop Now",ar:"تسوق الآن"}, mmWhatsApp:{en:"Chat on WhatsApp",ar:"كلمنا على واتساب"},
     heroBadge:{en:"Printed to order · 24–72h",ar:"يُطبع عند الطلب · 24-72 ساعة"},
     heroPoint2:{en:"Delivered across Egypt",ar:"توصيل لكل أنحاء مصر"},
     heroPoint3:{en:"COD with 50% deposit · InstaPay",ar:"الدفع عند الاستلام بمقدم 50٪ · إنستاباي"},
@@ -1227,7 +1253,7 @@
     try{
       const [catData, prodData, optData] = await Promise.all([
         sbSelect('categories', 'select=slug,name_en,name_ar,icon,sort_order&order=sort_order.asc'),
-        sbSelect('products', 'select=id,slug,name_en,name,category,price,description,desc_en,desc_ar,name_ar,icon,material,customizable,available,image_url&available=eq.true'),
+        sbSelect('products', 'select=id,slug,name_en,name,category,price,description,desc_en,desc_ar,name_ar,icon,material,customizable,available,image_url,created_at&available=eq.true'),
         sbSelect('customization_options', 'select=option_key,name_en,name_ar,pricing_type,fixed_amount,minimum_amount,maximum_amount,percentage_rate,active&active=eq.true&order=sort_order.asc'),
       ]);
 
@@ -1239,6 +1265,7 @@
         return {
           id: String(p.id),
           slug: p.slug,
+          createdAt: p.created_at || null,
           price: Number(p.price),
           catKey: p.category,
           icon: p.icon || (cat ? cat.icon : 'figure'),
@@ -1577,6 +1604,7 @@
   }
   $('toastView').addEventListener('click', openCart);
   $('cartBarBtn').addEventListener('click', openCart);
+  $('bottomCartBtn').addEventListener('click', openCart);
 
   function addToCart(id, qty, names){
     const p = products.find(x=>x.id===id);
@@ -2263,13 +2291,16 @@
   const GRID_STR = { en:{add:"Add to Cart", added:"Added", view:"View details"}, ar:{add:"أضف للعربة", added:"تمت الإضافة", view:"عرض التفاصيل"} };
   const CART_ICON_SM = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.5 3h2l2.4 12.4a2 2 0 002 1.6h8.6a2 2 0 002-1.6L21 8H6"/></svg>';
   const CHECK_ICON_SM = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
-  let currentFilter = "all", productQuery = '', selectedSpongeSlug = 'spongebob-card-pink', selectedLizardSlug = 'spring-lizard-big';
+  let currentFilter = "all", productQuery = '', selectedSort = "newest", selectedSpongeSlug = 'spongebob-card-pink', selectedLizardSlug = 'spring-lizard-big';
   const SPONGE_CARD_SLUGS = new Set(['spongebob-card-pink','spongebob-card-green','spongebob-card-bundle']);
   const SPONGE_CARD_ORDER = ['spongebob-card-pink','spongebob-card-green','spongebob-card-bundle'];
   const LIZARD_CARD_SLUGS = new Set(['spring-lizard-big','spring-lizard-small']);
   const LIZARD_CARD_ORDER = ['spring-lizard-big','spring-lizard-small'];
   function normalizeProductQuery(value){ return String(value || '').normalize('NFKC').toLocaleLowerCase().replace(/[\u064B-\u065F\u0670]/g,'').trim(); }
   $('productSearch').addEventListener('input', e => { productQuery = e.currentTarget.value; renderGrid(); });
+  $('productSort').addEventListener('change', e => { selectedSort = e.currentTarget.value; renderGrid(); });
+  [$('priceMin'),$('priceMax')].forEach(el => el.addEventListener('input', renderGrid));
+  $('clearFilters').addEventListener('click', () => { currentFilter='all'; productQuery=''; selectedSort='newest'; $('productSearch').value=''; $('productSort').value='newest'; $('priceMin').value=''; $('priceMax').value=''; renderChips(); renderGrid(); });
   const chipsEl = $('filterChips');
   function renderChips(){
     const lang = getLang();
@@ -2356,10 +2387,19 @@
       </div>
     </article>`;
   }
+  function renderGiftGroups(){
+    const root=$('giftProductGroups'); if(!root)return; const lang=getLang();
+    const groups=[{title:lang==='ar'?'هدايا بالأسماء':'Name items',test:p=>/name|personal/i.test(p.slug+' '+p.en.name)},{title:lang==='ar'?'أطقم للأزواج':'Couple sets',test:p=>/dual|love|couple/i.test(p.slug+' '+p.en.name)},{title:lang==='ar'?'ميداليات مفاتيح':'Keychains',test:p=>/keychain/i.test(p.slug+' '+p.en.name)}];
+    root.innerHTML=groups.map(g=>{const items=products.filter(g.test);const links=items.map(p=>'<a href="#shop" data-gift-product="' + esc(p[lang].name) + '">' + esc(p[lang].name) + ' · ' + fmt(p.price) + '</a>').join('');return '<section class="gift-group"><h2 class="font-bold text-lg">' + esc(g.title) + '</h2><div class="gift-items">' + (links || '<span class="sub text-sm">Ask us for a made-to-order gift in this style.</span>') + '</div></section>'}).join('');
+  }
+  $('giftProductGroups')?.addEventListener('click',e=>{const a=e.target.closest('[data-gift-product]');if(!a)return;e.preventDefault();productQuery=a.dataset.giftProduct;$('productSearch').value=productQuery;currentFilter='all';renderChips();renderGrid();location.hash='shop';});
   function renderGrid(){
     const lang = getLang();
+    renderGiftGroups();
     const query = normalizeProductQuery(productQuery);
-    const list = products.filter(p => (currentFilter === 'all' || p.catKey === currentFilter) && (!query || [p.en.name,p.ar.name,p.en.cat,p.ar.cat,p.en.desc,p.ar.desc].some(value => normalizeProductQuery(value).includes(query))));
+    const min = Number($('priceMin').value), max = Number($('priceMax').value);
+    const list = products.filter(p => (currentFilter === 'all' || p.catKey === currentFilter) && (!$('priceMin').value || p.price >= min) && (!$('priceMax').value || p.price <= max) && (!query || [p.en.name,p.ar.name,p.en.cat,p.ar.cat,p.en.desc,p.ar.desc].some(value => normalizeProductQuery(value).includes(query))));
+    list.sort((a,b) => selectedSort==='price-asc' ? a.price-b.price : selectedSort==='price-desc' ? b.price-a.price : (Date.parse(b.createdAt||'')||0)-(Date.parse(a.createdAt||'')||0));
     $('productSearchStatus').textContent = lang==='ar' ? (list.length ? `${list.length} نتيجة` : 'لا توجد منتجات مطابقة. جرّب كلمة أخرى.') : (list.length ? `${list.length} product${list.length===1?'':'s'} found` : 'No products match your search. Try another name.');
     const matchedSponge = list.some(p=>SPONGE_CARD_SLUGS.has(p.slug));
     const matchedLizard = list.some(p=>LIZARD_CARD_SLUGS.has(p.slug));
@@ -2491,18 +2531,18 @@
     sectionTargets.forEach(section => sectionObserver.observe(section));
   }
   // ---- Single-file page routing (terms / privacy / refund / contact / copyright) ----
-  const PAGE_MAP = { terms:'page-terms', privacy:'page-privacy', refund:'page-refund', contact:'page-contact', copyright:'page-copyright' };
+  const PAGE_MAP = { terms:'page-terms', privacy:'page-privacy', refund:'page-refund', contact:'page-contact', copyright:'page-copyright', gifts:'page-gifts', customOrder:'page-customorder', account:'page-account' };
   function showHome(){
     $('mainContent').classList.remove('hidden');
     $('policyPages').classList.add('hidden');
-    Object.values(PAGE_MAP).forEach(id => $(id).classList.add('hidden'));
+    Object.values(PAGE_MAP).forEach(id => $(id)?.classList.add('hidden'));
   }
   function showPolicyPage(key){
     const id = PAGE_MAP[key];
     if(!id) { showHome(); return; }
     $('mainContent').classList.add('hidden');
     $('policyPages').classList.remove('hidden');
-    Object.values(PAGE_MAP).forEach(pid => $(pid).classList.toggle('hidden', pid !== id));
+    Object.values(PAGE_MAP).forEach(pid => $(pid)?.classList.toggle('hidden', pid !== id));
     window.scrollTo(0,0);
   }
   function routeFromHash(){
