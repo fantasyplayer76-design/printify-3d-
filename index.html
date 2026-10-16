@@ -1293,6 +1293,7 @@
     customFileHelp:{en:"STL, 3MF, OBJ, JPG, PNG or PDF · up to 5 MB. If upload fails, attach it in WhatsApp.",ar:"STL أو 3MF أو OBJ أو JPG أو PNG أو PDF · حتى 5 ميجابايت. إذا تعذّر الرفع، أرفقه عبر واتساب."},
     customFileError:{en:"Choose a supported file no larger than 5 MB.",ar:"اختر ملفًا مدعومًا لا يتجاوز 5 ميجابايت."},
     customFileUploadError:{en:"Your quote was saved, but the file could not upload. Please attach it in WhatsApp.",ar:"تم حفظ طلب عرض السعر، لكن تعذّر رفع الملف. يُرجى إرفاقه عبر واتساب."},
+    customFallbackReady:{en:"You can continue in WhatsApp if the form cannot be sent.",ar:"يمكنك متابعة الطلب عبر واتساب إذا تعذّر إرسال النموذج."},
     customFallbackReady:{en:"You can also continue directly in WhatsApp.",ar:"يمكنك أيضًا متابعة الطلب مباشرة عبر واتساب."},
     customColorPh:{en:"e.g. black, white, red",ar:"مثلاً: أسود، أبيض، أحمر"},
     chargesTitle:{en:"Customization charges",ar:"رسوم التخصيص"},
@@ -2348,7 +2349,8 @@
     setCustomMsg(null, '');
     if(!customKey) customKey = newKey();     // kept across retries; renewed after success
     const waFields={name,phone,desc,size,color};
-    $('customWaLink').href=buildCustomWhatsAppUrl(waFields,file?(lang==='ar'?'سأرفق الملف إذا تعذّر رفعه.':'I will attach the file if upload fails.'):'');
+    $('customWaLink').href=buildCustomWhatsAppUrl(waFields,file?(lang==='ar'?'سأرفق الملف إذا تعذّر رفعه.':'I will attach the file if upload fails.':''));
+    $('customFormSuccessMsg').textContent=T('customFallbackReady');
 
     try{
       const r = await postFn('create-custom-order', { name, phone, whatsapp: phone, size, color, description: desc, client_request_id: customKey }, 25000);
@@ -2371,7 +2373,7 @@
       console.error(err);
       setCustomMsg('error', M('network'));
     }finally{
-      if(!$('customFormSuccess').classList.contains('hidden')){} 
+      if($('customWaLink').href.startsWith('https://wa.me/')) $('customFormSuccess').classList.remove('hidden');
       customBusy = false; btn.disabled = false; btn.textContent = prevLabel;
     }
   });
