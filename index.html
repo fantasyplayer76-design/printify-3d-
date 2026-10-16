@@ -417,22 +417,61 @@
   @media(prefers-reduced-motion:reduce){.hero h1,.hero h1 + p,.hero .mt-8,.hero #heroVisual,#productGrid article,.legal-body:not(.hidden){animation:none!important;opacity:1!important;transform:none!important}.fade-up{transition:none!important;opacity:1!important;transform:none!important}}
 </style>
 <style id="reference-design-refresh">
-  :root{--ink:#251b16;--sub:#756b61;--bg:#f8f0e6;--surface:#fbf5ec;--surface-2:#fffaf3;--line-soft:rgba(58,42,31,.12);--line-field:rgba(58,42,31,.24);--brand:#b85f3b;--brand-hover:#9d4c2d;--brand-text:#8d452c;--brand-ink:#fffaf3;--gold:#c88c67;--gold-ink:#281c17;--shadow-sm:0 3px 14px rgba(50,35,24,.05);--shadow-md:0 16px 36px rgba(50,35,24,.09)}
-  body{background:#f8f0e6;color:#251b16;font-family:'DM Sans','Noto Sans Arabic',sans-serif}
+  :root{--ink:#211d1a;--sub:#746e68;--bg:#f7f2e9;--surface:#fbf7f0;--surface-2:#fffaf2;--line-soft:rgba(48,39,31,.13);--line-field:rgba(48,39,31,.2);--brand:#b85351;--brand-hover:#a34240;--brand-text:#a34240;--brand-ink:#fffaf3;--gold:#c88c67;--gold-ink:#281c17;--shadow-sm:0 4px 16px rgba(50,35,24,.05);--shadow-md:0 18px 42px rgba(50,35,24,.11)}
+  body{background:#f7f2e9;color:#211d1a;font-family:'DM Sans','Noto Sans Arabic',sans-serif}
   h1,h2,h3,h4,.section-title,.legal-title{font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:-.025em}
   html[lang="ar"] h1,html[lang="ar"] h2,html[lang="ar"] h3,html[lang="ar"] h4,html[lang="ar"] .section-title,html[lang="ar"] .legal-title{font-family:'Noto Sans Arabic','Cairo',sans-serif;letter-spacing:normal}
-  .site-header{background:rgba(248,240,230,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(58,42,31,.1)}
-  #home{background:#f8f0e6;color:#251b16}
-  #home .sub{color:#756b61}#home .brand{color:#a45133}#home .pill{background:#fffaf3;border-color:rgba(58,42,31,.13);color:#56463b;box-shadow:none}
-  #home .btn-primary{background:#b85f3b;border-color:#b85f3b;color:#fffaf3;box-shadow:none;border-radius:999px;padding-inline:1.6rem}
-  #home .btn-primary:hover{background:#9d4c2d;border-color:#9d4c2d}#home .btn-outline{border-color:rgba(58,42,31,.25);color:#392c23;border-radius:999px}#home .btn-outline:hover{background:#392c23;color:#fffaf3}
-  #heroVisual .hero-tile{border:1px solid rgba(58,42,31,.11);background:#eee2d3;box-shadow:0 12px 30px rgba(50,35,24,.08)}#heroVisual .hero-cap{background:rgba(248,240,230,.95);color:#251b16}
-  .section{padding-block:4rem}@media(min-width:768px){.section{padding-block:5.5rem}}
-  .section-title{font-size:clamp(2.45rem,5vw,4rem);font-weight:600;line-height:.99}
-  .card{border-radius:6px;background:#fffaf3;border-color:rgba(58,42,31,.1);box-shadow:0 7px 22px rgba(50,35,24,.045)}
+  .site-header{background:rgba(247,242,233,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(48,39,31,.1)}
+  .site-header .wordmark{font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;letter-spacing:-.045em;font-size:1.4rem}
+  .site-header .wordmark .brand{color:#b85351}.site-header>a>span:last-child{display:none}
+  .site-header nav a:not([href="#shop"]):not([href="#custom"]):not([href="#faq"]){display:none}
+  .site-header nav{gap:2.1rem}.site-header nav a{font-size:.91rem;color:#625d57}.site-header nav a:hover{color:#a34240}
+  #home{background:#f7f2e9;color:#211d1a;min-height:min(760px,calc(100svh - 62px));display:flex;align-items:center}
+  .hero-inner{width:100%;padding-block:4.2rem 5rem;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(2.5rem,6vw,6rem)}
+  .hero-eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.23em;font-weight:700;color:#a34240;margin:0 0 1.45rem}
+  .hero h1.hero-title{font-size:clamp(3.8rem,7vw,6.75rem);font-weight:600;line-height:.9;letter-spacing:-.045em;max-width:9ch;margin:0}
+  .hero h1 em{font-style:italic;color:#b85351;font-weight:500}
+  .hero-sub{font-size:clamp(1rem,1.35vw,1.18rem);line-height:1.65;color:#746e68;max-width:31rem;margin:1.6rem 0 0}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem}.hero-actions .btn-primary,.hero-actions .btn-outline{border-radius:999px;min-height:52px;padding:.85rem 1.65rem;font-size:.95rem}
+  .hero-actions .btn-primary{background:#b85351;border-color:#b85351;color:#fffaf3;box-shadow:none}.hero-actions .btn-primary:hover{background:#a34240;border-color:#a34240}
+  .hero-actions .btn-outline{border-color:rgba(48,39,31,.22);color:#211d1a;background:transparent}.hero-actions .btn-outline:hover{background:#211d1a;color:#fffaf3}
+  #heroVisual{display:none}#heroVisual.ready{display:block;position:relative;width:100%;max-width:630px;justify-self:end;aspect-ratio:.94;isolation:isolate}
+  .hero-featured-main{position:absolute;inset:0 0 0 10%;width:90%;height:100%;overflow:hidden;border:0;border-radius:26px;background:#ddc9b0;padding:0;box-shadow:0 22px 60px rgba(48,39,31,.15);cursor:pointer}
+  .hero-featured-main .art,.hero-featured-inset .art{position:absolute;inset:0;width:100%;height:100%;padding:0}.hero-featured-main .art>img,.hero-featured-inset .art>img{width:100%;height:100%;object-fit:cover;display:block}
+  .hero-featured-main::after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(35,25,19,.2));pointer-events:none}
+  .hero-featured-badge{position:absolute;z-index:2;top:1rem;right:1rem;padding:.55rem .9rem;background:#fffaf2;color:#312720;border-radius:999px;font-size:.78rem;font-weight:700;box-shadow:0 4px 16px rgba(32,22,16,.1)}
+  .hero-featured-inset{position:absolute;z-index:3;left:0;bottom:7%;width:32%;aspect-ratio:1.08;padding:0;border:4px solid #f7f2e9;border-radius:22px;overflow:hidden;background:#d7b490;box-shadow:0 12px 32px rgba(48,39,31,.2);cursor:pointer}
+  html[dir="rtl"] .hero-featured-main{inset:0 10% 0 0}html[dir="rtl"] .hero-featured-inset{left:auto;right:0}
+  .section{padding-block:4.1rem}@media(min-width:768px){.section{padding-block:6rem}}
+  #shop{background:#faf6ef}.section-title{font-size:clamp(2.6rem,5vw,4.35rem);font-weight:600;line-height:1}
+  #shop .section-title{margin-bottom:.45rem}#shop .section-sub{color:#746e68;margin-bottom:1.35rem}
+  #productSearchWrap{max-width:22rem;margin:0 0 1rem}#productSearch{border-radius:999px;background:#fffaf2;box-shadow:none;min-height:42px}
+  #filterChips{gap:.55rem;margin-bottom:1.15rem}#filterChips .chip{min-height:39px;border-radius:999px;padding:.55rem 1rem;background:#efe7d9;color:#514940;border-color:transparent;font-size:.84rem;font-weight:600;white-space:nowrap}
+  #filterChips .chip.active{background:#25211e;color:#fffaf3;border-color:#25211e}
+  .shop-controls{display:flex;align-items:end;gap:.55rem;margin:0 0 1.55rem}.shop-controls label{min-width:8rem;font-size:.72rem;font-weight:600;color:#746e68}.shop-controls .field{min-height:39px;padding:.45rem .7rem;border-radius:999px;background:#fffaf2;font-size:.83rem}
+  #productGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.35rem}
+  #productGrid article.card{border-radius:17px;background:transparent;border:0;box-shadow:none;overflow:visible}
+  #productGrid article.card-hover:hover{transform:translateY(-4px);box-shadow:none}
+  #productGrid article>button.viewBtn,.photo-product .sponge-gallery-shell,.sponge-product .sponge-gallery-shell{border-radius:19px;overflow:hidden;background:#e9dfd1;border:0}
+  #productGrid .product-photo,#productGrid .sponge-gallery-shell .sponge-slide{aspect-ratio:1.22;background:#e9dfd1}
+  #productGrid .product-photo img{object-fit:cover}
+  #productGrid article>div:last-child{padding:1rem .35rem .35rem!important}
+  #productGrid article p.text-\[11px\]{font-size:.68rem;letter-spacing:.13em;color:#a34240;font-weight:700}
+  #productGrid article h3{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.48rem;line-height:1.05;font-weight:600;margin:.3rem 0 .4rem}
+  #productGrid article .price-num{font-size:1.18rem;color:#2a2622}
+  #productGrid .addBtn{min-height:43px;border-radius:999px;background:transparent;color:#a34240;border:1px solid rgba(163,66,64,.35);box-shadow:none;font-weight:700;margin-top:.55rem}
+  #productGrid .addBtn:hover{background:#b85351;color:white}
+  .card{border-radius:15px;background:#fffaf3;border-color:rgba(48,39,31,.1);box-shadow:0 7px 22px rgba(50,35,24,.045)}
   .card-hover:hover{transform:translateY(-3px);border-color:rgba(184,95,59,.25);box-shadow:0 16px 30px rgba(50,35,24,.09)}
-  .btn-primary,.btn-outline,.btn-light,.btn-gold,.field{border-radius:6px}.chip{border-radius:999px}.chip.active{background:#b85f3b;border-color:#b85f3b}.field{background:#fffaf3}.faq-item{border-radius:6px}
-  footer{background:#f1e5d6!important;color:#392c23!important;border-top:1px solid rgba(58,42,31,.12)}footer .sub,footer .foot-link{color:#756b61!important}footer .brand{color:#a45133!important}footer a:hover{color:#b85f3b!important}
+  .btn-primary,.btn-outline,.btn-light,.btn-gold,.field{border-radius:10px}.chip{border-radius:999px}.faq-item{border-radius:12px}
+  footer{background:#eee5d9!important;color:#392c23!important;border-top:1px solid rgba(48,39,31,.12)}footer .sub,footer .foot-link{color:#746e68!important}footer .brand{color:#a34240!important}footer a:hover{color:#b85351!important}
+  @media(max-width:767px){
+    #home{min-height:auto}.hero-inner{grid-template-columns:1fr;gap:2.5rem;padding-block:3.1rem 4rem}.hero h1.hero-title{font-size:clamp(3.5rem,15vw,5rem);max-width:9ch}.hero-sub{font-size:1rem;margin-top:1.25rem}.hero-actions{margin-top:1.5rem}.hero-actions .btn-primary,.hero-actions .btn-outline{min-height:48px;padding:.75rem 1.2rem;font-size:.86rem}
+    #heroVisual.ready{width:100%;max-width:34rem;justify-self:center;aspect-ratio:1.02}.hero-featured-main{inset:0 0 0 7%;width:93%;border-radius:22px}.hero-featured-inset{width:31%;border-width:3px;border-radius:17px}
+    #productGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}.shop-controls{overflow-x:auto;padding-bottom:.25rem}.shop-controls label{min-width:7.5rem}#productGrid article h3{font-size:1.28rem}#productGrid article>div:last-child{padding:.7rem .2rem .3rem!important}
+  }
+  @media(max-width:390px){.hero-actions{gap:.55rem}.hero-actions .btn-primary,.hero-actions .btn-outline{padding-inline:.9rem;font-size:.8rem}#productGrid{gap:.65rem}#productGrid article h3{font-size:1.14rem}}
+  @media(prefers-reduced-motion:reduce){.hero-featured-main,.hero-featured-inset,#productGrid article,.card-hover{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body class="antialiased">
@@ -494,29 +533,19 @@
 <main id="main">
 <!-- HERO -->
 <section id="home" class="hero">
-  <div class="max-w-6xl mx-auto px-5 sm:px-6 pt-10 pb-14 md:pt-16 md:pb-24 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-    <div>
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight">
-        <span class="wordmark block text-sm sm:text-base font-bold tracking-[.2em] uppercase brand mb-3">PRINTFY 3D</span><span class="sr-only"> — </span><span data-i18n="heroTitle">Your Ideas. <span class="brand">Printed.</span></span>
-      </h1>
-      <p class="mt-5 text-base sm:text-lg sub max-w-lg" data-i18n="heroSub">Custom 3D prints made in Egypt — gaming, décor, gifts, accessories, and more.</p>
-      <div class="mt-8 flex flex-col sm:flex-row gap-3">
-        <a href="#shop" class="btn-primary btn-lg" data-i18n="heroBtn1">Shop Now</a>
-        <a href="#custom" class="btn-outline btn-lg" data-i18n="heroBtn2">Create Your Own</a>
+  <div class="hero-inner max-w-6xl mx-auto px-5 sm:px-6 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+    <div class="hero-copy">
+      <p class="hero-eyebrow" data-i18n="heroEyebrow">Printed layer by layer in Cairo</p>
+      <h1 class="hero-title" data-i18n="heroTitle">Small objects,<br><em>quietly</em> beautiful.</h1>
+      <p class="hero-sub" data-i18n="heroSub">Handmade 3D-printed incense holders, figurines, wall art and custom pieces. Printed in Cairo, delivered across Egypt.</p>
+      <div class="hero-actions">
+        <a href="#shop" class="btn-primary btn-lg" data-i18n="heroBtn1">Shop the collection</a>
+        <a href="#custom" class="btn-outline btn-lg" data-i18n="heroBtn2">Print my idea</a>
       </div>
-      <p class="mt-4 text-sm">
-        <a href="https://wa.me/201063870873" target="_blank" rel="noopener noreferrer" class="underline brand font-semibold" data-i18n="heroWa">Questions? Chat with us on WhatsApp</a>
-      </p>
-      <ul class="mt-7 flex flex-wrap gap-2" aria-label="Highlights">
-        <li class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-i18n="heroBadge">Printed to order · 24–72h</span></li>
-        <li class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span data-i18n="heroPoint2">Delivered across Egypt</span></li>
-        <li class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg><span data-i18n="heroPoint3">Cash on delivery or InstaPay</span></li>
-      </ul>
     </div>
     <div id="heroVisual" aria-label="Featured products"></div>
   </div>
 </section>
-
 <!-- TRUST STRIP -->
 <section class="border-y ink-line surface" style="padding-block:2.5rem;">
   <div class="max-w-6xl mx-auto px-5 sm:px-6 grid md:grid-cols-3 gap-7">
@@ -1227,12 +1256,12 @@
     customPageEyebrow:{en:"PRINTFY 3D · CUSTOM PRINTING",ar:"PRINTFY 3D · طباعة مخصصة"}, customPageTitle:{en:"Bring your idea to life",ar:"حوّل فكرتك لقطعة مطبوعة"}, customPageIntro:{en:"Tell us what you want printed. Send photos, sketches or an STL file on WhatsApp. We review your idea, size and materials and send a separate quote in EGP before production.",ar:"احكيلنا عايز تطبع إيه، وابعت صور أو رسومات أو ملف STL على واتساب. بنراجع الفكرة والحجم والخامات ونبعتلك سعر منفصل بالجنيه قبل ما نبدأ الطباعة."}, customPageStep1:{en:"Describe the item and approximate size.",ar:"اوصف القطعة وحدد مقاسها التقريبي."}, customPageStep2:{en:"Send photos, sketches or an STL file on WhatsApp.",ar:"ابعت صور أو رسومات أو ملف STL على واتساب."}, customPageStep3:{en:"Review and approve the quote before printing.",ar:"راجع السعر وأكده قبل بدء الطباعة."}, customPageCTA:{en:"Request a custom quote",ar:"اطلب عرض سعر مخصص"},
     accountPageEyebrow:{en:"PRINTFY 3D · ORDER SUPPORT",ar:"PRINTFY 3D · متابعة الطلبات"}, accountPageTitle:{en:"Your orders",ar:"طلباتك"}, accountPageIntro:{en:"Orders are confirmed with our team directly. Message us on WhatsApp with the phone number used for your order and we’ll help with its status.",ar:"تأكيد الطلبات ومتابعتها بيكون مباشرة مع فريقنا. ابعتلنا على واتساب رقم الهاتف المستخدم في الطلب عشان نساعدك في معرفة حالته."}, accountPageCTA:{en:"Contact us about an order",ar:"اسألنا عن طلبك"}, accountPageCart:{en:"Your cart is saved in this browser so you can continue shopping on this device.",ar:"عربتك محفوظة في المتصفح ده، وتقدر تكمل التسوق من نفس الجهاز."}, navGifts:{en:"Gifts",ar:"هدايا"}, navCustomPage:{en:"Custom order",ar:"طلب مخصص"}, navGuide:{en:"3D printing cost guide",ar:"دليل تكلفة الطباعة ثلاثية الأبعاد"}, bottomCart:{en:"Cart",ar:"العربة"}, bottomAccount:{en:"Account",ar:"حسابي"},
     sortLabel:{en:"Sort by",ar:"ترتيب حسب"}, sortNewest:{en:"Newest",ar:"الأحدث"}, sortLow:{en:"Price: low to high",ar:"السعر: من الأقل للأعلى"}, sortHigh:{en:"Price: high to low",ar:"السعر: من الأعلى للأقل"}, priceMinLabel:{en:"Min price (EGP)",ar:"أقل سعر (جنيه)"}, priceMaxLabel:{en:"Max price (EGP)",ar:"أعلى سعر (جنيه)"}, clearFilters:{en:"Clear filters",ar:"مسح الفلاتر"}, navShopNow:{en:"Shop Now",ar:"تسوق الآن"}, mmWhatsApp:{en:"Chat on WhatsApp",ar:"كلمنا على واتساب"},
-    heroBadge:{en:"Printed to order · 24–72h",ar:"يُطبع عند الطلب · 24-72 ساعة"},
+    heroEyebrow:{en:"PRINTED LAYER BY LAYER IN CAIRO",ar:"طباعة طبقة فوق طبقة في القاهرة"},
+    heroTitle:{en:'Small objects,<br><em>quietly</em> beautiful.',ar:'قطع صغيرة،<br><em>جمالها في هدوئها.</em>'},
+    heroSub:{en:"Handmade 3D-printed incense holders, figurines, wall art and custom pieces. Printed in Cairo, delivered across Egypt.",ar:"حوامل بخور ومجسمات ولوحات حائط وقطع مخصصة مطبوعة ثلاثيّاً بعناية. نطبع في القاهرة ونوصل لكل أنحاء مصر."},
+    heroBtn1:{en:"Shop the collection",ar:"تسوق المجموعة"}, heroBtn2:{en:"Print my idea",ar:"اطبع فكرتي"},    heroBadge:{en:"Printed to order · 24–72h",ar:"يُطبع عند الطلب · 24-72 ساعة"},
     heroPoint2:{en:"Delivered across Egypt",ar:"توصيل لكل أنحاء مصر"},
     heroPoint3:{en:"COD with 50% deposit · InstaPay",ar:"الدفع عند الاستلام بمقدم 50٪ · إنستاباي"},
-    heroTitle:{en:'Your Ideas. <span class="brand">Printed.</span>', ar:'أفكارك. <span class="brand">مطبوعة.</span>'},
-    heroSub:{en:"Custom 3D prints made in Egypt — gaming, décor, gifts, accessories, and more.", ar:"مطبوعات ثلاثية الأبعاد مخصصة صُنعت في مصر — جيمنج، ديكور، هدايا، إكسسوارات وأكثر."},
-    heroBtn1:{en:"Shop Now",ar:"تسوق الآن"}, heroBtn2:{en:"Create Your Own",ar:"صمّم بنفسك"},
     heroWa:{en:"Questions? Chat with us on WhatsApp",ar:"عندك سؤال؟ كلمنا على واتساب"},
     shopSectionTitle:{en:"From the Workshop",ar:"من الورشة"}, productSearchLabel:{en:"Search products",ar:"ابحث عن المنتجات"}, productSearchPh:{en:"Search by name or category",ar:"ابحث بالاسم أو التصنيف"},
     shopSub:{en:"Ready-made pieces, typically printed within 24–72 hours.",ar:"قطع جاهزة للطلب، بتتطبع عادةً خلال 24-72 ساعة."},
@@ -1418,24 +1447,24 @@
     }
   }
 
-  // ---- Hero: real product photos (only if products have images) ----
+  // ---- Hero: editorial product photography ----
   function renderHero(){
     const wrap = $('heroVisual'); if(!wrap) return;
     const lang = getLang();
-    const withImg = products.filter(p => (window.EMBEDDED_IMAGES && window.EMBEDDED_IMAGES[p.slug]) || p.image);
-    const picks = [], seen = new Set();
-    withImg.forEach(p => { if(picks.length<4 && !seen.has(p.catKey)){ seen.add(p.catKey); picks.push(p); } });
-    withImg.forEach(p => { if(picks.length<4 && !picks.includes(p)) picks.push(p); });
-    const n = picks.length >= 4 ? 4 : (picks.length >= 2 ? 2 : 0);
-    if(!n){ wrap.className=''; wrap.innerHTML=''; return; }
-    wrap.className = 'ready' + (n===2 ? ' n2' : '');
-    wrap.innerHTML = picks.slice(0,n).map((p,index) => `
-      <button type="button" class="hero-tile" data-id="${esc(p.id)}" aria-label="${esc(p[lang].name)}">
-        <span class="art">${productMedia(p, 48, "", index === 0)}</span>
-        <span class="hero-cap"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(p[lang].name)}</span><strong>${priceTextQty(p,1)}</strong></span>
-      </button>`).join('');
+    const wolf = products.find(p=>p.slug==='low-poly-wolf');
+    const incense = products.find(p=>p.slug==='incense-water-drop');
+    if(!wolf || !incense){ wrap.className=''; wrap.innerHTML=''; return; }
+    wrap.className = 'ready';
+    wrap.innerHTML = `
+      <button type="button" class="hero-featured-main" data-id="${esc(wolf.id)}" aria-label="${esc(wolf[lang].name)}">
+        <span class="art">${productMedia(wolf,72,'',true)}</span>
+        <span class="hero-featured-badge">${lang==='ar'?'يبدأ من ٥٠ ج.م':'From 50 EGP'}</span>
+      </button>
+      <button type="button" class="hero-featured-inset" data-id="${esc(incense.id)}" aria-label="${esc(incense[lang].name)}">
+        <span class="art">${productMedia(incense,48,'',false)}</span>
+      </button>`;
   }
-  $('heroVisual').addEventListener('click', e => { const b = e.target.closest('.hero-tile'); if(b) openPreview(b.dataset.id); });
+  $('heroVisual').addEventListener('click', e => { const b = e.target.closest('button[data-id]'); if(b) openPreview(b.dataset.id); });
 
   // ---- Full catalog (price list) ----
   function renderCatalog(){
