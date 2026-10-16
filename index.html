@@ -2727,7 +2727,7 @@
   document.addEventListener('visibilitychange', () => { if(!document.hidden) pollOrders(); });
   updateCartBadge();
   loadCatalogData();
-  if(savedLang === 'ar') applyLanguage('ar'); else document.title = PAGE_TITLE.en;
+  applyLanguage(savedLang === 'ar' ? 'ar' : 'en');
   routeFromHash();
 </script>
 
