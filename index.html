@@ -1253,7 +1253,7 @@
     try{
       const [catData, prodData, optData] = await Promise.all([
         sbSelect('categories', 'select=slug,name_en,name_ar,icon,sort_order&order=sort_order.asc'),
-        sbSelect('products', 'select=id,slug,name_en,name,category,price,description,desc_en,desc_ar,name_ar,icon,material,customizable,available,image_url,created_at&available=eq.true'),
+        sbSelect('products', 'select=id,slug,name_en,name,category,price,description,desc_en,desc_ar,name_ar,icon,material,customizable,available,image_url&available=eq.true'),
         sbSelect('customization_options', 'select=option_key,name_en,name_ar,pricing_type,fixed_amount,minimum_amount,maximum_amount,percentage_rate,active&active=eq.true&order=sort_order.asc'),
       ]);
 
@@ -2399,7 +2399,7 @@
     const query = normalizeProductQuery(productQuery);
     const min = Number($('priceMin').value), max = Number($('priceMax').value);
     const list = products.filter(p => (currentFilter === 'all' || p.catKey === currentFilter) && (!$('priceMin').value || p.price >= min) && (!$('priceMax').value || p.price <= max) && (!query || [p.en.name,p.ar.name,p.en.cat,p.ar.cat,p.en.desc,p.ar.desc].some(value => normalizeProductQuery(value).includes(query))));
-    list.sort((a,b) => selectedSort==='price-asc' ? a.price-b.price : selectedSort==='price-desc' ? b.price-a.price : (Date.parse(b.createdAt||'')||0)-(Date.parse(a.createdAt||'')||0));
+    list.sort((a,b) => selectedSort==='price-asc' ? a.price-b.price : selectedSort==='price-desc' ? b.price-a.price : ((Date.parse(b.createdAt||'')||0)-(Date.parse(a.createdAt||'')||0)) || (Number.isFinite(+a.id)&&Number.isFinite(+b.id)?Number(b.id)-Number(a.id):0));
     $('productSearchStatus').textContent = lang==='ar' ? (list.length ? `${list.length} نتيجة` : 'لا توجد منتجات مطابقة. جرّب كلمة أخرى.') : (list.length ? `${list.length} product${list.length===1?'':'s'} found` : 'No products match your search. Try another name.');
     const matchedSponge = list.some(p=>SPONGE_CARD_SLUGS.has(p.slug));
     const matchedLizard = list.some(p=>LIZARD_CARD_SLUGS.has(p.slug));
