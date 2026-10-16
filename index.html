@@ -365,7 +365,7 @@
   .shop-controls{display:flex;flex-wrap:wrap;align-items:end;gap:.75rem;margin:-.7rem 0 1.2rem}.shop-controls label{display:grid;gap:.35rem;min-width:10rem;font-size:.78rem;font-weight:700;color:var(--sub)}.shop-controls .field{min-height:42px;padding:.55rem .75rem}.shop-controls button{min-height:42px}.mobile-bottom-nav{display:none}.gift-groups{display:grid;gap:1rem}.gift-group{border:1px solid var(--line-soft);border-radius:16px;padding:1.1rem;background:var(--surface-2)}.gift-items{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:.75rem}.gift-items a{border:1px solid var(--line-soft);padding:.5rem .8rem;border-radius:999px;font-size:.85rem}
   @media(max-width:767px){#socialFabs{bottom:5.35rem}.mobile-bottom-nav{display:grid;position:fixed;inset-inline:0;bottom:0;z-index:50;grid-template-columns:repeat(3,1fr);padding:.45rem .5rem calc(.45rem + env(safe-area-inset-bottom,0px));background:var(--surface-2);border-top:1px solid var(--line-soft);box-shadow:0 -5px 18px rgba(27,20,13,.09)}.mobile-bottom-nav a,.mobile-bottom-nav button{display:grid;justify-items:center;align-content:center;gap:.15rem;border:0;background:none;color:var(--ink);font-size:.75rem;font-weight:600;min-height:46px;text-decoration:none}.mobile-bottom-nav svg{width:20px;height:20px}body{padding-bottom:calc(4.4rem + env(safe-area-inset-bottom,0px))}.cart-bar.show{bottom:4.6rem}}
 </style>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How long does an order take?", "acceptedAnswer": {"@type": "Answer", "text": "Catalog items are typically printed within 24–72 hours. Custom orders can take longer depending on complexity, and we share an estimated timeline when your order is confirmed."}}, {"@type": "Question", "name": "Do you deliver across Egypt?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Delivery is charged separately depending on your location, and we confirm it with you on WhatsApp."}}, {"@type": "Question", "name": "How can I pay?", "acceptedAnswer": {"@type": "Answer", "text": "Cash on delivery requires a 50% deposit of the product total before production; the remaining 50% is due on delivery. Delivery is charged separately. Full payment via InstaPay is also available."}}, {"@type": "Question", "name": "Can you print my own design?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Fill in the custom order request, then send your STL file, photos or sketches on WhatsApp. We quote in EGP and confirm the details before printing."}}, {"@type": "Question", "name": "Can I change or cancel my order?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, before production has started, at no charge. Once printing has begun, especially for custom or personalized items, changes or cancellations may no longer be possible."}}, {"@type": "Question", "name": "Are products made to order?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Catalog products are printed after you place an order. Custom orders are reviewed and priced separately before production."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are products made to order?","acceptedAnswer":{"@type":"Answer","text":"Yes. Catalog products are printed after you order. Custom orders are priced separately after the idea, size and materials are reviewed."}},{"@type":"Question","name":"How long does printing take?","acceptedAnswer":{"@type":"Answer","text":"Ready-made catalog pieces typically take 24–72 hours to print. Custom orders may take longer depending on complexity; an estimated timeline is shared when the order is confirmed."}},{"@type":"Question","name":"How do I send an STL file?","acceptedAnswer":{"@type":"Answer","text":"Use the custom quote form to upload an STL, 3MF, OBJ, JPG, PNG or PDF file (up to 5 MB). WhatsApp is also available as a fallback."}},{"@type":"Question","name":"How are custom orders priced?","acceptedAnswer":{"@type":"Answer","text":"Custom orders are quoted separately after the idea, size and materials are reviewed. The quote is confirmed before printing."}},{"@type":"Question","name":"What payment methods are available?","acceptedAnswer":{"@type":"Answer","text":"Cash on delivery requires a 50% deposit before production, with the remaining 50% due on delivery. Full payment through InstaPay is also available."}},{"@type":"Question","name":"Do you deliver across Egypt?","acceptedAnswer":{"@type":"Answer","text":"Yes. Delivery is available across Egypt. The delivery fee is charged separately and confirmed based on location."}},{"@type":"Question","name":"What material do you use?","acceptedAnswer":{"@type":"Answer","text":"Product records list PLA for some items. For a custom request, material details are reviewed and confirmed with the quote."}},{"@type":"Question","name":"Can I request a color?","acceptedAnswer":{"@type":"Answer","text":"Include your preferred color in the custom request form. Color and material details are confirmed with your order."}},{"@type":"Question","name":"Can I order a personalized name gift?","acceptedAnswer":{"@type":"Answer","text":"Yes. Name keychains and name stands can be personalized. Confirm the spelling and design before production."}},{"@type":"Question","name":"What if my item arrives damaged or defective?","acceptedAnswer":{"@type":"Answer","text":"Contact PRINTFY 3D with photos within 3 days of delivery so the case can be reviewed. A free reprint or refund may be offered depending on the situation."}}]}</script>
 
 <style>
   .catalog-accordion{border:1px solid rgba(32,33,31,.12);border-radius:18px;background:rgba(255,255,255,.74);box-shadow:0 5px 18px rgba(32,33,31,.035);overflow:hidden}
@@ -667,7 +667,7 @@
       <div id="chargesCard" class="card p-5 sm:p-7">
         <h3 class="font-bold text-lg mb-1" data-i18n="chargesTitle">Customization charges</h3>
         <p class="text-sm sub mb-4" data-i18n="chargesSub">Base prices stay low — these apply only to work that takes extra time.</p>
-        <ul id="chargesList" class="text-sm rule-list"></ul>
+        <ul id="chargesList" class="text-sm rule-list"></ul><div class="mt-5 pt-4 border-t ink-line"><h4 class="font-semibold mb-2" data-i18n="deliveryFeeTitle">Delivery fees by area</h4><p class="text-sm sub" data-i18n="deliveryFeeTodo">[TODO: confirm delivery fees by area]</p></div>
       </div>
     </div>
   </div>
@@ -701,17 +701,22 @@
 </section>
 
 <!-- CUSTOMER REVIEWS --><section id="customerReviews" class="section border-t ink-line" style="padding-block:2.5rem;"><div class="max-w-6xl mx-auto px-5 sm:px-6 text-center"><p class="eyebrow brand mb-3" data-i18n="reviewsLink">Customer reviews</p><h2 class="section-title mb-3" style="font-size:clamp(1.6rem,4vw,2.25rem);" data-i18n="reviewsSummary">4.8 out of 5 · 10 customer reviews</h2><a href="/reviews/" class="btn-outline" data-i18n="reviewsCta">Read all 10 reviews</a></div></section><!-- FAQ -->
+<section id="homeTestimonials" class="section border-t ink-line hidden" aria-labelledby="testimonialsTitle"><div class="max-w-6xl mx-auto px-5 sm:px-6"><p class="eyebrow brand mb-3 text-center" data-i18n="testimonialsEyebrow">Customer words</p><h2 id="testimonialsTitle" class="section-title text-center mb-8" data-i18n="testimonialsTitle">Customer reviews</h2><div id="testimonialGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div></div></section>
 <section id="faq" class="section border-t ink-line" style="padding-block:3.5rem;">
   <div class="max-w-3xl mx-auto px-5 sm:px-6">
     <p class="eyebrow brand mb-3 text-center" data-i18n="faqEyebrow">Good to know</p>
     <h2 class="section-title text-center mb-8" style="font-size:clamp(1.6rem,4vw,2.25rem);" data-i18n="faqTitle">Frequently asked questions</h2>
     <div class="faq-list">
-      <details class="faq-item"><summary data-i18n="faq1q"></summary><p data-i18n="faq1a"></p></details>
-      <details class="faq-item"><summary data-i18n="faq2q"></summary><p data-i18n="faq2a"></p></details>
-      <details class="faq-item"><summary data-i18n="faq3q"></summary><p data-i18n="faq3a"></p></details>
-      <details class="faq-item"><summary data-i18n="faq4q"></summary><p data-i18n="faq4a"></p></details>
-      <details class="faq-item"><summary data-i18n="faq5q"></summary><p data-i18n="faq5a"></p></details>
-      <details class="faq-item"><summary data-i18n="faq6q">Are products made to order?</summary><p data-i18n="faq6a">Yes. We print catalog products after you order. Custom orders are priced separately after we review your idea, size and materials.</p></details>
+      <details class="faq-item"><summary data-i18n="faq1q">Are products made to order?</summary><p data-i18n="faq1a">Yes. Catalog products are printed after you order. Custom orders are priced separately after the idea, size and materials are reviewed.</p></details>
+      <details class="faq-item"><summary data-i18n="faq2q">How long does printing take?</summary><p data-i18n="faq2a">Ready-made catalog pieces typically take 24–72 hours to print. Custom orders may take longer depending on complexity; an estimated timeline is shared when the order is confirmed.</p></details>
+      <details class="faq-item"><summary data-i18n="faq3q">How do I send an STL file?</summary><p data-i18n="faq3a">Use the custom quote form to upload an STL, 3MF, OBJ, JPG, PNG or PDF file (up to 5 MB). WhatsApp is also available as a fallback.</p></details>
+      <details class="faq-item"><summary data-i18n="faq4q">How are custom orders priced?</summary><p data-i18n="faq4a">Custom orders are quoted separately after the idea, size and materials are reviewed. The quote is confirmed before printing.</p></details>
+      <details class="faq-item"><summary data-i18n="faq5q">What payment methods are available?</summary><p data-i18n="faq5a">Cash on delivery requires a 50% deposit before production, with the remaining 50% due on delivery. Full payment through InstaPay is also available.</p></details>
+      <details class="faq-item"><summary data-i18n="faq6q">Do you deliver across Egypt?</summary><p data-i18n="faq6a">Yes. Delivery is available across Egypt. The delivery fee is charged separately and confirmed based on location.</p></details>
+      <details class="faq-item"><summary data-i18n="faq7q">What material do you use?</summary><p data-i18n="faq7a">Product records list PLA for some items. For a custom request, material details are reviewed and confirmed with the quote.</p></details>
+      <details class="faq-item"><summary data-i18n="faq8q">Can I request a color?</summary><p data-i18n="faq8a">Include your preferred color in the custom request form. Color and material details are confirmed with your order.</p></details>
+      <details class="faq-item"><summary data-i18n="faq9q">Can I order a personalized name gift?</summary><p data-i18n="faq9a">Yes. Name keychains and name stands can be personalized. Confirm the spelling and design before production.</p></details>
+      <details class="faq-item"><summary data-i18n="faq10q">What if my item arrives damaged or defective?</summary><p data-i18n="faq10a">Contact PRINTFY 3D with photos within 3 days of delivery so the case can be reviewed. A free reprint or refund may be offered depending on the situation.</p></details>
     </div>
   </div>
 </section>
@@ -1104,7 +1109,7 @@
           <label class="pay-opt"><input type="radio" name="payMethod" id="payInstapay" value="instapay"><span><strong data-i18n="payIpT">InstaPay</strong><small data-i18n="payIpD">Pay now, then upload a screenshot of your transfer</small></span></label>
         </div>
       </fieldset>
-      <p id="codDepositNote" class="deposit-notice" role="status" aria-live="polite"></p>
+      <p id="codDepositNote" class="deposit-notice" data-i18n="codDepositWhy" role="note">The 50% COD deposit is due before production starts; the remaining 50% is due on delivery.</p>
       <input id="ckWebsite" type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
     </div>
   </div>
@@ -1241,17 +1246,16 @@
     igSub:{en:"We share new prints and custom work on Instagram. Message us there or on WhatsApp.",ar:"بننزل المطبوعات الجديدة والطلبات المخصصة على إنستجرام. كلمنا هناك أو على واتساب."},
     igBtn:{en:"Follow @3d_printingcairo",ar:"تابع @3d_printingcairo"},
     faqEyebrow:{en:"Good to know",ar:"مهم تعرفه"}, faqTitle:{en:"Frequently asked questions",ar:"الأسئلة الشائعة"},
-    faq1q:{en:"How long does an order take?",ar:"الطلب بياخد قد إيه؟"},
-    faq1a:{en:"Catalog items are typically printed within 24–72 hours. Custom orders can take longer depending on complexity, and we share an estimated timeline when your order is confirmed.",ar:"قطع الكتالوج عادةً بتتطبع خلال 24 إلى 72 ساعة. الطلبات المخصصة ممكن تاخد وقت أكتر حسب التعقيد، وبنقولك المدة المتوقعة لما نأكد الطلب."},
-    faq2q:{en:"Do you deliver across Egypt?",ar:"بتوصلوا لكل مصر؟"},
-    faq2a:{en:"Yes. Delivery is charged separately depending on your location, and we confirm it with you on WhatsApp.",ar:"أيوه. التوصيل بيتحسب منفصل حسب منطقتك، وبنأكده معاك على واتساب."},
-    faq3q:{en:"How can I pay?",ar:"أدفع إزاي؟"},
-    faq3a:{en:"Cash on delivery requires a 50% deposit of the product total before production; the remaining 50% is due on delivery. Delivery is charged separately. Full payment via InstaPay is also available.",ar:"الدفع عند الاستلام يتطلب مقدم 50٪ من إجمالي المنتجات قبل بدء التصنيع، والـ50٪ الباقية تُدفع عند الاستلام. التوصيل يُحسب منفصلًا. ويمكنك أيضًا دفع المبلغ كاملًا عبر إنستاباي."},
-    faq4q:{en:"Can you print my own design?",ar:"ممكن تطبعوا تصميمي أنا؟"},
-    faq4a:{en:"Yes. Fill in the custom order request, then send your STL file, photos or sketches on WhatsApp. We quote in EGP and confirm the details before printing.",ar:"أيوه. املا طلب التصميم المخصص وبعدين ابعت ملف STL أو صور أو اسكتشات على واتساب. بنقولك السعر بالجنيه ونأكد التفاصيل قبل الطباعة."},
-    faq5q:{en:"Can I change or cancel my order?",ar:"أقدر أعدّل أو ألغي طلبي؟"},
-    faq5a:{en:"Yes, before production has started, at no charge. Once printing has begun, especially for custom or personalized items, changes or cancellations may no longer be possible.",ar:"أيوه، قبل ما الطباعة تبدأ وبدون أي رسوم. بعد بداية الطباعة، خصوصاً للقطع المخصصة، ممكن التعديل أو الإلغاء ما يبقاش متاح."},
-    faq6q:{en:"Are products made to order?",ar:"هل المنتجات بتتطبع عند الطلب؟"}, faq6a:{en:"Yes. We print catalog products after you order. Custom orders are priced separately after we review your idea, size and materials.",ar:"أيوه، بنطبع منتجات الكتالوج بعد الطلب. الطلبات المخصصة بيكون لها سعر منفصل بعد مراجعة الفكرة والحجم والخامات."},
+    faq1q:{en:"Are products made to order?",ar:"هل المنتجات تُطبع حسب الطلب؟"}, faq1a:{en:"Yes. Catalog products are printed after you order. Custom orders are priced separately after the idea, size and materials are reviewed.",ar:"نعم. تُطبع منتجات الكتالوج بعد الطلب. وتُسعّر الطلبات المخصصة بشكل منفصل بعد مراجعة الفكرة والمقاس والخامات."},
+    faq2q:{en:"How long does printing take?",ar:"كم يستغرق الطباعة؟"}, faq2a:{en:"Ready-made catalog pieces typically take 24–72 hours to print. Custom orders may take longer depending on complexity; an estimated timeline is shared when the order is confirmed.",ar:"تستغرق منتجات الكتالوج عادةً من 24 إلى 72 ساعة للطباعة. وقد تستغرق الطلبات المخصصة وقتًا أطول حسب التعقيد، ويتم إبلاغك بالمدة التقديرية عند تأكيد الطلب."},
+    faq3q:{en:"How do I send an STL file?",ar:"كيف أرسل ملف STL؟"}, faq3a:{en:"Use the custom quote form to upload an STL, 3MF, OBJ, JPG, PNG or PDF file (up to 5 MB). WhatsApp is also available as a fallback.",ar:"استخدم نموذج عرض السعر المخصص لرفع ملف STL أو 3MF أو OBJ أو JPG أو PNG أو PDF (حتى 5 ميجابايت). واتساب متاح أيضًا كخيار بديل."},
+    faq4q:{en:"How are custom orders priced?",ar:"كيف يتم تسعير الطلبات المخصصة؟"}, faq4a:{en:"Custom orders are quoted separately after the idea, size and materials are reviewed. The quote is confirmed before printing.",ar:"يتم تحديد السعر بشكل منفصل بعد مراجعة الفكرة والمقاس والخامات، ويُؤكد السعر قبل الطباعة."},
+    faq5q:{en:"What payment methods are available?",ar:"ما طرق الدفع المتاحة؟"}, faq5a:{en:"Cash on delivery requires a 50% deposit before production, with the remaining 50% due on delivery. Full payment through InstaPay is also available.",ar:"الدفع عند الاستلام يتطلب عربونًا بنسبة 50% قبل الإنتاج، والباقي عند التسليم. كما يتاح الدفع الكامل عبر إنستا باي."},
+    faq6q:{en:"Do you deliver across Egypt?",ar:"هل التوصيل متاح في جميع أنحاء مصر؟"}, faq6a:{en:"Yes. Delivery is available across Egypt. The delivery fee is charged separately and confirmed based on location.",ar:"نعم، التوصيل متاح في جميع أنحاء مصر. وتُحسب رسوم التوصيل بشكل منفصل حسب الموقع."},
+    faq7q:{en:"What material do you use?",ar:"ما الخامة المستخدمة؟"}, faq7a:{en:"Product records list PLA for some items. For a custom request, material details are reviewed and confirmed with the quote.",ar:"توضح سجلات بعض المنتجات استخدام PLA. أما الطلبات المخصصة فتتم مراجعة الخامة وتأكيدها مع عرض السعر."},
+    faq8q:{en:"Can I request a color?",ar:"هل يمكنني طلب لون معين؟"}, faq8a:{en:"Include your preferred color in the custom request form. Color and material details are confirmed with your order.",ar:"اذكر اللون المفضل في نموذج الطلب المخصص. ويتم تأكيد اللون والخامة مع الطلب."},
+    faq9q:{en:"Can I order a personalized name gift?",ar:"هل يمكنني طلب هدية باسم مخصص؟"}, faq9a:{en:"Yes. Name keychains and name stands can be personalized. Confirm the spelling and design before production.",ar:"نعم. يمكن تخصيص ميداليات المفاتيح وحوامل الأسماء. يرجى تأكيد كتابة الاسم والتصميم قبل الإنتاج."},
+    faq10q:{en:"What if my item arrives damaged or defective?",ar:"ماذا أفعل إذا وصل المنتج تالفًا أو به عيب؟"}, faq10a:{en:"Contact PRINTFY 3D with photos within 3 days of delivery so the case can be reviewed. A free reprint or refund may be offered depending on the situation.",ar:"تواصل مع PRINTFY 3D وأرسل صورًا خلال 3 أيام من التسليم لمراجعة الحالة. قد يتم تقديم إعادة طباعة مجانية أو استرداد حسب الحالة."},
     navHome:{en:"Home",ar:"الرئيسية"}, navShop:{en:"Shop",ar:"المتجر"}, navCatalog:{en:"Full Catalog",ar:"الكتالوج الكامل"}, navCustom:{en:"Custom Orders",ar:"طلبات مخصصة"},
     brandTagline:{en:"Your Ideas. Printed.",ar:"أفكارك. مطبوعة."}, navContact:{en:"Contact",ar:"تواصل معنا"},
     giftsEyebrow:{en:"PRINTFY 3D · GIFTS",ar:"PRINTFY 3D · هدايا"}, giftsTitle:{en:"Gifts made personal",ar:"هدايا بطابعك الخاص"}, giftsIntro:{en:"Find name items, couple sets and keychains. Every item is printed to order; custom gifts are quoted separately.",ar:"اختار هدية باسم مميز أو طقم للأزواج أو ميدالية مفاتيح. بنطبع كل المنتجات بعد الطلب، والطلبات الخاصة لها تسعير منفصل."}, giftsBrowse:{en:"Browse all products",ar:"تصفح كل المنتجات"}, giftsGroupName:{en:"Name items",ar:"هدايا بالأسماء"}, giftsGroupCouple:{en:"Couple sets",ar:"أطقم للأزواج"}, giftsGroupKeychain:{en:"Keychains",ar:"ميداليات مفاتيح"}, giftsGroupEmpty:{en:"Ask us for a made-to-order gift in this style.",ar:"كلمنا لطلب هدية مخصصة من هذا النوع."},
@@ -1298,6 +1302,11 @@
     customColorPh:{en:"e.g. black, white, red",ar:"مثلاً: أسود، أبيض، أحمر"},
     chargesTitle:{en:"Customization charges",ar:"رسوم التخصيص"},
     chargesSub:{en:"Base prices stay low — these apply only to work that takes extra time.",ar:"الأسعار الأساسية بسيطة — دي بس للشغل اللي بياخد وقت إضافي."},
+    codDepositWhy:{en:"The 50% COD deposit is due before production starts; the remaining 50% is due on delivery.",ar:"يُدفع عربون 50٪ قبل بدء الإنتاج، وتُدفع الـ50٪ المتبقية عند التسليم."},
+    deliveryFeeTitle:{en:"Delivery fees by area",ar:"رسوم التوصيل حسب المنطقة"},
+    deliveryFeeTodo:{en:"[TODO: confirm delivery fees by area]",ar:"[مطلوب: تأكيد رسوم التوصيل حسب المنطقة]"},
+    testimonialsEyebrow:{en:"Customer words",ar:"آراء العملاء"},
+    testimonialsTitle:{en:"Customer reviews",ar:"آراء العملاء"},
     whyTitle:{en:"Why Choose PRINTFY 3D?",ar:"ليه تختار PRINTFY 3D؟"},
     why1T:{en:"High-Quality Printing",ar:"طباعة عالية الجودة"}, why1D:{en:"Precision printing with premium materials on every order.",ar:"طباعة دقيقة بخامات ممتازة في كل طلب."},
     why2T:{en:"Unique &amp; Creative Designs",ar:"تصاميم فريدة وإبداعية"}, why2D:{en:"Original pieces you won't find anywhere else.",ar:"قطع أصلية مش هتلاقيها في أي مكان تاني."},
@@ -1514,8 +1523,18 @@
     const lang = getLang();
     const wrap = $('chargesList');
     if(!wrap) return;
-    $('chargesCard').classList.toggle('hidden', customizationOptions.length === 0);
-    wrap.innerHTML = customizationOptions.map(o => `
+    const defaults=[
+      {name_en:"Simple name customization",name_ar:"تخصيص الاسم البسيط",pricing_type:"fixed",fixed_amount:0},
+      {name_en:"Extra color",name_ar:"لون إضافي",pricing_type:"fixed",fixed_amount:20},
+      {name_en:"Gift packaging",name_ar:"تغليف هدايا",pricing_type:"fixed",fixed_amount:25},
+      {name_en:"Logo conversion",name_ar:"تحويل الشعار",pricing_type:"range",minimum_amount:50,maximum_amount:100},
+      {name_en:"New custom design",name_ar:"تصميم مخصص جديد",pricing_type:"range",minimum_amount:100,maximum_amount:200},
+      {name_en:"Rush order",name_ar:"طلب مستعجل",pricing_type:"percentage",percentage_rate:20},
+      {name_en:"Delivery",name_ar:"التوصيل",pricing_type:"separate"}
+    ];
+    const options=customizationOptions.length?customizationOptions:defaults;
+    $('chargesCard').classList.remove('hidden');
+    wrap.innerHTML = options.map(o => `
       <li class="flex justify-between gap-4 py-2.5"><span>${esc(lang==='ar' ? (o.name_ar || o.name_en) : o.name_en)}</span><span class="font-bold whitespace-nowrap">${formatCharge(o, lang)}</span></li>
     `).join('');
   }
@@ -2652,6 +2671,8 @@
     });
   })();
 
+  const HOME_TESTIMONIALS=[["I ordered a custom-designed figure and it turned out even better than I imagined. The details are very precise and the finish is clean. Thank you, Printfy 3D.","طلبت مجسم بتصميم خاص بيا وطلع أحسن من اللي كنت متخيله! التفاصيل دقيقة جداً والتشطيب نضيف. تسلم إيديكم يا Printfy 3D.",5],["I needed a prototype quickly for my graduation project, and they finished it in exactly two days as agreed. The measurements were excellent.","كنت محتاج برنتوتايب لمشروع التخرج بسرعة، وخلصوهولي في يومين بالظبط زي ما اتفقنا. الدقة في المقاسات ممتازة.",5],["Customer service was very respectful. They helped me fix my STL file and advised me on the right material for the job. Truly professional service.","خدمة العملاء محترمة جداً، ساعدوني أظبط ملف الـ STL وقالولي أنسب خامة للشغلانة. ده تعامل محترفين بجد.",5],["The print quality is high, the colors are nice, and the packaging kept the piece safe. I only wish delivery were a little faster.","جودة الطباعة عالية والألوان حلوة، والتغليف كان محترم عشان القطعة توصل سليمة. ياريت التوصيل يبقى أسرع شوية.",4],["I ordered a gift for my friend: a figure of their favorite character. They loved it. The work was polished and had no defects. I’ll order again.","طلبت هدية لصاحبي مجسم بشكل شخصيته المفضلة، وفرح بيها جداً! الشغل متقن ومفيهوش عيوب. أكيد هطلب تاني.",5],["The prices are very reasonable for the quality. I’ve tried other places, and Printfy 3D is better for precision and keeping to agreed timelines.","الأسعار معقولة جداً مقارنة بالجودة اللي بتاخدها. جربت أماكن تانية وPrintfy 3D أحسن في الدقة والالتزام بالمواعيد.",5],["They printed a replacement part for a device that I couldn’t find in the market, and it fit perfectly on the first try. Thank you!","طبعوا لي قطعة غيار لجهاز عندي مش لاقيها في السوق، وركبت مظبوطة من أول مرة. ربنا يكرمكم!",5],["The material is strong, the surface is smooth, and the small details came out clearly. A very good experience; I’ll order again.","الخامة قوية والسطح ناعم، والتفاصيل الصغيرة طلعت واضحة. تجربة كويسة جداً وهكررها.",4],["They work patiently and don’t get tired of revisions. They adjusted my design twice until we reached the result I wanted. Excellent work.","بيشتغلوا بصبر ومش بيزهقوا من التعديلات. عدّلوا لي التصميم مرتين لحد ما وصلنا للشكل المطلوب. شغل راقي.",5],["I recommend them to anyone in Egypt who needs 3D printing. Fast, precise, and reasonably priced. Great service.","أنصح أي حد محتاج طباعة 3D في مصر يتعامل معاهم. سرعة، دقة، وسعر كويس. تعامل من الآخر!",5]];
+  function renderTestimonials(){const root=$('homeTestimonials'),grid=$('testimonialGrid');if(!root||!grid)return;root.classList.toggle('hidden',HOME_TESTIMONIALS.length===0);const ar=getLang()==='ar';grid.innerHTML=HOME_TESTIMONIALS.map(r=>`<article class="card p-5 text-start" lang="${ar?'ar':'en'}" dir="${ar?'rtl':'ltr'}"><p class="text-amber-600 mb-3" aria-label="${ar?r[2]+' من 5 نجوم':r[2]+' out of 5 stars'}">${'★'.repeat(r[2])}${'☆'.repeat(5-r[2])}</p><p class="text-sm leading-7">${esc(r[ar?1:0])}</p></article>`).join('');}
   // ---- Language toggle ----
   function applyLanguage(lang){
     document.documentElement.lang = lang;
@@ -2673,7 +2694,7 @@
     $('cartClose').setAttribute('aria-label', lang==='ar' ? 'إغلاق العربة' : 'Close cart');
     refreshMenuBtn();
     try{ localStorage.setItem('printify3d_lang', lang); }catch(e){}
-    renderChips(); renderGrid(); renderCatalog(); renderCharges(); renderHero(); renderCart(); renderBanner(); updateCartBar();
+    renderChips(); renderGrid(); renderCatalog(); renderCharges(); renderTestimonials(); renderHero(); renderCart(); renderBanner(); updateCartBar();
     if(previewOpen) closePreview();
   }
   let savedLang = 'en';
