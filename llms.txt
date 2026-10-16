@@ -1,0 +1,15 @@
+# PRINTFY 3D
+
+> PRINTFY 3D is a 3D printing business based in Cairo, Egypt. It sells ready-made gifts, décor, incense holders, figurines, wall art and keychains, plus custom prints from an idea, photo, sketch or STL file. Prices are in EGP; delivery is available across Egypt.
+
+## Key pages
+- [Shop](https://www.printfy3d-eg.com/shop/)
+- [Gifts](https://www.printfy3d-eg.com/gifts/)
+- [Custom orders](https://www.printfy3d-eg.com/custom-orders/)
+- [FAQ](https://www.printfy3d-eg.com/faq/)
+- [Contact](https://www.printfy3d-eg.com/contact/)
+- [Returns & refunds](https://www.printfy3d-eg.com/refund-policy/)
+- [3D printing cost guide](https://www.printfy3d-eg.com/3d-printing-cost-egypt.html)
+- [Full business information](https://www.printfy3d-eg.com/llms-full.txt)
+
+WhatsApp +20 10 63870873 · printify3d.eg@gmail.com · Cairo, Egypt. English and Arabic; Arabic pages are under /ar/.
