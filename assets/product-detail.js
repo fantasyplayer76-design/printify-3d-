@@ -213,7 +213,7 @@
     }
   }
   document.querySelector('#pdpRetry').addEventListener('click',loadProduct);
-  document.querySelector('#langToggle').addEventListener('click',()=>{localStorage.setItem('printify3d_lang',language==='ar'?'en':'ar');});
+  const langLink=document.querySelector('#langToggle');if(langLink)langLink.addEventListener('click',()=>{localStorage.setItem('printify3d_lang',language==='ar'?'en':'ar');});
   document.querySelector('#pdpZoomClose').addEventListener('click',()=>document.querySelector('#pdpZoom').close());
   document.querySelector('#pdpZoom').addEventListener('click',event=>{if(event.target.id==='pdpZoom')event.currentTarget.close();});
   if(!localStorage.getItem('printify3d_lang'))localStorage.setItem('printify3d_lang',language);
