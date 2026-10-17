@@ -453,7 +453,8 @@
   #productGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.35rem}
   #productGrid article.card{border-radius:17px;background:transparent;border:0;box-shadow:none;overflow:visible}
   #productGrid article.card-hover:hover{transform:translateY(-4px);box-shadow:none}
-  #productGrid article>button.viewBtn,.photo-product .sponge-gallery-shell,.sponge-product .sponge-gallery-shell{border-radius:19px;overflow:hidden;background:#e9dfd1;border:0}
+  #productGrid article>button.viewBtn,#productGrid article>a.viewBtn,.photo-product .sponge-gallery-shell,.sponge-product .sponge-gallery-shell{border-radius:19px;overflow:hidden;background:#e9dfd1;border:0}
+  #productGrid article>a.viewBtn{display:block;text-decoration:none}.pdp-card-link{display:inline-block;margin:.2rem 0 .35rem;color:#a34240;font-size:.85rem;font-weight:700;text-decoration:underline;text-underline-offset:3px}
   #productGrid .product-photo,#productGrid .sponge-gallery-shell .sponge-slide{aspect-ratio:1.22;background:#e9dfd1}
   #productGrid .product-photo img{object-fit:cover}
   #productGrid article>div:last-child{padding:1rem .35rem .35rem!important}
@@ -2402,7 +2403,7 @@
     setCustomMsg(null, '');
     if(!customKey) customKey = newKey();     // kept across retries; renewed after success
     const waFields={name,phone,desc,size,color};
-    $('customWaLink').href=buildCustomWhatsAppUrl(waFields,file?(lang==='ar'?'سأرفق الملف إذا تعذّر رفعه.':'I will attach the file if upload fails.':''));
+    $('customWaLink').href=buildCustomWhatsAppUrl(waFields,file?(lang==='ar'?'سأرفق الملف إذا تعذّر رفعه.':'I will attach the file if upload fails.'):'');
     $('customFormSuccessMsg').textContent=T('customFallbackReady');
 
     try{
@@ -2551,6 +2552,7 @@
         <h3 class="font-semibold text-sm sm:text-base leading-snug mb-1">${lang==='ar'?'بطاقة سبونج بوب':'SpongeBob Card'}</h3>
         <div class="sponge-variants" role="group" aria-label="${lang==='ar'?'اختيار اللون أو الباقة':'Choose color or bundle'}">${choices}</div>
         <p class="sponge-price" data-sponge-price>${priceHtml(selected.price)}</p>
+        <a class="pdp-card-link" data-sponge-detail href="/product.html?slug=${encodeURIComponent(selected.slug)}&lang=${lang}">${lang==='ar'?'عرض التفاصيل':'View details'}</a>
         <button type="button" class="addBtn btn-primary w-full mt-2 text-sm px-3" data-id="${esc(selected.id)}">${CART_ICON_SM}<span>${GRID_STR[lang].add}</span></button>
       </div>
     </article>`;
@@ -2572,6 +2574,7 @@
         <h3 class="font-semibold text-sm sm:text-base leading-snug mb-1">${lang==='ar'?'السحلية النابضية':'Spring Lizard'}</h3>
         <div class="sponge-variants lizard-variants" role="group" aria-label="${lang==='ar'?'اختيار الحجم':'Choose a size'}">${choices}</div>
         <p class="sponge-price" data-lizard-price>${priceHtml(selected.price)}</p>
+        <a class="pdp-card-link" data-lizard-detail href="/product.html?slug=${encodeURIComponent(selected.slug)}&lang=${lang}">${lang==='ar'?'عرض التفاصيل':'View details'}</a>
         <button type="button" class="addBtn btn-primary w-full mt-2 text-sm px-3" data-id="${esc(selected.id)}">${CART_ICON_SM}<span>${GRID_STR[lang].add}</span></button>
       </div>
     </article>`;
@@ -2598,6 +2601,7 @@
         <p class="text-[11px] sub uppercase tracking-wide mb-1">${esc(p[lang].cat)}</p>
         <h3 class="font-semibold text-sm sm:text-base leading-snug mb-1">${esc(nm)}</h3>
         <p class="sponge-price">${priceHtmlFor(p)}</p>
+        <a class="pdp-card-link" href="/product.html?slug=${encodeURIComponent(p.slug)}&lang=${lang}">${lang==='ar'?'عرض التفاصيل':'View details'}</a>
         ${needsNames(p) ? nameFieldsHtml(p, lang, true) : ''}
         <button type="button" class="addBtn btn-primary w-full mt-2 text-sm px-3" data-id="${esc(p.id)}">${CART_ICON_SM}<span>${GRID_STR[lang].add}</span></button>
       </div>
@@ -2626,9 +2630,9 @@
     const regularProducts = list.filter(p=>!SPONGE_CARD_SLUGS.has(p.slug) && !LIZARD_CARD_SLUGS.has(p.slug));
     const regularCards = regularProducts.map(p => PHOTO_CARD_SLUGS.has(p.slug) ? photoCardHtml(p, lang) : `
       <article class="card card-hover overflow-hidden flex flex-col">
-        <button type="button" class="viewBtn block w-full" data-id="${esc(p.id)}" aria-label="${GRID_STR[lang].view}: ${esc(p[lang].name)}">
+        <a class="viewBtn block w-full" href="/product.html?slug=${encodeURIComponent(p.slug)}&lang=${lang}" aria-label="${GRID_STR[lang].view}: ${esc(p[lang].name)}">
           <div class="art product-photo" style="border-bottom:1px solid var(--line-soft);">${productMedia(p, 56)}</div>
-        </button>
+        </a>
         <div class="p-3 sm:p-4 flex flex-col flex-1">
           <p class="text-[11px] sub uppercase tracking-wide mb-1">${esc(p[lang].cat)}</p>
           <h3 class="font-semibold text-sm sm:text-base leading-snug clamp-2 mb-2">${esc(p[lang].name)}</h3>
@@ -2656,11 +2660,13 @@
       selectedLizardSlug=slug;
       card.querySelectorAll('[data-lizard-variant]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.lizardVariant===slug)));
       card.querySelector('[data-lizard-price]').innerHTML=priceHtml(p.price);
+      card.querySelector('[data-lizard-detail]').href=`/product.html?slug=${encodeURIComponent(p.slug)}&lang=${getLang()}`;
     }else{
       if(selectedSpongeSlug===slug)return;
       selectedSpongeSlug=slug;
       card.querySelectorAll('[data-sponge-variant]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.spongeVariant===slug)));
       card.querySelector('[data-sponge-price]').innerHTML=priceHtml(p.price);
+      card.querySelector('[data-sponge-detail]').href=`/product.html?slug=${encodeURIComponent(p.slug)}&lang=${getLang()}`;
     }
     card.querySelector('.addBtn').dataset.id=p.id;
   }, true);
@@ -2671,6 +2677,7 @@
       const card = lizardChoice.closest('.lizard-product'), p = products.find(item=>item.slug===selectedLizardSlug);
       card.querySelectorAll('[data-lizard-variant]').forEach(button=>button.setAttribute('aria-pressed',String(button===lizardChoice)));
       card.querySelector('[data-lizard-price]').innerHTML = priceHtml(p.price);
+      card.querySelector('[data-lizard-detail]').href = `/product.html?slug=${encodeURIComponent(p.slug)}&lang=${getLang()}`;
       card.querySelector('.addBtn').dataset.id = p.id;
       const slideIndex = LIZARD_CARD_ORDER.indexOf(p.slug), gallery = card.querySelector('[data-lizard-gallery]');
       if(slideIndex>=0) gallery.scrollTo({left:slideIndex*gallery.clientWidth,behavior:'smooth'});
@@ -2682,6 +2689,7 @@
       const card = choice.closest('.sponge-product'), p = products.find(item=>item.slug===selectedSpongeSlug);
       card.querySelectorAll('[data-sponge-variant]').forEach(button=>button.setAttribute('aria-pressed',String(button===choice)));
       card.querySelector('[data-sponge-price]').innerHTML = priceHtml(p.price);
+      card.querySelector('[data-sponge-detail]').href = `/product.html?slug=${encodeURIComponent(p.slug)}&lang=${getLang()}`;
       card.querySelector('.addBtn').dataset.id = p.id;
       const slideIndex = SPONGE_CARD_ORDER.indexOf(p.slug), gallery = card.querySelector('[data-sponge-gallery]');
       if(slideIndex>=0) gallery.scrollTo({left:slideIndex*gallery.clientWidth,behavior:'smooth'});
@@ -2700,7 +2708,7 @@
     const photoNext = e.target.closest('[data-photo-next]');
     if(photoNext){const gallery=photoNext.closest('.sponge-gallery-shell').querySelector('[data-photo-gallery]');gallery.scrollBy({left:gallery.clientWidth,behavior:'smooth'});return;}
     const v = e.target.closest('.viewBtn');
-    if(v){ openPreview(v.dataset.id); return; }
+    if(v){ return; }
     const b = e.target.closest('.addBtn');
     if(b){
       const prod = products.find(x => x.id === b.dataset.id), scope = b.closest('.photo-product') || document;
@@ -2828,6 +2836,7 @@
   loadCatalogData();
   applyLanguage(savedLang === 'ar' ? 'ar' : 'en');
   routeFromHash();
+  try{ if(localStorage.getItem('printify3d_open_cart')==='1'){localStorage.removeItem('printify3d_open_cart');openCart();} }catch(e){}
 </script>
 
 
