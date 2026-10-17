@@ -55,10 +55,11 @@ export function buildSitemap(old,products){
  return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'+blocks.join("\n")+"\n</urlset>\n";
 }
 async function api(url,key,table,query){const r=await fetch(url+"/rest/v1/"+table+"?"+query,{headers:{apikey:key,Authorization:"Bearer "+key}});if(!r.ok)throw new Error("Supabase "+table+" request failed: "+r.status+" "+(await r.text()).slice(0,300));return r.json();}
+async function rpc(url,key,name){const r=await fetch(url+"/rest/v1/rpc/"+name,{method:"POST",headers:{apikey:key,Authorization:"Bearer "+key,"Content-Type":"application/json"},body:"{}"});if(!r.ok)throw new Error("Supabase RPC "+name+" failed: "+r.status+" "+(await r.text()).slice(0,300));return r.json();}
 async function main(){
  const home=fs.readFileSync(path.join(ROOT,"index.html"),"utf8"),url=(process.env.SUPABASE_URL||home.match(/const SUPABASE_URL\s*=\s*"([^"]+)"/)?.[1]||"").replace(/\/$/,""),key=process.env.SUPABASE_ANON_KEY||home.match(/const SUPABASE_ANON_KEY\s*=\s*"([^"]+)"/)?.[1]||"";
  if(!url||!key)throw new Error("Public Supabase URL/key not found; set SUPABASE_URL and SUPABASE_ANON_KEY.");
- const [products,cats]=await Promise.all([api(url,key,"products","select=id,slug,name,name_en,name_ar,category,price,stock,description,desc_en,desc_ar,material,dims,customizable,available,image_url&order=slug.asc"),api(url,key,"categories","select=slug,name_en,name_ar")]);
+ const [products,cats]=await Promise.all([rpc(url,key,"get_public_product_catalog"),api(url,key,"categories","select=slug,name_en,name_ar")]);
  if(!Array.isArray(products)||!products.length)throw new Error("No available Supabase products; refusing to overwrite existing storefront pages.");
  const assets=fs.existsSync(path.join(ROOT,"assets/products"))?fs.readdirSync(path.join(ROOT,"assets/products")):[],homePath=path.join(ROOT,"index.html");
  fs.writeFileSync(homePath,prerenderCatalog(home,products,cats,assets));
