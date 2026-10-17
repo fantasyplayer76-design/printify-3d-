@@ -21,3 +21,15 @@
 - Updated the Vercel static build to read products through that RPC; no service-role key or browser secret is used.
 
 - Fixed the generated PDP language-toggle binding and footer labels discovered in live-route verification.
+
+
+## Phase 3 — SEO and bilingual discovery
+- Added four English/Arabic landing pages generated from the existing Supabase catalog for Cairo 3D printing, custom name stands, 3D printed keychains, and custom printing.
+- Added canonical URLs and reciprocal ar-EG/en/x-default alternates to those pages and generated product pages; sitemap generation includes the localized pages and current product URLs.
+- Linked the landing pages from the English and Arabic home-page footers.
+- Updated the English and Arabic privacy pages and storefront notice to disclose privacy-friendly, cookieless Plausible analytics.
+
+## Phase 4 — Measurement and quality
+- Added cookieless Plausible event hooks for WhatsApp clicks, add-to-cart, checkout start, and successful quote submission. No customer or order details are included in event properties.
+- Plausible domain is configured in the site code as www.printfy3d-eg.com. The corresponding domain and event goals must be enabled in the Plausible dashboard to view reports.
+- Product pages and landing pages load event tracking through the shared build template.
