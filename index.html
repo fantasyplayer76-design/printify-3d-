@@ -475,8 +475,20 @@
   @media(prefers-reduced-motion:reduce){.hero-featured-main,.hero-featured-inset,#productGrid article,.card-hover{transition:none!important;animation:none!important}}
 </style>
 <link rel="alternate" hreflang="en" href="https://www.printfy3d-eg.com/"><link rel="alternate" hreflang="ar" href="https://www.printfy3d-eg.com/ar/"><link rel="alternate" hreflang="x-default" href="https://www.printfy3d-eg.com/">
+<style id="site-loading-screen">
+  #siteLoader{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:#211713;color:#fff;opacity:1;visibility:visible;transition:opacity .35s ease,visibility .35s ease}
+  #siteLoader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+  .site-loader-content{display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center;padding:2rem}
+  .site-loader-spinner{width:58px;height:58px;border:5px solid rgba(255,255,255,.22);border-top-color:#e7a47e;border-radius:50%;animation:site-loader-spin .8s linear infinite}
+  .site-loader-text{min-height:1.7em;font-size:1.05rem;font-weight:600;letter-spacing:.02em}
+  @keyframes site-loader-spin{to{transform:rotate(360deg)}}
+  @media(prefers-reduced-motion:reduce){.site-loader-spinner{animation-duration:1.8s}#siteLoader{transition:none}}
+</style>
 </head>
 <body class="antialiased">
+<div id="siteLoader" role="status" aria-live="polite" aria-label="Loading PRINTFY 3D">
+  <div class="site-loader-content"><span class="site-loader-spinner" aria-hidden="true"></span><span class="site-loader-text" id="siteLoaderText">Please wait...</span></div>
+</div>
 <a href="https://www.printfy3d-eg.com/#main" class="skip-link" data-i18n="skipLink">Skip to content</a>
 
 <!-- NAV -->
@@ -2818,6 +2830,19 @@
   loadCatalogData();
   applyLanguage(savedLang === 'ar' ? 'ar' : 'en');
   routeFromHash();
+  (function(){
+    const loader=$('siteLoader'), label=$('siteLoaderText'); if(!loader||!label)return;
+    const messages=savedLang==='ar'?['يرجى الانتظار...','جارٍ التحميل...','ها هو الموقع!']:['Please wait...','Loading...','Here it is!'];
+    if(savedLang==='ar'){loader.setAttribute('aria-label','جارٍ تحميل PRINTFY 3D');}
+    const started=Date.now(); let step=0, finished=false;
+    const messageTimer=setInterval(()=>{step=Math.min(step+1,messages.length-1);label.textContent=messages[step];},650);
+    function finish(){
+      if(finished)return; finished=true;
+      setTimeout(()=>{clearInterval(messageTimer);loader.classList.add('is-hidden');setTimeout(()=>loader.remove(),400);},Math.max(0,2000-(Date.now()-started)));
+    }
+    window.addEventListener('load',finish,{once:true});
+    setTimeout(finish,5000);
+  })();
 </script>
 
 
