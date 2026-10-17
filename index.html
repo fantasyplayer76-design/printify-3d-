@@ -2537,15 +2537,11 @@
   function spongeCardHtml(variants, lang){
     const selected = variants.find(p=>p.slug===selectedSpongeSlug) || variants[0];
     const variantLabel = p => p.slug==='spongebob-card-pink' ? (lang==='ar'?'وردي':'Pink') : p.slug==='spongebob-card-green' ? (lang==='ar'?'أخضر':'Green') : (lang==='ar'?'الباقة: اللونان':'Bundle: both colors');
-    const slides = variants.map((p,i)=>`<div class="sponge-slide" aria-label="${lang==='ar'?'صورة':'Photo'} ${i+1} ${lang==='ar'?'من':'of'} ${variants.length}">${productMedia(p,56,'',false,'contain')}</div>`).join('');
     const choices = variants.map(p=>`<button type="button" class="sponge-choice" data-sponge-variant="${esc(p.slug)}" aria-pressed="${p.slug===selected.slug}"><span>${esc(variantLabel(p))}</span><span>${fmt(p.price)}</span></button>`).join('');
     return `<article class="card card-hover overflow-hidden flex flex-col sponge-product">
       <div class="sponge-gallery-shell">
-        <div class="sponge-gallery" data-sponge-gallery aria-label="${lang==='ar'?'صور بطاقة سبونج بوب':'SpongeBob card photos'}">${slides}</div>
-        <button type="button" class="sponge-gallery-control sponge-gallery-prev" data-sponge-prev aria-label="${lang==='ar'?'الصورة السابقة':'Previous photo'}">‹</button>
-        <button type="button" class="sponge-gallery-control sponge-gallery-next" data-sponge-next aria-label="${lang==='ar'?'الصورة التالية':'Next photo'}">›</button>
+        <div class="sponge-slide" data-sponge-photo aria-label="${lang==='ar'?'صورة بطاقة سبونج بوب':'SpongeBob card photo'}">${productMedia(selected,56,'',false,'contain')}</div>
       </div>
-      <p class="sponge-swipe-hint">${lang==='ar'?'اسحب لمشاهدة باقي الصور':'Swipe to see all 3 photos'}</p>
       <div class="p-3 sm:p-4 flex flex-col flex-1">
         <p class="text-[11px] sub uppercase tracking-wide mb-1">${lang==='ar'?'مجسمات ومقتنيات':'Figures & Collectibles'}</p>
         <h3 class="font-semibold text-sm sm:text-base leading-snug mb-1">${lang==='ar'?'بطاقة سبونج بوب':'SpongeBob Card'}</h3>
@@ -2663,8 +2659,7 @@
       card.querySelectorAll('[data-sponge-variant]').forEach(button=>button.setAttribute('aria-pressed',String(button===choice)));
       card.querySelector('[data-sponge-price]').innerHTML = priceHtml(p.price);
       card.querySelector('.addBtn').dataset.id = p.id;
-      const slideIndex = SPONGE_CARD_ORDER.indexOf(p.slug), gallery = card.querySelector('[data-sponge-gallery]');
-      if(slideIndex>=0) gallery.scrollTo({left:slideIndex*gallery.clientWidth,behavior:'smooth'});
+      card.querySelector('[data-sponge-photo]').innerHTML = productMedia(p,56,'',false,'contain');
       return;
     }
     const previous = e.target.closest('[data-sponge-prev]');
@@ -2813,3 +2808,4 @@
 
 
 </body></html>
+
