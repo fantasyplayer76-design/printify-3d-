@@ -19,3 +19,5 @@
 ## Deployment fix — Supabase catalog access
 - Added a SECURITY INVOKER read-only catalog RPC and narrow column-level SELECT grants for the existing public product fields; existing RLS policies are unchanged and private cost/profit columns are not exposed.
 - Updated the Vercel static build to read products through that RPC; no service-role key or browser secret is used.
+
+- Fixed the generated PDP language-toggle binding and footer labels discovered in live-route verification.
