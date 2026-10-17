@@ -2538,6 +2538,7 @@
   });
 
   const grid = $('productGrid');
+  function pdpUrl(slug, lang){ return '/'+(lang==='ar'?'ar/':'')+'shop/'+encodeURIComponent(slug)+'/'; }
   function spongeCardHtml(variants, lang){
     const selected = variants.find(p=>p.slug===selectedSpongeSlug) || variants[0];
     const variantLabel = p => p.slug==='spongebob-card-pink' ? (lang==='ar'?'وردي':'Pink') : p.slug==='spongebob-card-green' ? (lang==='ar'?'أخضر':'Green') : (lang==='ar'?'الباقة: اللونان':'Bundle: both colors');
@@ -2555,7 +2556,7 @@
         <h3 class="font-semibold text-sm sm:text-base leading-snug mb-1">${lang==='ar'?'بطاقة سبونج بوب':'SpongeBob Card'}</h3>
         <div class="sponge-variants" role="group" aria-label="${lang==='ar'?'اختيار اللون أو الباقة':'Choose color or bundle'}">${choices}</div>
         <p class="sponge-price" data-sponge-price>${priceHtml(selected.price)}</p>
-        <a class="pdp-card-link" data-sponge-detail href="/product.html?slug=${encodeURIComponent(selected.slug)}&lang=${lang}">${lang==='ar'?'عرض التفاصيل':'View details'}</a>
+        <a class="pdp-card-link" data-sponge-detail href="${pdpUrl(selected.slug,lang)}">${lang==='ar'?'عرض التفاصيل':'View details'}</a>
         <button type="button" class="addBtn btn-primary w-full mt-2 text-sm px-3" data-id="${esc(selected.id)}">${CART_ICON_SM}<span>${GRID_STR[lang].add}</span></button>
       </div>
     </article>`;
@@ -2577,7 +2578,7 @@
         <h3 class="font-semibold text-sm sm:text-base leading-snug mb-1">${lang==='ar'?'السحلية النابضية':'Spring Lizard'}</h3>
         <div class="sponge-variants lizard-variants" role="group" aria-label="${lang==='ar'?'اختيار الحجم':'Choose a size'}">${choices}</div>
         <p class="sponge-price" data-lizard-price>${priceHtml(selected.price)}</p>
-        <a class="pdp-card-link" data-lizard-detail href="/product.html?slug=${encodeURIComponent(selected.slug)}&lang=${lang}">${lang==='ar'?'عرض التفاصيل':'View details'}</a>
+        <a class="pdp-card-link" data-lizard-detail href="${pdpUrl(selected.slug,lang)}">${lang==='ar'?'عرض التفاصيل':'View details'}</a>
         <button type="button" class="addBtn btn-primary w-full mt-2 text-sm px-3" data-id="${esc(selected.id)}">${CART_ICON_SM}<span>${GRID_STR[lang].add}</span></button>
       </div>
     </article>`;
@@ -2604,7 +2605,7 @@
         <p class="text-[11px] sub uppercase tracking-wide mb-1">${esc(p[lang].cat)}</p>
         <h3 class="font-semibold text-sm sm:text-base leading-snug mb-1">${esc(nm)}</h3>
         <p class="sponge-price">${priceHtmlFor(p)}</p>
-        <a class="pdp-card-link" href="/product.html?slug=${encodeURIComponent(p.slug)}&lang=${lang}">${lang==='ar'?'عرض التفاصيل':'View details'}</a>
+        <a class="pdp-card-link" href="${pdpUrl(p.slug,lang)}">${lang==='ar'?'عرض التفاصيل':'View details'}</a>
         ${needsNames(p) ? nameFieldsHtml(p, lang, true) : ''}
         <button type="button" class="addBtn btn-primary w-full mt-2 text-sm px-3" data-id="${esc(p.id)}">${CART_ICON_SM}<span>${GRID_STR[lang].add}</span></button>
       </div>
@@ -2633,7 +2634,7 @@
     const regularProducts = list.filter(p=>!SPONGE_CARD_SLUGS.has(p.slug) && !LIZARD_CARD_SLUGS.has(p.slug));
     const regularCards = regularProducts.map(p => PHOTO_CARD_SLUGS.has(p.slug) ? photoCardHtml(p, lang) : `
       <article class="card card-hover overflow-hidden flex flex-col">
-        <a class="viewBtn block w-full" href="/product.html?slug=${encodeURIComponent(p.slug)}&lang=${lang}" aria-label="${GRID_STR[lang].view}: ${esc(p[lang].name)}">
+        <a class="viewBtn block w-full" href="${pdpUrl(p.slug,lang)}" aria-label="${GRID_STR[lang].view}: ${esc(p[lang].name)}">
           <div class="art product-photo" style="border-bottom:1px solid var(--line-soft);">${productMedia(p, 56)}</div>
         </a>
         <div class="p-3 sm:p-4 flex flex-col flex-1">
@@ -2663,13 +2664,13 @@
       selectedLizardSlug=slug;
       card.querySelectorAll('[data-lizard-variant]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.lizardVariant===slug)));
       card.querySelector('[data-lizard-price]').innerHTML=priceHtml(p.price);
-      card.querySelector('[data-lizard-detail]').href=`/product.html?slug=${encodeURIComponent(p.slug)}&lang=${getLang()}`;
+      card.querySelector('[data-lizard-detail]').href=pdpUrl(p.slug,getLang());
     }else{
       if(selectedSpongeSlug===slug)return;
       selectedSpongeSlug=slug;
       card.querySelectorAll('[data-sponge-variant]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.spongeVariant===slug)));
       card.querySelector('[data-sponge-price]').innerHTML=priceHtml(p.price);
-      card.querySelector('[data-sponge-detail]').href=`/product.html?slug=${encodeURIComponent(p.slug)}&lang=${getLang()}`;
+      card.querySelector('[data-sponge-detail]').href=pdpUrl(p.slug,getLang());
     }
     card.querySelector('.addBtn').dataset.id=p.id;
   }, true);
@@ -2680,7 +2681,7 @@
       const card = lizardChoice.closest('.lizard-product'), p = products.find(item=>item.slug===selectedLizardSlug);
       card.querySelectorAll('[data-lizard-variant]').forEach(button=>button.setAttribute('aria-pressed',String(button===lizardChoice)));
       card.querySelector('[data-lizard-price]').innerHTML = priceHtml(p.price);
-      card.querySelector('[data-lizard-detail]').href = `/product.html?slug=${encodeURIComponent(p.slug)}&lang=${getLang()}`;
+      card.querySelector('[data-lizard-detail]').href = pdpUrl(p.slug,getLang());
       card.querySelector('.addBtn').dataset.id = p.id;
       const slideIndex = LIZARD_CARD_ORDER.indexOf(p.slug), gallery = card.querySelector('[data-lizard-gallery]');
       if(slideIndex>=0) gallery.scrollTo({left:slideIndex*gallery.clientWidth,behavior:'smooth'});
@@ -2692,7 +2693,7 @@
       const card = choice.closest('.sponge-product'), p = products.find(item=>item.slug===selectedSpongeSlug);
       card.querySelectorAll('[data-sponge-variant]').forEach(button=>button.setAttribute('aria-pressed',String(button===choice)));
       card.querySelector('[data-sponge-price]').innerHTML = priceHtml(p.price);
-      card.querySelector('[data-sponge-detail]').href = `/product.html?slug=${encodeURIComponent(p.slug)}&lang=${getLang()}`;
+      card.querySelector('[data-sponge-detail]').href = pdpUrl(p.slug,getLang());
       card.querySelector('.addBtn').dataset.id = p.id;
       const slideIndex = SPONGE_CARD_ORDER.indexOf(p.slug), gallery = card.querySelector('[data-sponge-gallery]');
       if(slideIndex>=0) gallery.scrollTo({left:slideIndex*gallery.clientWidth,behavior:'smooth'});
