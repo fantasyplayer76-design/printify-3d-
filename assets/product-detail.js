@@ -9,7 +9,8 @@
   const params = new URLSearchParams(location.search);
   const slug = params.get('slug') || decodeURIComponent(location.pathname.split('/').filter(Boolean).at(-1) || '');
   const arabicRoute = location.pathname.startsWith('/ar/');
-  let language = (params.get('lang') || localStorage.getItem('printify3d_lang') || (arabicRoute ? 'ar' : 'en')) === 'ar' ? 'ar' : 'en';
+  let language = arabicRoute ? 'ar' : (location.pathname.startsWith('/shop/') ? 'en' : ((params.get('lang') || localStorage.getItem('printify3d_lang') || 'en') === 'ar' ? 'ar' : 'en'));
+  const productPath=(productSlug,lang=language)=>`/${lang==='ar'?'ar/':''}shop/${encodeURIComponent(productSlug)}/`;
   let currentProduct = null;
   let siblings = [];
   let productVariants = [];
@@ -22,6 +23,7 @@
   };
   const t = (key) => text[language][key];
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const isAvailable = (product) => product.available !== false && Number(product.stock ?? 1) > 0;
   const getName = (p) => language === 'ar' ? (p.name_ar || p.name_en || p.name) : (p.name_en || p.name);
   const getDescription = (p) => language === 'ar' ? (p.desc_ar || p.desc_en || p.description || '') : (p.desc_en || p.description || '');
   const money = (value) => new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en-EG', {style:'currency', currency:'EGP', maximumFractionDigits:0}).format(Number(value || 0));
@@ -50,12 +52,12 @@
     const productSchema = {
       '@context':'https://schema.org', '@type':'Product', name:title, description,
       brand:{'@type':'Brand',name:'PRINTFY 3D'}, image:gallery.filter(isImageUrl),
-      offers:{'@type':'Offer',url:`${SITE}/product.html?slug=${encodeURIComponent(product.slug)}${language==='ar'?'&lang=ar':''}`,price:Number(product.price),priceCurrency:'EGP',availability:product.available?'https://schema.org/InStock':'https://schema.org/OutOfStock',seller:{'@type':'Organization',name:'PRINTFY 3D'}}
+      offers:{'@type':'Offer',url:`${SITE}${productPath(product.slug,language)}`,price:Number(product.price),priceCurrency:'EGP',availability:isAvailable(product)?'https://schema.org/InStock':'https://schema.org/OutOfStock',seller:{'@type':'Organization',name:'PRINTFY 3D'}}
     };
     const crumbs = {'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[
       {'@type':'ListItem',position:1,name:t('home'),item:`${SITE}/${language==='ar'?'ar/':''}`},
       {'@type':'ListItem',position:2,name:t('shop'),item:`${SITE}/${language==='ar'?'ar/':''}shop/`},
-      {'@type':'ListItem',position:3,name:title,item:`${SITE}/product.html?slug=${encodeURIComponent(product.slug)}${language==='ar'?'&lang=ar':''}`}
+      {'@type':'ListItem',position:3,name:title,item:`${SITE}${productPath(product.slug,language)}`}
     ]};
     let node = document.querySelector('#pdp-jsonld');
     if(!node){node=document.createElement('script');node.type='application/ld+json';node.id='pdp-jsonld';document.head.append(node);}
@@ -64,7 +66,7 @@
   function updateSeo(product) {
     const name = getName(product), description = `${getDescription(product) || name} — PRINTFY 3D, 3D printing in Cairo, Egypt.`;
     const title = `${name} | PRINTFY 3D`;
-    const canonical=`${SITE}/product.html?slug=${encodeURIComponent(product.slug)}${language==='ar'?'&lang=ar':''}`;
+    const canonical=`${SITE}${productPath(product.slug,language)}`;
     document.title=title;
     setMeta('meta[name="description"]', description.slice(0,160));
     setMeta('meta[property="og:type"]','product');
@@ -75,7 +77,7 @@
     const image=gallery.find(isImageUrl);
     if(image){setMeta('meta[property="og:image"]',image);setMeta('meta[name="twitter:card"]','summary_large_image');}
     setCanonical(canonical);
-    for(const [locale,url] of [['en',`${SITE}/product.html?slug=${encodeURIComponent(product.slug)}`],['ar',`${SITE}/product.html?slug=${encodeURIComponent(product.slug)}&lang=ar`],['x-default',`${SITE}/product.html?slug=${encodeURIComponent(product.slug)}`]]){
+    for(const [locale,url] of [['en',`${SITE}${productPath(product.slug,'en')}`],['ar-EG',`${SITE}${productPath(product.slug,'ar')}`],['x-default',`${SITE}${productPath(product.slug,'en')}`]]){
       let link=document.head.querySelector(`link[rel="alternate"][hreflang="${locale}"]`);
       if(!link){link=document.createElement('link');link.rel='alternate';link.hreflang=locale;document.head.append(link);}
       link.href=url;
@@ -83,27 +85,29 @@
     updateStructuredData(product);
   }
   function imageSources(product) {
-    const primary=product.image_url;
-    const extra=product.slug==='nfc-display' ? ['/assets/products/nfc-display-detail-1.webp','/assets/products/nfc-display-detail-2.webp'] : [];
     const base=product.slug.startsWith('spring-lizard-')?'spring-lizard':product.slug;
-    const fallback=primary?[]:[`/assets/products/${base}.webp`];
-    return [...new Set([primary,...extra,...fallback].filter(value=>isImageUrl(value)||value?.startsWith('/assets/')))];
+    let preRendered=[];
+    const socialImage=document.querySelector('meta[property="og:image"]')?.content;
+    if(socialImage){try{const imageUrl=new URL(socialImage,location.href);if(imageUrl.origin===location.origin)preRendered=[imageUrl.pathname];}catch{}}
+    const extra=product.slug==='nfc-display'?['/assets/products/nfc-display-detail-1.webp','/assets/products/nfc-display-detail-2.webp']:[];
+    const primary=preRendered.length?[]:(product.image_url?[product.image_url]:[]);
+    return [...new Set([...preRendered,...extra,...primary].filter(value=>isImageUrl(value)||value?.startsWith('/assets/')))];
   }
   function renderGallery() {
     const stage=document.querySelector('#pdpImageStage'), thumbs=document.querySelector('#pdpThumbs');
     const src=gallery[galleryIndex];
     if (!src) {stage.innerHTML=`<div class="pdp-no-image" role="img" aria-label="${esc(t('noImage'))}">${esc(t('noImage'))}</div>`; thumbs.innerHTML='';return;}
-    stage.innerHTML=`<button class="pdp-zoom" type="button" aria-label="${language==='ar'?'تكبير الصورة':'Zoom image'}"><img src="${esc(src)}" alt="${esc(getName(currentProduct))} — PRINTFY 3D" fetchpriority="high" decoding="async"></button>`;
+    stage.innerHTML=`<button class="pdp-zoom" type="button" aria-label="${language==='ar'?'تكبير الصورة':'Zoom image'}"><img src="${esc(src)}" alt="${esc(getName(currentProduct))} — PRINTFY 3D" width="900" height="700" fetchpriority="high" decoding="async"></button>`;
     const image=stage.querySelector('img');
     const base=currentProduct.slug.startsWith('spring-lizard-')?'spring-lizard':currentProduct.slug;
-    const fallbacks=[`/assets/products/${base}.webp`,`/assets/products/${base}.jpg`].filter(url=>url!==src);
+    const fallbacks=gallery.filter(url=>url!==src);
     image.addEventListener('error',()=>{
       const next=fallbacks.shift();
       if(next)image.src=next;
       else {stage.innerHTML=`<div class="pdp-no-image" role="img" aria-label="${esc(t('noImage'))}">${esc(t('noImage'))}</div>`;}
     });
-    stage.querySelector('.pdp-zoom').addEventListener('click',()=>{const dialog=document.querySelector('#pdpZoom');dialog.querySelector('img').src=src;dialog.querySelector('img').alt=getName(currentProduct);dialog.showModal();});
-    thumbs.innerHTML=gallery.length>1?gallery.map((url,index)=>`<button type="button" class="pdp-thumb${index===galleryIndex?' is-active':''}" data-gallery-index="${index}" aria-label="${language==='ar'?'الصورة':'Image'} ${index+1}" aria-pressed="${index===galleryIndex}"><img src="${esc(url)}" alt="" loading="lazy"></button>`).join(''):'';
+    stage.querySelector('.pdp-zoom').addEventListener('click',()=>{const dialog=document.querySelector('#pdpZoom');dialog.querySelector('img').src=image.currentSrc||image.src;dialog.querySelector('img').alt=getName(currentProduct);dialog.showModal();});
+    thumbs.innerHTML=gallery.length>1?gallery.map((url,index)=>`<button type="button" class="pdp-thumb${index===galleryIndex?' is-active':''}" data-gallery-index="${index}" aria-label="${language==='ar'?'الصورة':'Image'} ${index+1}" aria-pressed="${index===galleryIndex}"><img src="${esc(url)}" alt="" width="56" height="56" loading="lazy" decoding="async"></button>`).join(''):'';
     thumbs.querySelectorAll('[data-gallery-index]').forEach(button=>button.addEventListener('click',()=>{galleryIndex=Number(button.dataset.galleryIndex);renderGallery();}));
   }
   function whatsappUrl(product, qty) {
@@ -125,7 +129,7 @@
   }
   function addToCart() {
     const product=currentProduct, qty=Number(document.querySelector('#pdpQty').value);
-    if(!product || !product.available || !Number.isInteger(qty) || qty<1 || qty>99) return;
+    if(!product || !isAvailable(product) || !Number.isInteger(qty) || qty<1 || qty>99) return;
     try {
       const cart=JSON.parse(localStorage.getItem('printify3d_cart')||'{}');
       const id=String(product.id), prior=Number(cart[id]||0);
@@ -141,22 +145,22 @@
   function relatedMarkup(products) {
     return products.filter(p=>p.slug!==currentProduct.slug).slice(0,6).map(p=>{
       const image=isImageUrl(p.image_url)?`<img src="${esc(p.image_url)}" alt="${esc(getName(p))}" loading="lazy" decoding="async">`:'<span class="pdp-related-placeholder" aria-hidden="true">3D</span>';
-      return `<a class="pdp-related-card" href="/product.html?slug=${encodeURIComponent(p.slug)}&lang=${language}">${image}<span>${esc(getName(p))}</span><strong>${esc(money(p.price))}</strong></a>`;
+      return `<a class="pdp-related-card" href="${productPath(p.slug,language)}">${image}<span>${esc(getName(p))}</span><strong>${esc(money(p.price))}</strong></a>`;
     }).join('');
   }
   function variantMarkup() {
     const groups=[['spongebob-card-pink','spongebob-card-green','spongebob-card-bundle'],['spring-lizard-big','spring-lizard-small']];
-    const group=groups.find(items=>items.includes(currentProduct.slug));
-    if(!group)return '';
-    const items=productVariants.filter(p=>group.includes(p.slug));
-    const label=p=>p.slug==='spongebob-card-pink'?(language==='ar'?'وردي':'Pink'):p.slug==='spongebob-card-green'?(language==='ar'?'أخضر':'Green'):p.slug==='spongebob-card-bundle'?(language==='ar'?'اللونان':'Both colors'):p.slug==='spring-lizard-big'?(language==='ar'?'كبير':'Big'):(language==='ar'?'صغير':'Small');
-    return items.length>1?`<section class="pdp-options" aria-labelledby="pdpVariantsTitle"><h2 id="pdpVariantsTitle">${esc(t('options'))}</h2><div class="pdp-variant-list">${items.map(p=>`<a class="pdp-variant${p.slug===currentProduct.slug?' is-selected':''}" href="/product.html?slug=${encodeURIComponent(p.slug)}&lang=${language}"${p.slug===currentProduct.slug?' aria-current="page"':''}>${esc(label(p))} · ${esc(money(p.price))}</a>`).join('')}</div></section>`:'';
+    const group=groups.find(items=>items.includes(currentProduct.slug));if(!group)return '';
+    const items=productVariants.filter(product=>group.includes(product.slug));
+    const label=product=>product.slug==='spongebob-card-pink'?(language==='ar'?'وردي':'Pink'):product.slug==='spongebob-card-green'?(language==='ar'?'أخضر':'Green'):product.slug==='spongebob-card-bundle'?(language==='ar'?'اللونان':'Both colors'):product.slug==='spring-lizard-big'?(language==='ar'?'كبير':'Big'):(language==='ar'?'صغير':'Small');
+    const title=language==='ar'?'اختر اللون أو المقاس':'Choose a color or size';
+    return items.length>1?'<section class="pdp-options" aria-labelledby="pdpVariantsTitle"><h2 id="pdpVariantsTitle">'+esc(title)+'</h2><div class="pdp-variant-list" role="region" tabindex="0" aria-label="'+esc(title)+'">'+items.map(product=>{const img=product.slug.startsWith('spring-lizard-')?'/assets/products/spring-lizard.webp':'/assets/products/'+product.slug+'.webp';return '<a class="pdp-variant-slide'+(product.slug===currentProduct.slug?' is-selected':'')+'" href="'+esc(productPath(product.slug,language))+'"'+(product.slug===currentProduct.slug?' aria-current="page"':'')+'><img src="'+esc(img)+'" alt="'+esc(label(product))+' — '+esc(getName(product))+'" width="160" height="160" loading="lazy" decoding="async"><span>'+esc(label(product))+'</span><strong>'+esc(money(product.price))+'</strong></a>';}).join('')+'</div></section>':'';
   }
   function render(product, related, categoryMap, variants) {
     currentProduct=product; siblings=related; productVariants=variants;
     gallery=imageSources(product);galleryIndex=0;
     document.documentElement.lang=language;document.documentElement.dir=language==='ar'?'rtl':'ltr';
-    document.querySelector('#langToggle').href=`/product.html?slug=${encodeURIComponent(slug)}&lang=${language==='ar'?'en':'ar'}`;
+    document.querySelector('#langToggle').href=productPath(slug,language==='ar'?'en':'ar');
     document.querySelector('#langToggle').textContent=language==='ar'?'English':'العربية';
     const nav=document.querySelector('.pdp-header nav');
     const navLinks=nav?.querySelectorAll('a');
@@ -171,19 +175,19 @@
     document.querySelector('#pdpContent').innerHTML=`
       <nav class="pdp-crumbs" aria-label="${language==='ar'?'مسار التنقل':'Breadcrumb'}"><a href="/${language==='ar'?'ar/':''}">${esc(t('home'))}</a><span aria-hidden="true">›</span><a href="/${language==='ar'?'ar/':''}shop/">${esc(t('shop'))}</a><span aria-hidden="true">›</span><span aria-current="page">${esc(name)}</span></nav>
       <div class="pdp-layout"><section class="pdp-gallery" aria-label="${language==='ar'?'صور المنتج':'Product images'}"><div id="pdpImageStage" class="pdp-image-stage"></div><div id="pdpThumbs" class="pdp-thumbs" aria-label="${language==='ar'?'صور مصغرة':'Image thumbnails'}"></div></section>
-      <section class="pdp-info"><p class="pdp-eyebrow">${esc(cat)} · PRINTFY 3D</p><h1>${esc(name)}</h1><p class="pdp-price">${product.customizable?`${language==='ar'?'يبدأ من':'From'} `:''}${esc(money(product.price))}</p><p class="pdp-stock ${product.available?'is-available':'is-unavailable'}"><span aria-hidden="true">${product.available?'●':'○'}</span> ${esc(product.available?t('available'):t('unavailable'))}</p>${desc?`<div class="pdp-description"><h2>${esc(t('description'))}</h2><p>${esc(desc)}</p></div>`:''}${variantMarkup()}<div class="pdp-purchase"><label for="pdpQty">${esc(t('quantity'))}</label><div class="pdp-quantity"><button type="button" id="qtyDown" aria-label="${language==='ar'?'تقليل الكمية':'Decrease quantity'}">−</button><input id="pdpQty" type="number" min="1" max="99" value="1" inputmode="numeric"><button type="button" id="qtyUp" aria-label="${language==='ar'?'زيادة الكمية':'Increase quantity'}">+</button></div><button id="pdpAdd" class="pdp-primary" type="button" ${product.available?'':'disabled'}>${esc(t('add'))}</button><a id="pdpWhatsapp" class="pdp-whatsapp" href="#" target="_blank" rel="noopener noreferrer">${esc(t('buy'))}</a></div>${product.customizable?`<div class="pdp-custom"><label for="customRequest">${esc(t('customize'))}</label><textarea id="customRequest" rows="3" maxlength="500" aria-describedby="customRequestHelp" placeholder="${esc(t('request'))}"></textarea><p id="customRequestHelp" class="pdp-custom-help">${language==='ar'?'تفاصيل التخصيص تُرسل عبر واتساب لتأكيد السعر النهائي.':'Send customization details via WhatsApp so we can confirm the final price.'}</p></div>`:''}<div class="pdp-trust"><section><h2>${esc(t('shipping'))}</h2><p>${esc(t('shippingText'))}</p></section><section><h2>${esc(t('returns'))}</h2><p>${esc(t('returnsText'))} <a href="/${language==='ar'?'ar/':''}refund-policy/">${language==='ar'?'التفاصيل':'Read policy'}</a></p></section><section><h2>${esc(t('support'))}</h2><p>${esc(t('supportText'))} <a href="https://wa.me/${PHONE}" target="_blank" rel="noopener noreferrer">WhatsApp</a></p></section></div></section></div>
+      <section class="pdp-info"><p class="pdp-eyebrow">${esc(cat)} · PRINTFY 3D</p><h1>${esc(name)}</h1><p class="pdp-price">${product.customizable?`${language==='ar'?'يبدأ من':'From'} `:''}${esc(money(product.price))}</p><p class="pdp-stock ${isAvailable(product)?'is-available':'is-unavailable'}"><span aria-hidden="true">${isAvailable(product)?'●':'○'}</span> ${esc(isAvailable(product)?t('available'):t('unavailable'))}</p>${desc?`<div class="pdp-description"><h2>${esc(t('description'))}</h2><p>${esc(desc)}</p></div>`:''}${variantMarkup()}<div class="pdp-purchase"><label for="pdpQty">${esc(t('quantity'))}</label><div class="pdp-quantity"><button type="button" id="qtyDown" aria-label="${language==='ar'?'تقليل الكمية':'Decrease quantity'}">−</button><input id="pdpQty" type="number" min="1" max="99" value="1" inputmode="numeric"><button type="button" id="qtyUp" aria-label="${language==='ar'?'زيادة الكمية':'Increase quantity'}">+</button></div><button id="pdpAdd" class="pdp-primary" type="button" ${isAvailable(product)?'':'disabled'}>${esc(t('add'))}</button><a id="pdpWhatsapp" class="pdp-whatsapp" href="#" target="_blank" rel="noopener noreferrer">${esc(t('buy'))}</a></div>${product.customizable?`<div class="pdp-custom"><label for="customRequest">${esc(t('customize'))}</label><textarea id="customRequest" rows="3" maxlength="500" aria-describedby="customRequestHelp" placeholder="${esc(t('request'))}"></textarea><p id="customRequestHelp" class="pdp-custom-help">${language==='ar'?'تفاصيل التخصيص تُرسل عبر واتساب لتأكيد السعر النهائي.':'Send customization details via WhatsApp so we can confirm the final price.'}</p></div>`:''}<div class="pdp-trust"><section><h2>${esc(t('shipping'))}</h2><p>${esc(t('shippingText'))}</p></section><section><h2>${esc(t('returns'))}</h2><p>${esc(t('returnsText'))} <a href="/${language==='ar'?'ar/':''}refund-policy/">${language==='ar'?'التفاصيل':'Read policy'}</a></p></section><section><h2>${esc(t('support'))}</h2><p>${esc(t('supportText'))} <a href="https://wa.me/${PHONE}" target="_blank" rel="noopener noreferrer">WhatsApp</a></p></section></div></section></div>
       ${product.material||product.dims?`<section class="pdp-specs"><h2>${esc(t('specs'))}</h2><dl>${product.material?`<div><dt>${esc(t('material'))}</dt><dd>${esc(product.material)}</dd></div>`:''}${product.dims?`<div><dt>${esc(t('dimensions'))}</dt><dd>${esc(product.dims)}</dd></div>`:''}</dl></section>`:''}
       ${desc||product.material||product.dims||product.customizable?`<section class="pdp-features"><h2>${esc(t('features'))}</h2><ul>${product.material?`<li>${esc(t('material'))}: ${esc(product.material)}</li>`:''}${product.dims?`<li>${esc(t('dimensions'))}: ${esc(product.dims)}</li>`:''}${product.customizable?`<li>${language==='ar'?'يمكن طلب تخصيص هذا المنتج. أرسل التفاصيل عبر واتساب.':'Customization can be requested; share details via WhatsApp.'}</li>`:''}</ul></section>`:''}
       <section class="pdp-related"><h2>${esc(t('related'))}</h2><div class="pdp-related-grid">${relatedMarkup(related)}</div></section>`;
     renderGallery();updateSeo(product);
     document.querySelector('#pdpStatus').textContent='';
-    document.querySelector('#pdpContent').hidden=false;
+    document.querySelector('#pdpContent').hidden=false; const fallback=document.querySelector('.pdp-static-fallback');if(fallback)fallback.hidden=true;
     document.querySelector('#qtyDown').addEventListener('click',()=>{const input=document.querySelector('#pdpQty');input.value=Math.max(1,Number(input.value||1)-1);updateWhatsapp();});
     document.querySelector('#qtyUp').addEventListener('click',()=>{const input=document.querySelector('#pdpQty');input.value=Math.min(99,Number(input.value||1)+1);updateWhatsapp();});
     document.querySelector('#pdpQty').addEventListener('input',updateWhatsapp);
     document.querySelector('#pdpAdd').addEventListener('click',addToCart);
     document.querySelector('#customRequest')?.addEventListener('input',()=>{
-      document.querySelector('#pdpAdd').disabled=!product.available||Boolean(document.querySelector('#customRequest').value.trim());
+      document.querySelector('#pdpAdd').disabled=!isAvailable(product)||Boolean(document.querySelector('#customRequest').value.trim());
       updateWhatsapp();
     });
     updateWhatsapp();
@@ -193,15 +197,15 @@
     document.querySelector('#pdpRetry').hidden=true;
     try {
       const [rows,cats]=await Promise.all([
-        apiFetch('products',`select=id,slug,name,name_en,name_ar,category,price,description,desc_en,desc_ar,material,dims,customizable,available,image_url&slug=eq.${encodeURIComponent(slug)}&limit=1`),
+        apiFetch('products',`select=id,slug,name,name_en,name_ar,category,price,stock,description,desc_en,desc_ar,material,dims,customizable,available,image_url&slug=eq.${encodeURIComponent(slug)}&limit=1`),
         apiFetch('categories','select=slug,name_en,name_ar')
       ]);
       if(!rows.length)throw new Error('Product not found');
       const product=rows[0];
       const variants=(product.slug.startsWith('spongebob-card-'))?['spongebob-card-pink','spongebob-card-green','spongebob-card-bundle']:(product.slug.startsWith('spring-lizard-'))?['spring-lizard-big','spring-lizard-small']:[];
-      const relatedQuery=`select=id,slug,name,name_en,name_ar,category,price,image_url&available=eq.true&category=eq.${encodeURIComponent(product.category)}&order=slug.asc&limit=12`;
+      const relatedQuery=`select=id,slug,name,name_en,name_ar,category,price,stock,image_url&available=eq.true&category=eq.${encodeURIComponent(product.category)}&order=slug.asc&limit=12`;
       const related=await apiFetch('products',relatedQuery);
-      const variantRows=variants.length?await apiFetch('products',`select=id,slug,name,name_en,name_ar,category,price,image_url,available&available=eq.true&slug=in.(${variants.join(',')})`):[];
+      const variantRows=variants.length?await apiFetch('products',`select=id,slug,name,name_en,name_ar,category,price,stock,image_url,available&available=eq.true&slug=in.(${variants.join(',')})`):[];
       const categoryMap=Object.fromEntries(cats.map(c=>[c.slug,language==='ar'?(c.name_ar||c.name_en):(c.name_en||c.name_ar)]));
       render(product,related,categoryMap,variantRows);
     } catch(error) {
