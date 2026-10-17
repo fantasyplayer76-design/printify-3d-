@@ -2542,10 +2542,10 @@
     return `<article class="card card-hover overflow-hidden flex flex-col sponge-product">
       <div class="sponge-gallery-shell">
         <div class="sponge-gallery" data-sponge-gallery aria-label="${lang==='ar'?'صور بطاقة سبونج بوب':'SpongeBob card photos'}">${slides}</div>
-        <button type="button" class="sponge-gallery-control sponge-gallery-prev" data-sponge-prev aria-label="${lang==='ar'?'الصورة السابقة':'Previous photo'}">‹</button>
-        <button type="button" class="sponge-gallery-control sponge-gallery-next" data-sponge-next aria-label="${lang==='ar'?'الصورة التالية':'Next photo'}">›</button>
+        ${variants.length>1 ? `<button type="button" class="sponge-gallery-control sponge-gallery-prev" data-sponge-prev aria-label="${lang==='ar'?'الصورة السابقة':'Previous photo'}">‹</button>
+        <button type="button" class="sponge-gallery-control sponge-gallery-next" data-sponge-next aria-label="${lang==='ar'?'الصورة التالية':'Next photo'}">›</button>` : ''}
       </div>
-      <p class="sponge-swipe-hint">${lang==='ar'?'اسحب لمشاهدة باقي الصور':'Swipe to see all 3 photos'}</p>
+      ${variants.length>1 ? `<p class="sponge-swipe-hint">${lang==='ar'?'اسحب لمشاهدة باقي الصور':`Swipe to see all ${variants.length} photos`}</p>` : ''}
       <div class="p-3 sm:p-4 flex flex-col flex-1">
         <p class="text-[11px] sub uppercase tracking-wide mb-1">${lang==='ar'?'مجسمات ومقتنيات':'Figures & Collectibles'}</p>
         <h3 class="font-semibold text-sm sm:text-base leading-snug mb-1">${lang==='ar'?'بطاقة سبونج بوب':'SpongeBob Card'}</h3>
@@ -2563,10 +2563,10 @@
     return `<article class="card card-hover overflow-hidden flex flex-col sponge-product lizard-product">
       <div class="sponge-gallery-shell">
         <div class="sponge-gallery" data-lizard-gallery aria-label="${lang==='ar'?'صور السحلية النابضية':'Spring Lizard photos'}">${slides}</div>
-        <button type="button" class="sponge-gallery-control sponge-gallery-prev" data-lizard-prev aria-label="${lang==='ar'?'الصورة السابقة':'Previous photo'}">‹</button>
-        <button type="button" class="sponge-gallery-control sponge-gallery-next" data-lizard-next aria-label="${lang==='ar'?'الصورة التالية':'Next photo'}">›</button>
+        ${variants.length>1 ? `<button type="button" class="sponge-gallery-control sponge-gallery-prev" data-lizard-prev aria-label="${lang==='ar'?'الصورة السابقة':'Previous photo'}">‹</button>
+        <button type="button" class="sponge-gallery-control sponge-gallery-next" data-lizard-next aria-label="${lang==='ar'?'الصورة التالية':'Next photo'}">›</button>` : ''}
       </div>
-      <p class="sponge-swipe-hint">${lang==='ar'?'اسحب لمشاهدة الصورتين':'Swipe to see both photos'}</p>
+      ${variants.length>1 ? `<p class="sponge-swipe-hint">${lang==='ar'?'اسحب لمشاهدة الصورتين':`Swipe to see all ${variants.length} photos`}</p>` : ''}
       <div class="p-3 sm:p-4 flex flex-col flex-1">
         <p class="text-[11px] sub uppercase tracking-wide mb-1">${lang==='ar'?'مجسمات ومقتنيات':'Figures & Collectibles'}</p>
         <h3 class="font-semibold text-sm sm:text-base leading-snug mb-1">${lang==='ar'?'السحلية النابضية':'Spring Lizard'}</h3>
@@ -2642,16 +2642,26 @@
     `).join('');
     const spongeVariants = SPONGE_CARD_ORDER.map(slug=>products.find(p=>p.slug===slug)).filter(Boolean);
     const lizardVariants = LIZARD_CARD_ORDER.map(slug=>products.find(p=>p.slug===slug)).filter(Boolean);
-    grid.innerHTML = regularCards + (matchedSponge && spongeVariants.length===3 ? spongeCardHtml(spongeVariants,lang) : '') + (matchedLizard && lizardVariants.length===2 ? lizardCardHtml(lizardVariants,lang) : '');
+    grid.innerHTML = regularCards + (matchedSponge && spongeVariants.length ? spongeCardHtml(spongeVariants,lang) : '') + (matchedLizard && lizardVariants.length ? lizardCardHtml(lizardVariants,lang) : '');
   }
   grid.addEventListener('scroll', e => {
-    const gallery=e.target.closest('[data-sponge-gallery]'); if(!gallery || !gallery.clientWidth) return;
-    const slug=SPONGE_CARD_ORDER[Math.round(gallery.scrollLeft/gallery.clientWidth)], p=products.find(item=>item.slug===slug);
-    if(!p || selectedSpongeSlug===slug) return;
-    selectedSpongeSlug=slug;
+    const gallery=e.target.closest('[data-sponge-gallery],[data-lizard-gallery]'); if(!gallery || !gallery.clientWidth) return;
+    const isLizard=gallery.matches('[data-lizard-gallery]');
+    const order=isLizard?LIZARD_CARD_ORDER:SPONGE_CARD_ORDER;
+    const slug=order[Math.round(gallery.scrollLeft/gallery.clientWidth)], p=products.find(item=>item.slug===slug);
+    if(!p) return;
     const card=gallery.closest('.sponge-product');
-    card.querySelectorAll('[data-sponge-variant]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.spongeVariant===slug)));
-    card.querySelector('[data-sponge-price]').innerHTML=priceHtml(p.price);
+    if(isLizard){
+      if(selectedLizardSlug===slug)return;
+      selectedLizardSlug=slug;
+      card.querySelectorAll('[data-lizard-variant]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.lizardVariant===slug)));
+      card.querySelector('[data-lizard-price]').innerHTML=priceHtml(p.price);
+    }else{
+      if(selectedSpongeSlug===slug)return;
+      selectedSpongeSlug=slug;
+      card.querySelectorAll('[data-sponge-variant]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.spongeVariant===slug)));
+      card.querySelector('[data-sponge-price]').innerHTML=priceHtml(p.price);
+    }
     card.querySelector('.addBtn').dataset.id=p.id;
   }, true);
   grid.addEventListener('click', e => {
