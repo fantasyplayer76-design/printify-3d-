@@ -475,8 +475,8 @@
   @media(max-width:390px){.hero-actions{gap:.55rem}.hero-actions .btn-primary,.hero-actions .btn-outline{padding-inline:.9rem;font-size:.8rem}#productGrid{gap:.65rem}#productGrid article h3{font-size:1.14rem}}
   @media(prefers-reduced-motion:reduce){.hero-featured-main,.hero-featured-inset,#productGrid article,.card-hover{transition:none!important;animation:none!important}}
 </style>
-<link rel="alternate" hreflang="en" href="https://www.printfy3d-eg.com/"><link rel="alternate" hreflang="ar" href="https://www.printfy3d-eg.com/ar/"><link rel="alternate" hreflang="x-default" href="https://www.printfy3d-eg.com/">
-<style>.delivery-estimator{display:grid;gap:8px;max-width:440px}.delivery-estimator label{font-weight:650;font-size:.9rem}.delivery-estimator-select{width:100%;min-height:44px;border:1px solid var(--line-soft);border-radius:9px;padding:10px;background:#fff;color:var(--ink);font:inherit}.delivery-estimator-status{line-height:1.55}.delivery-estimator-ask{width:max-content}</style></head>
+<link rel="alternate" hreflang="en" href="https://www.printfy3d-eg.com/"><link rel="alternate" hreflang="ar-EG" href="https://www.printfy3d-eg.com/ar/"><link rel="alternate" hreflang="x-default" href="https://www.printfy3d-eg.com/">
+<style>.delivery-estimator{display:grid;gap:8px;max-width:440px}.delivery-estimator label{font-weight:650;font-size:.9rem}.delivery-estimator-select{width:100%;min-height:44px;border:1px solid var(--line-soft);border-radius:9px;padding:10px;background:#fff;color:var(--ink);font:inherit}.delivery-estimator-status{line-height:1.55}.delivery-estimator-ask{width:max-content}</style><script defer data-domain="www.printfy3d-eg.com" src="https://plausible.io/js/script.js"></script><script defer src="/assets/analytics.js"></script></head>
 <body class="antialiased">
 <a href="https://www.printfy3d-eg.com/#main" class="skip-link" data-i18n="skipLink">Skip to content</a>
 
@@ -824,6 +824,7 @@
       <a href="/contact/" class="hover:underline" data-page="contact" data-i18n="footerLegalContact">Contact Us</a>
       <a href="/copyright/" class="hover:underline" data-page="copyright" data-i18n="footerLegalCopyright">Copyright</a>
     </nav>
+    <nav aria-label="SEO pages"><a href="/3d-printing-in-cairo/">3D printing in Cairo</a><a href="/custom-name-stands/">Custom name stands</a><a href="/3d-printed-keychains-egypt/">3D printed keychains in Egypt</a><a href="/custom-3d-printing-egypt/">Custom 3D printing in Egypt</a></nav>
     <div data-i18n="footerCopyright" class="order-1 sm:order-2">© 2026 PRINTFY 3D</div>
   </div>
 </footer>
@@ -1357,7 +1358,7 @@
     footerLegalRefund:{en:"Refund &amp; Returns",ar:"سياسة الاسترجاع"}, footerLegalContact:{en:"Contact Us",ar:"تواصل معنا"},
     footerLegalCopyright:{en:"Copyright",ar:"حقوق النشر"},
     backToSite:{en:"Back to site",ar:"العودة للموقع"},
-    consentText:{en:'We use browser storage for your cart, language preference, privacy notice choice, and InstaPay order status. We do not use analytics or tracking cookies. See our <a href="/privacy/" class="underline brand">Privacy Policy</a> for details.', ar:'بنستخدم التخزين المحلي للمتصفح لحفظ عربة التسوق واللغة واختيارك لإشعار الخصوصية وحالة طلب إنستاباي. لا نستخدم التحليلات أو كوكيز التتبع. للمزيد راجع <a href="/privacy/" class="underline brand">سياسة الخصوصية</a>.'},
+    consentText:{en:'We use browser storage for your cart, language preference, privacy notice choice, and InstaPay order status. We use privacy-friendly, cookieless Plausible Analytics to measure aggregate site visits and key actions. We do not send names, phone numbers, order details or selected product options to analytics. See our <a href="/privacy/" class="underline brand">Privacy Policy</a> for details.', ar:'بنستخدم التخزين المحلي للمتصفح لحفظ عربة التسوق واللغة واختيارك لإشعار الخصوصية وحالة طلب إنستاباي. لا نستخدم التحليلات أو كوكيز التتبع. للمزيد راجع <a href="/privacy/" class="underline brand">سياسة الخصوصية</a>.'},
     consentAccept:{en:"Got it",ar:"تمام"},
     cartTitle:{en:"Your Cart",ar:"عربة التسوق"}, cartTotalLabel:{en:"Total",ar:"الإجمالي"},
     cartCheckoutBtn:{en:"Place Order",ar:"إتمام الطلب"}, cartContinueBtn:{en:"Checkout",ar:"متابعة الدفع"},
@@ -2359,7 +2360,7 @@
     const errEl = $('customFormError'), okEl = $('customFormSuccess');
     errEl.classList.add('hidden'); okEl.classList.add('hidden');
     if(kind==='error'){ errEl.textContent = msg; errEl.classList.remove('hidden'); }
-    if(kind==='success'){ $('customFormSuccessMsg').textContent = msg; okEl.classList.remove('hidden'); }
+    if(kind==='success'){ window.printfyTrack?.('Quote Form Submitted'); $('customFormSuccessMsg').textContent = msg; okEl.classList.remove('hidden'); }
   }
   let customKey = null, customBusy = false;
   const CUSTOM_FILE_TYPES={stl:'model/stl','3mf':'model/3mf',obj:'model/obj',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',pdf:'application/pdf'};
