@@ -14,3 +14,8 @@
 - Replaced invented testimonials with JSON-backed approved-review slots; added JSON-backed recent-order photo slots, materials/About blocks, and the 12-question bilingual homepage FAQ.
 - Confirmed quote uploads already have a 5 MB Supabase Storage limit and MIME allowlist enforced server-side.
 - De-emphasized MakerWorld and added product-page WhatsApp floating buttons.
+
+
+## Deployment fix — Supabase catalog access
+- Added a SECURITY INVOKER read-only catalog RPC and narrow column-level SELECT grants for the existing public product fields; existing RLS policies are unchanged and private cost/profit columns are not exposed.
+- Updated the Vercel static build to read products through that RPC; no service-role key or browser secret is used.
