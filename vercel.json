@@ -49,6 +49,26 @@
   ],
   "redirects": [
     {
+      "source": "/custom-orders",
+      "destination": "/#stl-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/custom-orders/",
+      "destination": "/#stl-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/ar/custom-orders",
+      "destination": "/ar/#stl-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/ar/custom-orders/",
+      "destination": "/ar/#stl-calculator",
+      "permanent": true
+    },
+    {
       "source": "/custom-print",
       "destination": "/#stl-calculator",
       "permanent": true

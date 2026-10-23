@@ -637,88 +637,16 @@
   </div>
 </section>
 
-<!-- CUSTOM ORDER -->
-<section id="custom" class="section border-t ink-line">
-  <div class="max-w-6xl mx-auto px-5 sm:px-6 grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-    <div>
-      <p class="eyebrow brand mb-3" data-i18n="customEyebrow">Bring your own design</p>
-      <h2 class="section-title" style="font-size:clamp(2rem,5vw,3rem);" data-i18n="customTitle">Got a model?<br>We'll print it.</h2>
-      <p class="section-sub" data-i18n="customSub">Fill in the request and attach an STL file, photos or sketches. We quote in EGP, print in-house, and deliver across Egypt.</p>
-      <ol class="space-y-4 mt-8 mb-8">
-        <li class="flex gap-4 items-start"><span class="step-num">1</span><span class="pt-1 text-sm" data-i18n="step1Text">Tell us what you need using the form below</span></li>
-        <li class="flex gap-4 items-start"><span class="step-num">2</span><span class="pt-1 text-sm" data-i18n="step2Text">Upload your model, photos or sketch with this form. WhatsApp is also available as a fallback.</span></li>
-        <li class="flex gap-4 items-start"><span class="step-num">3</span><span class="pt-1 text-sm" data-i18n="step3Text">We quote in EGP, confirm details, then print and deliver</span></li>
-      </ol>
-      <div class="flex flex-col sm:flex-row gap-3">
-        <a href="https://wa.me/201063870873?text=Start%20a%20custom%20order" target="_blank" rel="noopener noreferrer" class="btn-outline px-6 text-sm" data-i18n="customBtn1">Order via WhatsApp instead</a>
-        <a href="https://makerworld.com/" target="_blank" rel="noopener noreferrer" class="text-xs sub underline underline-offset-4 mt-4">
-          <span data-i18n="customBtn2">Browse Designs on MakerWorld</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"></path></svg>
-        </a>
-      </div>
-    </div>
-
-    <div class="space-y-6">
-      <form id="customForm" class="card p-5 sm:p-7" novalidate="">
-        <h3 class="text-xl font-bold mb-1" data-i18n="customFormTitle">Request a custom quote</h3>
-        <p class="text-sm sub mb-5" data-i18n="customFormIntro">Tell us what you'd like printed. We quote in EGP and confirm on WhatsApp.</p>
-        <div class="grid sm:grid-cols-2 gap-3 mb-3">
-          <div>
-            <label class="field-label" for="customName"><span data-i18n="customFormNameLabel">Your name</span> <span class="brand" aria-hidden="true">*</span></label>
-            <input id="customName" type="text" autocomplete="name" maxlength="120" aria-describedby="customFormError" class="field">
-          </div>
-          <div>
-            <label class="field-label" for="customPhone"><span data-i18n="customFormPhoneLabel">Phone / WhatsApp</span> <span class="brand" aria-hidden="true">*</span></label>
-            <input id="customPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" aria-describedby="customFormError" data-i18n-placeholder="customPhonePh" placeholder="01012345678" class="field">
-          </div>
-        </div>
-        <div class="mb-3">
-          <label class="field-label" for="customDesc"><span data-i18n="customFormDescLabel">Describe what you want</span> <span class="brand" aria-hidden="true">*</span></label>
-          <textarea id="customDesc" rows="3" maxlength="1000" aria-describedby="customFormError" class="field"></textarea>
-        </div>
-        <div class="grid sm:grid-cols-2 gap-3 mb-4">
-          <div>
-            <label class="field-label" for="customSize" data-i18n="customFormSizeLabel">Size</label>
-            <select id="customSize" class="field">
-              <option value="small" data-i18n="sizeSmall">Small</option>
-              <option value="medium" data-i18n="sizeMedium">Medium</option>
-              <option value="large" data-i18n="sizeLarge">Large</option>
-            </select>
-          </div>
-          <div>
-            <label class="field-label" for="customColor" data-i18n="customFormColorLabel">Color</label>
-            <input id="customColor" type="text" data-i18n-placeholder="customColorPh" placeholder="e.g. black, white, red" class="field">
-          </div>
-        </div>
-        <div class="mb-4"><label class="field-label" for="customFile" data-i18n="customFileLabel">Reference file (optional)</label><input id="customFile" class="field" type="file" accept=".stl,.3mf,.obj,.jpg,.jpeg,.png,.pdf"><p class="text-xs sub mt-1" data-i18n="customFileHelp">STL, 3MF, OBJ, JPG, PNG or PDF · up to 5 MB.</p></div>
-        <input id="customWebsite" type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
-        <p id="customFormError" role="alert" class="hidden text-sm font-medium mb-3" style="color:var(--brand-text);"></p>
-        <div id="customFormSuccess" class="hidden mb-3 rounded-lg p-3 text-sm" style="background:rgba(47,125,79,.1); color:#1f5a38;" role="status">
-          <p id="customFormSuccessMsg" class="font-semibold"></p>
-          <a id="customWaLink" href="https://wa.me/201063870873" target="_blank" rel="noopener noreferrer" class="btn-primary px-5 text-sm mt-3" data-i18n="customContinueWa">Continue on WhatsApp</a>
-        </div>
-        <button id="customSubmitBtn" type="button" class="btn-primary btn-lg w-full" data-i18n="customFormSubmit">Send Request</button>
-        <p class="text-xs sub mt-3 text-center" data-i18n="customReply">We typically reply on WhatsApp within a few hours.</p>
-        <p class="text-xs sub mt-1 text-center" data-i18n="customFormPhotoNote">This form does not upload files. After submitting, tap “Continue on WhatsApp” and attach your photos or STL file in the chat.</p>
-      </form>
-
-      <div id="chargesCard" class="card p-5 sm:p-7">
-        <h3 class="font-bold text-lg mb-1" data-i18n="chargesTitle">Customization charges</h3>
-        <p class="text-sm sub mb-4" data-i18n="chargesSub">Base prices stay low — these apply only to work that takes extra time.</p>
-        <ul id="chargesList" class="text-sm rule-list"></ul><div class="mt-5 pt-4 border-t ink-line"><h4 class="font-semibold mb-2" data-i18n="deliveryFeeTitle">Delivery fees by area</h4><p class="text-sm sub" data-i18n="deliveryFeeTodo">Delivery is charged separately and confirmed on WhatsApp.</p></div>
-      </div>
-    </div>
-  <div class="stl-calculator-inline lg:col-span-2" id="stl-calculator">
+<!-- CUSTOM STL CALCULATOR -->
+<section id="custom" class="section border-t ink-line"><div class="max-w-6xl mx-auto px-5 sm:px-6"><div class="stl-calculator-inline" id="stl-calculator">
 <header class="stl-calc-intro"><p class="stl-eyebrow" data-calc-copy="estimateEyebrow">INSTANT ESTIMATE</p><h2 data-calc-copy="heading">Upload and preview your STL</h2><p class="stl-lead" data-calc-copy="lead">Preview your model and get a quick EGP estimate. The file stays on your device.</p></header>
 <section class="calculator" aria-label="STL price calculator"><div class="model-column">
 <label class="upload" for="stlFile"><span class="upload-icon" aria-hidden="true">＋</span><strong data-calc-copy="chooseLabel">Choose an STL file</strong><span data-calc-copy="uploadHint">STL only · up to 15 MB · stays on this device</span><input id="stlFile" type="file" accept=".stl,model/stl,application/sla"></label>
 <p id="fileStatus" class="status" role="status" aria-live="polite" data-calc-copy="initialStatus">Your model preview will appear here after you choose a file.</p><div id="viewer" class="viewer" role="region" aria-label="Interactive 3D preview"><div class="viewer-empty" data-calc-copy="viewerEmpty">Choose an STL file to begin</div></div><div id="modelFacts" class="model-facts" hidden></div></div>
 <div class="settings-column"><div class="panel"><h3 data-calc-copy="settingsTitle">Print settings</h3><label for="material" data-calc-copy="materialLabel">Material</label><select id="material"><option value="pla">PLA</option><option value="petg">PETG</option><option value="abs">ABS</option><option value="tpu">TPU</option></select><label for="units" data-calc-copy="unitsLabel">STL dimensions are in</label><select id="units"><option value="mm" data-calc-copy="unitMm">Millimeters (mm)</option><option value="cm" data-calc-copy="unitCm">Centimeters (cm)</option><option value="in" data-calc-copy="unitIn">Inches (in)</option></select><label for="infill"><span data-calc-copy="infillPrefix">Infill:</span> <output id="infillValue">20%</output></label><input id="infill" type="range" min="5" max="50" step="5" value="20"><p class="hint" data-calc-copy="localHint">The file stays in your browser. It is not uploaded to PRINTFY or a third party.</p></div>
 <div class="panel estimate-panel"><p class="stl-eyebrow" data-calc-copy="estimateEyebrow">INSTANT ESTIMATE</p><h3 id="estimatePrice" aria-live="polite">— EGP</h3><p id="estimateStatus" class="status">Choose a model to calculate.</p><dl id="estimateBreakdown" class="breakdown" hidden></dl><button id="orderButton" class="primary" type="button" disabled data-calc-copy="continueWhatsapp">Continue on WhatsApp</button><p class="fine-print" data-calc-copy="estimateFine">Estimate only. The final price is confirmed after review; attach the STL in WhatsApp.</p></div></div></section>
-<section class="disclosure"><h3 data-calc-copy="disclosureTitle">How the estimate works</h3><p data-calc-copy="disclosureBody">This is a mesh-based estimate, not a slicer quote. Confirm final grams and time in a slicer before printing.</p><p id="pricingNote">Pricing is read from estimator settings.</p><p id="assumptionsNote">Print assumptions are provisional.</p><p id="buildVolumeNote">Build volume is read from printer settings.</p></section>
-<section class="support"><h3 data-calc-copy="supportTitle">Need help?</h3><p data-calc-copy="supportBody">Send your file and estimate to our team. We will check the model and confirm the price.</p><a href="/custom-orders/" data-calc-copy="customOrdersLink">Read about custom orders</a> · <a href="https://wa.me/201063870873" target="_blank" rel="noopener noreferrer" data-calc-copy="contactWhatsapp">Contact PRINTFY 3D on WhatsApp</a></section></div>
-  </div>
-</section>
+<section class="disclosure"><h3 data-calc-copy="disclosureTitle">How the estimate works</h3><p data-calc-copy="disclosureBody">This is a mesh-based estimate, not a slicer quote. Confirm final grams and time in a slicer before printing.</p><p id="pricingNote">Pricing is read from estimator settings.</p><p id="assumptionsNote">Print assumptions are provisional.</p><p id="buildVolumeNote">Build volume is read from printer settings.</p></section></div>
+<p class="mt-4 text-sm sub"><a href="https://makerworld.com/" target="_blank" rel="noopener noreferrer" data-i18n="customBtn2">Browse Designs on MakerWorld</a> <span aria-hidden="true">↗</span></p></div></section>
 
 <!-- WHY CHOOSE US -->
 <section id="why" class="section border-t ink-line surface">
@@ -810,7 +738,7 @@
       <ul class="space-y-2">
         <li><a href="https://www.printfy3d-eg.com/#shop" class="foot-link" data-i18n="navShop">Shop</a></li>
         <li><a href="https://www.printfy3d-eg.com/#gifts" class="foot-link policyLink" data-page="gifts" data-i18n="navGifts">Gifts</a></li>
-        <li><a href="https://www.printfy3d-eg.com/#custom-order" class="foot-link policyLink" data-page="customOrder" data-i18n="navCustomPage">Custom order</a></li>
+        <li><a href="#custom" class="foot-link" data-i18n="navCustomPage">STL calculator</a></li>
         <li><a href="https://www.printfy3d-eg.com/3d-printing-cost-egypt.html" class="foot-link" data-i18n="navGuide">3D printing cost guide</a></li>
         <li><a href="https://www.printfy3d-eg.com/#catalog" class="foot-link" data-i18n="navCatalog">Full Catalog</a></li><li><a href="https://www.printfy3d-eg.com/reviews/" class="foot-link" data-i18n="reviewsLink">Customer reviews</a></li>
         <li><a href="https://www.printfy3d-eg.com/#custom" class="foot-link" data-i18n="navCustom">Custom Print</a></li>
@@ -1118,7 +1046,6 @@
     <h2>5. الإبلاغ عن مشكلة</h2><p>إذا كنت تعتقد أن ملكيتك الفكرية استُخدمت على هذا الموقع دون تصريح مناسب، تواصل معنا لنراجع الأمر ونعالجه.</p><h2>6. التواصل</h2><ul><li><strong>واتساب / الهاتف:</strong> <a href="https://wa.me/201063870873">+20 10 63870873</a></li><li><strong>إنستغرام:</strong> <a href="https://instagram.com/3d_printingcairo">@3d_printingcairo</a></li><li><strong>الموقع:</strong> القاهرة، مصر</li></ul>
   </section>
   <section id="page-gifts" class="legal-body hidden" dir="ltr" lang="en"><p class="eyebrow brand mb-3" data-i18n="giftsEyebrow">PRINTFY 3D · GIFTS</p><h1 class="legal-title" data-i18n="giftsTitle">Gifts made personal</h1><p class="sub text-sm mb-8" data-i18n="giftsIntro">Find name items, couple sets and keychains. Every item is printed to order; custom gifts are quoted separately.</p><div id="giftProductGroups" class="gift-groups"></div><p class="mt-8"><a class="btn-primary px-6" href="https://www.printfy3d-eg.com/#shop" data-i18n="giftsBrowse">Browse all products</a></p></section>
-  <section id="page-customorder" class="legal-body hidden" dir="ltr" lang="en"><p class="eyebrow brand mb-3" data-i18n="customPageEyebrow">PRINTFY 3D · CUSTOM PRINTING</p><h1 class="legal-title" data-i18n="customPageTitle">Bring your idea to life</h1><p class="sub text-sm mb-5" data-i18n="customPageIntro">Tell us what you want printed. Send photos, sketches or an STL file on WhatsApp. We review your idea, size and materials and send a separate quote in EGP before production.</p><ol class="mb-8"><li data-i18n="customPageStep1">Describe the item and approximate size.</li><li data-i18n="customPageStep2">Send photos, sketches or an STL file on WhatsApp.</li><li data-i18n="customPageStep3">Review and approve the quote before printing.</li></ol><a class="btn-primary px-6" href="https://www.printfy3d-eg.com/#custom" data-i18n="customPageCTA">Request a custom quote</a></section>
   <section id="page-account" class="legal-body hidden" dir="ltr" lang="en"><p class="eyebrow brand mb-3" data-i18n="accountPageEyebrow">PRINTFY 3D · ORDER SUPPORT</p><h1 class="legal-title" data-i18n="accountPageTitle">Your orders</h1><p class="sub text-sm mb-5" data-i18n="accountPageIntro">Orders are confirmed with our team directly. Message us on WhatsApp with the phone number used for your order and we’ll help with its status.</p><a class="btn-primary px-6" href="https://wa.me/201063870873?text=I%20would%20like%20help%20with%20my%20order" target="_blank" rel="noopener noreferrer" data-i18n="accountPageCTA">Contact us about an order</a><p class="mt-5 text-sm sub" data-i18n="accountPageCart">Your cart is saved in this browser so you can continue shopping on this device.</p></section>
 </div>
 
@@ -1308,7 +1235,7 @@
     brandTagline:{en:"Your Ideas. Printed.",ar:"أفكارك. مطبوعة."}, navContact:{en:"Contact",ar:"تواصل معنا"},
     giftsEyebrow:{en:"PRINTFY 3D · GIFTS",ar:"PRINTFY 3D · هدايا"}, giftsTitle:{en:"Gifts made personal",ar:"هدايا بطابعك الخاص"}, giftsIntro:{en:"Find name items, couple sets and keychains. Every item is printed to order; custom gifts are quoted separately.",ar:"اختار هدية باسم مميز أو طقم للأزواج أو ميدالية مفاتيح. بنطبع كل المنتجات بعد الطلب، والطلبات الخاصة لها تسعير منفصل."}, giftsBrowse:{en:"Browse all products",ar:"تصفح كل المنتجات"}, giftsGroupName:{en:"Name items",ar:"هدايا بالأسماء"}, giftsGroupCouple:{en:"Couple sets",ar:"أطقم للأزواج"}, giftsGroupKeychain:{en:"Keychains",ar:"ميداليات مفاتيح"}, giftsGroupEmpty:{en:"Ask us for a made-to-order gift in this style.",ar:"كلمنا لطلب هدية مخصصة من هذا النوع."},
     customPageEyebrow:{en:"PRINTFY 3D · CUSTOM PRINTING",ar:"PRINTFY 3D · طباعة مخصصة"}, customPageTitle:{en:"Bring your idea to life",ar:"حوّل فكرتك لقطعة مطبوعة"}, customPageIntro:{en:"Tell us what you want printed. Send photos, sketches or an STL file on WhatsApp. We review your idea, size and materials and send a separate quote in EGP before production.",ar:"احكيلنا عايز تطبع إيه، وابعت صور أو رسومات أو ملف STL على واتساب. بنراجع الفكرة والحجم والخامات ونبعتلك سعر منفصل بالجنيه قبل ما نبدأ الطباعة."}, customPageStep1:{en:"Describe the item and approximate size.",ar:"اوصف القطعة وحدد مقاسها التقريبي."}, customPageStep2:{en:"Send photos, sketches or an STL file on WhatsApp.",ar:"ابعت صور أو رسومات أو ملف STL على واتساب."}, customPageStep3:{en:"Review and approve the quote before printing.",ar:"راجع السعر وأكده قبل بدء الطباعة."}, customPageCTA:{en:"Request a custom quote",ar:"اطلب عرض سعر مخصص"},
-    accountPageEyebrow:{en:"PRINTFY 3D · ORDER SUPPORT",ar:"PRINTFY 3D · متابعة الطلبات"}, accountPageTitle:{en:"Your orders",ar:"طلباتك"}, accountPageIntro:{en:"Orders are confirmed with our team directly. Message us on WhatsApp with the phone number used for your order and we’ll help with its status.",ar:"تأكيد الطلبات ومتابعتها بيكون مباشرة مع فريقنا. ابعتلنا على واتساب رقم الهاتف المستخدم في الطلب عشان نساعدك في معرفة حالته."}, accountPageCTA:{en:"Contact us about an order",ar:"اسألنا عن طلبك"}, accountPageCart:{en:"Your cart is saved in this browser so you can continue shopping on this device.",ar:"عربتك محفوظة في المتصفح ده، وتقدر تكمل التسوق من نفس الجهاز."}, navGifts:{en:"Gifts",ar:"هدايا"}, navCustomPage:{en:"Custom order",ar:"طلب مخصص"}, navGuide:{en:"3D printing cost guide",ar:"دليل تكلفة الطباعة ثلاثية الأبعاد"}, bottomCart:{en:"Cart",ar:"العربة"}, bottomAccount:{en:"Account",ar:"حسابي"},
+    accountPageEyebrow:{en:"PRINTFY 3D · ORDER SUPPORT",ar:"PRINTFY 3D · متابعة الطلبات"}, accountPageTitle:{en:"Your orders",ar:"طلباتك"}, accountPageIntro:{en:"Orders are confirmed with our team directly. Message us on WhatsApp with the phone number used for your order and we’ll help with its status.",ar:"تأكيد الطلبات ومتابعتها بيكون مباشرة مع فريقنا. ابعتلنا على واتساب رقم الهاتف المستخدم في الطلب عشان نساعدك في معرفة حالته."}, accountPageCTA:{en:"Contact us about an order",ar:"اسألنا عن طلبك"}, accountPageCart:{en:"Your cart is saved in this browser so you can continue shopping on this device.",ar:"عربتك محفوظة في المتصفح ده، وتقدر تكمل التسوق من نفس الجهاز."}, navGifts:{en:"Gifts",ar:"هدايا"}, navCustomPage:{en:"STL calculator",ar:"حاسبة STL"}, navGuide:{en:"3D printing cost guide",ar:"دليل تكلفة الطباعة ثلاثية الأبعاد"}, bottomCart:{en:"Cart",ar:"العربة"}, bottomAccount:{en:"Account",ar:"حسابي"},
     sortLabel:{en:"Sort by",ar:"ترتيب حسب"}, sortNewest:{en:"Newest",ar:"الأحدث"}, sortLow:{en:"Price: low to high",ar:"السعر: من الأقل للأعلى"}, sortHigh:{en:"Price: high to low",ar:"السعر: من الأعلى للأقل"}, priceMinLabel:{en:"Min price (EGP)",ar:"أقل سعر (جنيه)"}, priceMaxLabel:{en:"Max price (EGP)",ar:"أعلى سعر (جنيه)"}, clearFilters:{en:"Clear filters",ar:"مسح الفلاتر"}, navShopNow:{en:"Shop Now",ar:"تسوق الآن"}, mmWhatsApp:{en:"Chat on WhatsApp",ar:"كلمنا على واتساب"},
     heroEyebrow:{en:"PRINTED LAYER BY LAYER IN CAIRO",ar:"طباعة طبقة فوق طبقة في القاهرة"},
     heroTitle:{en:'3D Printing in Cairo,<br><em>made personal.</em>',ar:'طباعة ثلاثية الأبعاد في القاهرة،<br><em>بتصميمك.</em>'},
@@ -2367,86 +2294,6 @@
     }
   });
 
-  // ---- Custom order form ----
-  function setCustomMsg(kind, msg){
-    const errEl = $('customFormError'), okEl = $('customFormSuccess');
-    errEl.classList.add('hidden'); okEl.classList.add('hidden');
-    if(kind==='error'){ errEl.textContent = msg; errEl.classList.remove('hidden'); }
-    if(kind==='success'){ window.printfyTrack?.('Quote Form Submitted'); $('customFormSuccessMsg').textContent = msg; okEl.classList.remove('hidden'); }
-  }
-  let customKey = null, customBusy = false;
-  const CUSTOM_FILE_TYPES={stl:'model/stl','3mf':'model/3mf',obj:'model/obj',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',pdf:'application/pdf'};
-  function buildCustomWhatsAppUrl(f,extra=''){
-    const ar=getLang()==='ar',lines=[ar?'طلب عرض سعر مخصص من الموقع':'Custom quote request from website','',
-      (ar?'الاسم':'Name')+': '+(f.name||'-'),(ar?'رقم الهاتف':'Phone')+': '+(f.phone||'-'),(ar?'الوصف':'Description')+': '+(f.desc||'-'),
-      (ar?'المقاس':'Size')+': '+(f.size||'-'),(ar?'اللون':'Color')+': '+(f.color||'-')];
-    if(extra)lines.push('',extra);
-    return 'https://wa.me/'+WHATSAPP_ORDER+'?text='+encodeURIComponent(lines.join('\n'));
-  }
-  function refreshCustomWhatsAppLink(){ const f={name:$('customName').value.trim(),phone:$('customPhone').value.trim(),desc:$('customDesc').value.trim(),size:$('customSize').value,color:$('customColor').value.trim()}; const link=$('customWaLink'); if(link)link.href=buildCustomWhatsAppUrl(f); }
-  ['customName','customPhone','customDesc','customSize','customColor'].forEach(id=>{const el=$(id); if(el){el.addEventListener('input',refreshCustomWhatsAppLink);el.addEventListener('change',refreshCustomWhatsAppLink);}});
-  async function uploadCustomReference(file,id){
-    if(!file)return null;
-    const ext=(file.name.split('.').pop()||'').toLowerCase();
-    const path='custom-quotes/'+id+'/'+newKey()+'.'+ext;
-    const url=SUPABASE_URL+'/storage/v1/object/reference-uploads/'+path.split('/').map(encodeURIComponent).join('/');
-    const resp=await fetch(url,{method:'POST',headers:{apikey:SUPABASE_ANON_KEY,Authorization:'Bearer '+SUPABASE_ANON_KEY,'Content-Type':CUSTOM_FILE_TYPES[ext],'x-upsert':'false'},body:file});
-    if(!resp.ok)throw new Error('upload-failed');
-    return path;
-  }
-  $('customSubmitBtn').addEventListener('click', async function(){
-    if(customBusy) return;
-    const lang = getLang();
-    // Honeypot: real users never fill this hidden field — bots often do
-    if($('customWebsite').value.trim() !== ''){ return; }
-    const name = $('customName').value.trim();
-    const phone = $('customPhone').value.trim();
-    const desc = $('customDesc').value.trim();
-    const size = $('customSize').value;
-    const color = $('customColor').value.trim();
-    const file=$('customFile').files[0]||null, ext=file?(file.name.split('.').pop()||'').toLowerCase():'';
-    ['customName','customPhone','customDesc'].forEach(id => markInvalid($(id), false));
-    if(file&&(!CUSTOM_FILE_TYPES[ext]||file.size>5*1024*1024)){setCustomMsg('error',T('customFileError'));$('customFile').focus();return;}
-
-    if(name.length < 2){ markInvalid($('customName'), true); setCustomMsg('error', lang==='ar' ? 'اكتب اسمك.' : 'Please enter your name.'); $('customName').focus(); return; }
-    if(!validPhone(phone)){ markInvalid($('customPhone'), true); setCustomMsg('error', lang==='ar' ? 'اكتب رقم موبايل صحيح.' : 'Please enter a valid phone number.'); $('customPhone').focus(); return; }
-    if(!desc){ markInvalid($('customDesc'), true); setCustomMsg('error', lang==='ar' ? 'اوصف اللي عايزه.' : 'Please describe what you want.'); $('customDesc').focus(); return; }
-
-    const btn = this;
-    const prevLabel = btn.textContent;
-    customBusy = true; btn.disabled = true; btn.textContent = lang==='ar' ? 'جاري الإرسال…' : 'Sending…';
-    setCustomMsg(null, '');
-    if(!customKey) customKey = newKey();     // kept across retries; renewed after success
-    const waFields={name,phone,desc,size,color};
-    $('customWaLink').href=buildCustomWhatsAppUrl(waFields,file?(lang==='ar'?'سأرفق الملف إذا تعذّر رفعه.':'I will attach the file if upload fails.'):'');
-    $('customFormSuccessMsg').textContent=T('customFallbackReady');
-
-    try{
-      const r = await postFn('create-custom-order', { name, phone, whatsapp: phone, size, color, description: desc, client_request_id: customKey }, 25000);
-      if(r.ok){
-        let path=null,failed=false;
-        try{path=await uploadCustomReference(file,customKey);}catch(e){console.error(e);failed=!!file;}
-        const note=failed?(lang==='ar'?'تعذّر رفع الملف؛ سأرفقه هنا.':'File upload failed; I will attach it here.'):path?(lang==='ar'?'مسار الملف المرفوع: ':'Uploaded file path: ')+path:'';
-        const waUrl=buildCustomWhatsAppUrl(waFields,note);
-        $('customWaLink').href=waUrl;
-        setCustomMsg('success',failed?T('customFileUploadError'):T('customSentMsg'));
-        customKey=null;$('customForm').reset();openWhatsApp(waUrl);
-      } else if(r.status === 429){
-        setCustomMsg('error', M('limit'));
-      } else if(r.status === 400 && r.data.error){
-        setCustomMsg('error', lang==='ar' ? 'راجع بياناتك وحاول تاني.' : String(r.data.error));
-      } else {
-        setCustomMsg('error', M('customGeneric'));
-      }
-    }catch(err){
-      console.error(err);
-      setCustomMsg('error', M('network'));
-    }finally{
-      if($('customWaLink').href.startsWith('https://wa.me/')) $('customFormSuccess').classList.remove('hidden');
-      customBusy = false; btn.disabled = false; btn.textContent = prevLabel;
-    }
-  });
-
   // ---- Product preview modal ----
   const PV_STR = { en:{add:"Add to Cart", close:"Close"}, ar:{add:"أضف للعربة", close:"إغلاق"} };
   // Product photos: the main photo plus optional extras (window.EXTRA_IMAGES[slug]) shown as a small gallery in the preview
@@ -2758,7 +2605,7 @@
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     if(!$('policyPages').classList.contains('hidden')){const key=(location.hash||'').slice(1);if(PAGE_MAP[key])showPolicyPage(key);}
-    document.querySelectorAll('#page-gifts,#page-customorder,#page-account').forEach(el=>{el.lang=lang;el.dir=lang==='ar'?'rtl':'ltr';});
+    document.querySelectorAll('#page-gifts,#page-account').forEach(el=>{el.lang=lang;el.dir=lang==='ar'?'rtl':'ltr';});
     const quickNav=document.querySelector('.mobile-bottom-nav'); if(quickNav) quickNav.setAttribute('aria-label',lang==='ar'?'تنقل سريع':'Quick navigation');
     document.title = PAGE_TITLE[lang];
     document.querySelectorAll('[data-i18n]').forEach(el=>{
@@ -2798,7 +2645,7 @@
     sectionTargets.forEach(section => sectionObserver.observe(section));
   }
   // ---- Single-file page routing (terms / privacy / refund / contact / copyright) ----
-  const PAGE_MAP = { terms:'page-terms', privacy:'page-privacy', refund:'page-refund', contact:'page-contact', copyright:'page-copyright', gifts:'page-gifts', customOrder:'page-customorder', account:'page-account' };
+  const PAGE_MAP = { terms:'page-terms', privacy:'page-privacy', refund:'page-refund', contact:'page-contact', copyright:'page-copyright', gifts:'page-gifts', account:'page-account' };
   function showHome(){
     $('mainContent').classList.remove('hidden');
     $('policyPages').classList.add('hidden');
