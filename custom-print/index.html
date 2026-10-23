@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>STL Price Calculator & 3D Preview | PRINTFY 3D</title>
+  <meta name="description" content="Preview your STL in 3D and get a transparent mesh-based 3D printing estimate in EGP from PRINTFY 3D in Cairo.">
+  <link rel="canonical" href="https://www.printfy3d-eg.com/custom-print/">
+  <link rel="alternate" hreflang="en" href="https://www.printfy3d-eg.com/custom-print/">
+  <link rel="alternate" hreflang="ar-EG" href="https://www.printfy3d-eg.com/ar/custom-print/">
+  <link rel="alternate" hreflang="x-default" href="https://www.printfy3d-eg.com/custom-print/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PRINTFY 3D">
+  <meta property="og:title" content="STL Price Calculator & 3D Preview | PRINTFY 3D">
+  <meta property="og:description" content="Preview your STL in 3D and get a transparent mesh-based 3D printing estimate in EGP from PRINTFY 3D in Cairo.">
+  <meta property="og:url" content="https://www.printfy3d-eg.com/custom-print/">
+  <meta name="theme-color" content="#fff">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.printfy3d-eg.com/"},{"@type":"ListItem","position":2,"name":"Custom Print","item":"https://www.printfy3d-eg.com/custom-orders/"},{"@type":"ListItem","position":3,"name":"STL Calculator","item":"https://www.printfy3d-eg.com/custom-print/"}]}</script>
+  <link rel="stylesheet" href="/custom-print/calculator.css">
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.0/examples/jsm/"}}</script>
+  <script type="module" src="/custom-print/calculator.js"></script>
+</head>
+<body data-lang="en">
+  <header class="site-head"><a class="brand" href="/" aria-label="PRINTFY 3D home">PRINTFY <span>3D</span></a><nav aria-label="Main navigation"><a href="/shop/">Shop</a><a href="/custom-orders/">Custom Orders</a><a href="/faq/">FAQ</a><a id="languageLink" href="/ar/custom-print/" lang="ar">العربية</a></nav></header>
+  <main class="page">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">›</span><a href="/custom-orders/">Custom Print</a><span aria-hidden="true">›</span><span aria-current="page">STL Calculator</span></nav>
+    <section class="intro"><p class="eyebrow">PRINTFY 3D · CAIRO, EGYPT</p><h1>Preview your STL and estimate its print price</h1><p class="lead">Choose an STL file to inspect its size, rotate a 3D preview, and get a transparent EGP estimate for our Elegoo Centauri Carbon 2.</p></section>
+    <section class="calculator" aria-label="STL price calculator">
+      <div class="model-column">
+        <label class="upload" for="stlFile"><span class="upload-icon" aria-hidden="true">＋</span><strong>Choose an STL file</strong><span>STL only · up to 15 MB · stays on this device</span><input id="stlFile" type="file" accept=".stl,model/stl,application/sla"></label>
+        <p id="fileStatus" class="status" role="status" aria-live="polite">Your model preview will appear here after you choose a file.</p>
+        <div id="viewer" class="viewer" role="region" aria-label="Interactive 3D preview"><div class="viewer-empty">Choose an STL file to begin</div></div>
+        <div id="modelFacts" class="model-facts" hidden></div>
+      </div>
+      <div class="settings-column">
+        <div class="panel"><h2>Print settings</h2>
+          <label for="material">Material</label><select id="material"><option value="pla">PLA</option><option value="petg">PETG</option><option value="abs">ABS</option><option value="tpu">TPU</option></select>
+          <label for="units">STL dimensions are in</label><select id="units"><option value="mm">Millimeters (mm)</option><option value="cm">Centimeters (cm)</option><option value="in">Inches (in)</option></select>
+          <label for="infill">Infill: <output id="infillValue">20%</output></label><input id="infill" type="range" min="5" max="50" step="5" value="20">
+          <p class="hint">The file stays in your browser. It is not uploaded to PRINTFY or a third party.</p>
+        </div>
+        <div class="panel estimate-panel"><p class="eyebrow">INSTANT ESTIMATE</p><h2 id="estimatePrice" aria-live="polite">— EGP</h2><p id="estimateStatus" class="status">Choose a model to calculate.</p><dl id="estimateBreakdown" class="breakdown" hidden></dl><button id="orderButton" class="primary" type="button" disabled>Continue on WhatsApp</button><p class="fine-print">Estimate only. We confirm the final price after checking your STL and slicer settings. Delivery is charged separately. Attach the STL file in WhatsApp after the chat opens.</p></div>
+      </div>
+    </section>
+    <section class="disclosure"><h2>How the estimate works</h2><p>This is a <strong>mesh-based estimate, not a slicer quote</strong>. An STL does not store print settings or units. Choose the correct units and infill; the estimate uses the closed mesh volume and approximate material density. Open, damaged, self-intersecting or unusually shaped meshes can make the estimate inaccurate. The final grams and time should be checked in a slicer before printing.</p><p id="pricingNote">Pricing is read from the estimator settings.</p><p id="assumptionsNote">The print assumptions are provisional and are read from the estimator settings.</p><p id="buildVolumeNote">Build volume is read from the printer settings. Measurements use the STL's current orientation; rotate the model in slicing software if needed.</p></section>
+    <section class="support"><h2>Need help?</h2><p>Send your file and estimate to our team. We will check the model, confirm the price, and approve details with you before printing.</p><a href="/custom-orders/">Read about custom orders</a> · <a href="https://wa.me/201063870873" target="_blank" rel="noopener noreferrer">Contact PRINTFY 3D on WhatsApp</a></section>
+  </main>
+  <footer><span>PRINTFY 3D · 3D Printing in Cairo</span><nav><a href="/terms/">Terms</a><a href="/privacy/">Privacy</a><a href="/refund-policy/">Returns</a><a href="/contact/">Contact</a></nav></footer>
+</body>
+</html>
+

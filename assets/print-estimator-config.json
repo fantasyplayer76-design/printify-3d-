@@ -1,0 +1,22 @@
+{
+  "printer": "Elegoo Centauri Carbon 2",
+  "buildVolumeMm": { "x": 256, "y": 256, "z": 256 },
+  "pricing": {
+    "filamentEgpPerGram": 2.5,
+    "machineEgpPerHour": 30,
+    "setupFeeEgp": 10
+  },
+  "estimate": {
+    "shellAllowance": 0.18,
+    "supportAllowance": 1.1,
+    "effectiveFlowMm3PerSecond": 8,
+    "defaultInfillPercent": 20
+  },
+  "materials": [
+    { "id": "pla", "densityGPerCm3": 1.24 },
+    { "id": "petg", "densityGPerCm3": 1.27 },
+    { "id": "abs", "densityGPerCm3": 1.04 },
+    { "id": "tpu", "densityGPerCm3": 1.20 }
+  ]
+}
+
