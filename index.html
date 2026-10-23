@@ -479,7 +479,7 @@
 <style>.delivery-estimator{display:grid;gap:8px;max-width:440px}.delivery-estimator label{font-weight:650;font-size:.9rem}.delivery-estimator-select{width:100%;min-height:44px;border:1px solid var(--line-soft);border-radius:9px;padding:10px;background:#fff;color:var(--ink);font:inherit}.delivery-estimator-status{line-height:1.55}.delivery-estimator-ask{width:max-content}</style><script defer data-domain="www.printfy3d-eg.com" src="https://plausible.io/js/script.js"></script><script defer src="/assets/analytics.js"></script><script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LocalBusiness","name":"PRINTFY 3D","url":"https://www.printfy3d-eg.com/","slogan":"Turn Ideas Into Reality.","description":"Made-to-order 3D printing and personalized 3D printed products in Cairo, Egypt.","telephone":"+20 10 63870873","address":{"@type":"PostalAddress","addressLocality":"Cairo","addressCountry":"EG"},"areaServed":{"@type":"Country","name":"Egypt"},"priceRange":"EGP 50–800","sameAs":["https://instagram.com/3d_printingcairo","https://facebook.com/Printify3d.eg.official"],"email":"printify3d.eg@gmail.com"}
 </script>
-</head>
+<link rel="stylesheet" href="/custom-print/inline.css"><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.0/examples/jsm/"}}</script></head>
 <body class="antialiased">
 <a href="https://www.printfy3d-eg.com/#main" class="skip-link" data-i18n="skipLink">Skip to content</a>
 
@@ -655,7 +655,6 @@
           <span data-i18n="customBtn2">Browse Designs on MakerWorld</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"></path></svg>
         </a>
-        <a href="/custom-print/" class="btn-outline px-6 text-sm" data-i18n="customCalculatorBtn">Upload an STL · Preview in 3D · Get an estimate</a>
       </div>
     </div>
 
@@ -709,6 +708,15 @@
         <ul id="chargesList" class="text-sm rule-list"></ul><div class="mt-5 pt-4 border-t ink-line"><h4 class="font-semibold mb-2" data-i18n="deliveryFeeTitle">Delivery fees by area</h4><p class="text-sm sub" data-i18n="deliveryFeeTodo">Delivery is charged separately and confirmed on WhatsApp.</p></div>
       </div>
     </div>
+  <div class="stl-calculator-inline lg:col-span-2" id="stl-calculator">
+<header class="stl-calc-intro"><p class="stl-eyebrow" data-calc-copy="estimateEyebrow">INSTANT ESTIMATE</p><h2 data-calc-copy="heading">Upload and preview your STL</h2><p class="stl-lead" data-calc-copy="lead">Preview your model and get a quick EGP estimate. The file stays on your device.</p></header>
+<section class="calculator" aria-label="STL price calculator"><div class="model-column">
+<label class="upload" for="stlFile"><span class="upload-icon" aria-hidden="true">＋</span><strong data-calc-copy="chooseLabel">Choose an STL file</strong><span data-calc-copy="uploadHint">STL only · up to 15 MB · stays on this device</span><input id="stlFile" type="file" accept=".stl,model/stl,application/sla"></label>
+<p id="fileStatus" class="status" role="status" aria-live="polite" data-calc-copy="initialStatus">Your model preview will appear here after you choose a file.</p><div id="viewer" class="viewer" role="region" aria-label="Interactive 3D preview"><div class="viewer-empty" data-calc-copy="viewerEmpty">Choose an STL file to begin</div></div><div id="modelFacts" class="model-facts" hidden></div></div>
+<div class="settings-column"><div class="panel"><h3 data-calc-copy="settingsTitle">Print settings</h3><label for="material" data-calc-copy="materialLabel">Material</label><select id="material"><option value="pla">PLA</option><option value="petg">PETG</option><option value="abs">ABS</option><option value="tpu">TPU</option></select><label for="units" data-calc-copy="unitsLabel">STL dimensions are in</label><select id="units"><option value="mm" data-calc-copy="unitMm">Millimeters (mm)</option><option value="cm" data-calc-copy="unitCm">Centimeters (cm)</option><option value="in" data-calc-copy="unitIn">Inches (in)</option></select><label for="infill"><span data-calc-copy="infillPrefix">Infill:</span> <output id="infillValue">20%</output></label><input id="infill" type="range" min="5" max="50" step="5" value="20"><p class="hint" data-calc-copy="localHint">The file stays in your browser. It is not uploaded to PRINTFY or a third party.</p></div>
+<div class="panel estimate-panel"><p class="stl-eyebrow" data-calc-copy="estimateEyebrow">INSTANT ESTIMATE</p><h3 id="estimatePrice" aria-live="polite">— EGP</h3><p id="estimateStatus" class="status">Choose a model to calculate.</p><dl id="estimateBreakdown" class="breakdown" hidden></dl><button id="orderButton" class="primary" type="button" disabled data-calc-copy="continueWhatsapp">Continue on WhatsApp</button><p class="fine-print" data-calc-copy="estimateFine">Estimate only. The final price is confirmed after review; attach the STL in WhatsApp.</p></div></div></section>
+<section class="disclosure"><h3 data-calc-copy="disclosureTitle">How the estimate works</h3><p data-calc-copy="disclosureBody">This is a mesh-based estimate, not a slicer quote. Confirm final grams and time in a slicer before printing.</p><p id="pricingNote">Pricing is read from estimator settings.</p><p id="assumptionsNote">Print assumptions are provisional.</p><p id="buildVolumeNote">Build volume is read from printer settings.</p></section>
+<section class="support"><h3 data-calc-copy="supportTitle">Need help?</h3><p data-calc-copy="supportBody">Send your file and estimate to our team. We will check the model and confirm the price.</p><a href="/custom-orders/" data-calc-copy="customOrdersLink">Read about custom orders</a> · <a href="https://wa.me/201063870873" target="_blank" rel="noopener noreferrer" data-calc-copy="contactWhatsapp">Contact PRINTFY 3D on WhatsApp</a></section></div>
   </div>
 </section>
 
@@ -2840,7 +2848,7 @@
 
 
 
-<script src="/assets/delivery-estimator.js" defer></script></body></html>
+<script src="/assets/delivery-estimator.js" defer></script><script type="module" src="/custom-print/calculator.js"></script></body></html>
 
 
 
