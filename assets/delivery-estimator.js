@@ -8,7 +8,7 @@ const select=document.createElement("select");select.id=id;select.className="fie
 const first=document.createElement("option");first.value="";first.textContent=t.choose;select.append(first);
 (config?.governorates||[]).forEach(g=>{const o=document.createElement("option");o.value=g.slug;o.textContent=l==="ar"?g.name_ar:g.name_en;if(selected===g.slug)o.selected=true;select.append(o);});
 const status=document.createElement("p");status.className="delivery-estimator-status sub text-sm mt-2";status.setAttribute("role","status");status.setAttribute("aria-live","polite");
-const link=document.createElement("a");link.className="delivery-estimator-ask text-sm underline brand";link.target="_blank";link.rel="noopener noreferrer";link.textContent=t.ask;
+const link=document.createElement("a");link.className="delivery-estimator-ask text-sm underline brand";link.href="https://wa.me/201063870873";link.target="_blank";link.rel="noopener noreferrer";link.textContent=t.ask;
 wrap.append(label,select,status,link);root.replaceChildren(wrap);
 function update(){select.value=selected;
 const g=(config?.governorates||[]).find(x=>x.slug===selected);
