@@ -46,5 +46,27 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/custom-print",
+      "destination": "/#stl-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/custom-print/",
+      "destination": "/#stl-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/ar/custom-print",
+      "destination": "/ar/#stl-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/ar/custom-print/",
+      "destination": "/ar/#stl-calculator",
+      "permanent": true
+    }
   ]
 }
