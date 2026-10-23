@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin-payments.html
 
 User-agent: GPTBot
 Allow: /
@@ -17,3 +18,5 @@ User-agent: Google-Extended
 Allow: /
 
 Sitemap: https://www.printfy3d-eg.com/sitemap.xml
+
+
