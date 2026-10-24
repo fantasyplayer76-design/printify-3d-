@@ -15,11 +15,11 @@ export function measureMeshVolumeMm3(position, scale = 1) {
   return volume;
 }
 
-export function estimatePrint({ volumeCm3, densityGPerCm3, infillPercent, shellAllowance, supportAllowance, flowMm3PerSecond, filamentEgpPerGram, machineEgpPerHour, setupFeeEgp }) {
-  const numbers = [volumeCm3, densityGPerCm3, infillPercent, shellAllowance, supportAllowance, flowMm3PerSecond, filamentEgpPerGram, machineEgpPerHour, setupFeeEgp].map(Number);
+export function estimatePrint({ volumeCm3, densityGPerCm3, infillPercent, shellAllowance, supportAllowance, flowMm3PerSecond, filamentEgpPerGram, machineEgpPerHour, setupFeeEgp, profitMarginPercent = 0 }) {
+  const numbers = [volumeCm3, densityGPerCm3, infillPercent, shellAllowance, supportAllowance, flowMm3PerSecond, filamentEgpPerGram, machineEgpPerHour, setupFeeEgp, profitMarginPercent].map(Number);
   if (!numbers.every(Number.isFinite)) throw new TypeError('Estimate settings must be finite numbers');
-  const [volume, density, infill, shell, support, flow, perGram, perHour, setup] = numbers;
-  if (volume <= 0 || density <= 0 || infill < 0 || infill > 100 || shell < 0 || shell > 1 || support < 1 || flow <= 0 || perGram < 0 || perHour < 0 || setup < 0) {
+  const [volume, density, infill, shell, support, flow, perGram, perHour, setup, marginPercent] = numbers;
+  if (volume <= 0 || density <= 0 || infill < 0 || infill > 100 || shell < 0 || shell > 1 || support < 1 || flow <= 0 || perGram < 0 || perHour < 0 || setup < 0 || marginPercent < 0 || marginPercent >= 100) {
     throw new RangeError('Estimate settings are outside valid ranges');
   }
   const materialFraction = shell + (1 - shell) * infill / 100;
@@ -28,7 +28,9 @@ export function estimatePrint({ volumeCm3, densityGPerCm3, infillPercent, shellA
   const hours = depositedMm3 / flow / 3600;
   const filamentCharge = grams * perGram;
   const machineCharge = hours * perHour;
-  return { grams, hours, filamentCharge, machineCharge, setupFee: setup, total: Math.ceil(filamentCharge + machineCharge + setup) };
+  const baseCost = filamentCharge + machineCharge + setup;
+  const profitCharge = baseCost * marginPercent / (100 - marginPercent);
+  return { grams, hours, filamentCharge, machineCharge, setupFee: setup, baseCost, profitMarginPercent: marginPercent, profitCharge, total: Math.ceil(baseCost + profitCharge) };
 }
 
 export function fitsBuildVolume(dimensionsMm, buildVolumeMm) {
