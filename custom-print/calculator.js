@@ -26,7 +26,6 @@ function applyInlineLanguage(){
   document.querySelectorAll('.stl-calculator-inline [data-calc-copy]').forEach(element=>{const value=copy[element.dataset.calcCopy];if(value)element.textContent=value;});
   document.querySelectorAll('.stl-calculator-inline').forEach(element=>{element.lang=lang;element.dir=lang==='ar'?'rtl':'ltr';});
   if(languageLink) languageLink.href=lang==='ar'?'/custom-print/':'/ar/custom-print/';
-  if(config) renderPricingNotes();
   if(measured){showFacts(measured);updateEstimate();say(copy.loaded,'success');} else {say(copy.pick);sayEstimate(copy.waiting);}
 }
 const $ = (id) => document.getElementById(id);
@@ -67,18 +66,6 @@ const sayEstimate = (message, kind = '') => {
 const money = value => `${Math.ceil(value).toLocaleString(lang === 'ar' ? 'ar-EG' : 'en-EG')} EGP`;
 const fixed = (value, digits = 1) => Number(value).toLocaleString(lang === 'ar' ? 'ar-EG' : 'en-EG', { maximumFractionDigits: digits });
 const unitScale = () => ({ mm: 1, cm: 10, in: 25.4 })[unitsSelect.value] || 1;
-
-function renderPricingNotes(){
-  if(!config)return;
-  $('buildVolumeNote').textContent = `${copy.build}: ${config.buildVolumeMm.x} × ${config.buildVolumeMm.y} × ${config.buildVolumeMm.z} mm (${config.printer}). Measurements use the STL's current orientation; rotate the model in slicing software if needed.`;
-  $('pricingNote').textContent = lang === 'ar'
-  ? `يعتمد تقدير التكلفة على ${config.pricing.filamentEgpPerGram} جنيه لكل جرام تقديري، و${config.pricing.machineEgpPerHour} جنيهاً لكل ساعة طباعة، إضافة إلى ${config.pricing.setupFeeEgp} جنيه رسوم تجهيز.`
-  : `The estimate uses ${config.pricing.filamentEgpPerGram} EGP per estimated gram, ${config.pricing.machineEgpPerHour} EGP per print hour, plus a ${config.pricing.setupFeeEgp} EGP setup fee.`;
-  $('assumptionsNote').textContent = lang === 'ar'
-  ? `افتراضات التقدير المؤقتة: سماحية جدران ${Math.round(config.estimate.shellAllowance * 100)}٪، ومعامل دعم ${config.estimate.supportAllowance}، ومعدل بثق فعّال ${config.estimate.effectiveFlowMm3PerSecond} مم³/ثانية، وحشو افتراضي ${config.estimate.defaultInfillPercent}٪.`
-  : `Provisional estimate assumptions: ${Math.round(config.estimate.shellAllowance * 100)}% shell allowance, ${config.estimate.supportAllowance} support multiplier, ${config.estimate.effectiveFlowMm3PerSecond} mm³/s effective flow, and ${config.estimate.defaultInfillPercent}% default infill.`;
-  
-}
 
 function initViewer() {
   try {
@@ -260,7 +247,6 @@ async function start() {
     const response = await fetch('/assets/print-estimator-config.json', { cache: 'no-cache' });
     if (!response.ok) throw new Error(`Config request failed (${response.status})`);
     config = await response.json();
-    renderPricingNotes();
     infill.value = config.estimate.defaultInfillPercent;
     $('infillValue').value = `${infill.value}%`;
     initViewer();
