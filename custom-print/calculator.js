@@ -104,12 +104,21 @@ function initViewer() {
     resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(viewer);
     resize();
+    let renderPending = false;
     const draw = () => {
-      animationFrame = requestAnimationFrame(draw);
-      controls.update();
+      renderPending = false;
+      if (!renderer || !controls) return;
+      const stillMoving = controls.update();
       renderer.render(scene, camera);
+      if (stillMoving) animationFrame = requestAnimationFrame(draw);
     };
-    draw();
+    const requestDraw = () => {
+      if (renderPending) return;
+      renderPending = true;
+      animationFrame = requestAnimationFrame(draw);
+    };
+    controls.addEventListener('change', requestDraw);
+    requestDraw();
   } catch (error) {
     viewer.replaceChildren(Object.assign(document.createElement('div'), { className: 'viewer-empty', textContent: copy.webglFail }));
     throw error;
