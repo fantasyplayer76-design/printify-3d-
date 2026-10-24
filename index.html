@@ -436,7 +436,7 @@
   .hero-actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem}.hero-actions .btn-primary,.hero-actions .btn-outline{border-radius:999px;min-height:52px;padding:.85rem 1.65rem;font-size:.95rem}
   .hero-actions .btn-primary{background:#b85351;border-color:#b85351;color:#fffaf3;box-shadow:none}.hero-actions .btn-primary:hover{background:#a34240;border-color:#a34240}
   .hero-actions .btn-outline{border-color:rgba(48,39,31,.22);color:#211d1a;background:transparent}.hero-actions .btn-outline:hover{background:#211d1a;color:#fffaf3}
-  #heroVisual{display:none}#heroVisual.ready{display:block;position:relative;width:100%;max-width:630px;justify-self:end;aspect-ratio:.94;isolation:isolate}
+  #heroVisual{display:none}#heroVisual.ready{display:block;position:relative;width:100%;max-width:630px;justify-self:end;aspect-ratio:.94;isolation:isolate}#heroVisual:not(.ready){display:block;position:relative;width:100%;max-width:630px;justify-self:end;aspect-ratio:.94;isolation:isolate;border-radius:26px;overflow:hidden;background:#e9dfd1}#heroVisual:not(.ready)>.hero-visual-placeholder{display:block;width:100%;height:100%;object-fit:cover}
   .hero-featured-main{position:absolute;inset:0 0 0 10%;width:90%;height:100%;overflow:hidden;border:0;border-radius:26px;background:#ddc9b0;padding:0;box-shadow:0 22px 60px rgba(48,39,31,.15);cursor:pointer}
   .hero-featured-main .art,.hero-featured-inset .art{position:absolute;inset:0;width:100%;height:100%;padding:0}.hero-featured-main .art>img,.hero-featured-inset .art>img{width:100%;height:100%;object-fit:cover;display:block}
   .hero-featured-main::after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(35,25,19,.2));pointer-events:none}
@@ -469,7 +469,7 @@
   footer{background:#eee5d9!important;color:#392c23!important;border-top:1px solid rgba(48,39,31,.12)}footer .sub,footer .foot-link{color:#746e68!important}footer .brand{color:#a34240!important}footer a:hover{color:#b85351!important}
   @media(max-width:767px){
     #home{min-height:auto}.hero-inner{grid-template-columns:1fr;gap:2.5rem;padding-block:3.1rem 4rem}.hero h1.hero-title{font-size:clamp(3.5rem,15vw,5rem);max-width:9ch}.hero-sub{font-size:1rem;margin-top:1.25rem}.hero-actions{margin-top:1.5rem}.hero-actions .btn-primary,.hero-actions .btn-outline{min-height:48px;padding:.75rem 1.2rem;font-size:.86rem}
-    #heroVisual.ready{width:100%;max-width:34rem;justify-self:center;aspect-ratio:1.02}.hero-featured-main{inset:0 0 0 7%;width:93%;border-radius:22px}.hero-featured-inset{width:31%;border-width:3px;border-radius:17px}
+    #heroVisual.ready{width:100%;max-width:34rem;justify-self:center;aspect-ratio:1.02}#heroVisual:not(.ready){max-width:34rem;justify-self:center;aspect-ratio:1.02;border-radius:22px}.hero-featured-main{inset:0 0 0 7%;width:93%;border-radius:22px}.hero-featured-inset{width:31%;border-width:3px;border-radius:17px}
     #productGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}.shop-controls{overflow-x:auto;padding-bottom:.25rem}.shop-controls label{min-width:7.5rem}#productGrid article h3{font-size:1.28rem}#productGrid article>div:last-child{padding:.7rem .2rem .3rem!important}
   }
   @media(max-width:390px){.hero-actions{gap:.55rem}.hero-actions .btn-primary,.hero-actions .btn-outline{padding-inline:.9rem;font-size:.8rem}#productGrid{gap:.65rem}#productGrid article h3{font-size:1.14rem}}
@@ -545,7 +545,7 @@
         <a href="https://www.printfy3d-eg.com/#custom" class="btn-outline btn-lg" data-i18n="heroBtn2">Print my idea</a>
       </div>
     </div>
-    <div id="heroVisual" aria-label="Featured products"></div>
+    <div id="heroVisual" aria-label="Featured products"><img class="hero-visual-placeholder" src="/assets/products/low-poly-wolf-800.jpg" alt="Low-poly wolf — 3D printed by PRINTFY 3D" width="800" height="533" fetchpriority="high" decoding="async"></div>
   </div>
 </section>
 <section id="shop" class="section">
