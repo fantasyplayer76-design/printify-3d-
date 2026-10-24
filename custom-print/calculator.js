@@ -26,6 +26,7 @@ function applyInlineLanguage(){
   document.querySelectorAll('.stl-calculator-inline [data-calc-copy]').forEach(element=>{const value=copy[element.dataset.calcCopy];if(value)element.textContent=value;});
   document.querySelectorAll('.stl-calculator-inline').forEach(element=>{element.lang=lang;element.dir=lang==='ar'?'rtl':'ltr';});
   if(languageLink) languageLink.href=lang==='ar'?'/custom-print/':'/ar/custom-print/';
+  if(colorInput) colorInput.setAttribute('aria-label', copy.colorLabel);
   if(measured){showFacts(measured);updateEstimate();say(copy.loaded,'success');} else {say(copy.pick);sayEstimate(copy.waiting);}
 }
 const $ = (id) => document.getElementById(id);
