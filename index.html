@@ -58,8 +58,8 @@
   html[lang="ar"] .eyebrow{letter-spacing:0;}
 
   /* Layout rhythm */
-  .section{padding-block:4rem;}
-  @media(min-width:768px){.section{padding-block:6rem;}}
+  .section{padding-block:2.5rem;}
+  @media(min-width:768px){.section{padding-block:2.5rem;}}
   .section-title{font-size:1.9rem; line-height:1.15; font-weight:700; letter-spacing:-.01em;}
   @media(min-width:768px){.section-title{font-size:2.4rem;}}
   .section-sub{color:var(--sub); margin-top:.6rem; max-width:36rem;}
@@ -646,24 +646,14 @@
 <div class="settings-column"><div class="panel"><h3 data-calc-copy="settingsTitle">Print settings</h3><label for="material" data-calc-copy="materialLabel">Material</label><select id="material"><option value="pla">PLA</option><option value="petg">PETG</option><option value="abs">ABS</option><option value="tpu">TPU</option></select><label for="units" data-calc-copy="unitsLabel">STL dimensions are in</label><select id="units"><option value="mm" data-calc-copy="unitMm">Millimeters (mm)</option><option value="cm" data-calc-copy="unitCm">Centimeters (cm)</option><option value="in" data-calc-copy="unitIn">Inches (in)</option></select><label for="infill"><span data-calc-copy="infillPrefix">Infill:</span> <output id="infillValue">20%</output></label><input id="infill" type="range" min="5" max="50" step="5" value="20"><p class="hint" data-calc-copy="localHint">The file stays in your browser. It is not uploaded to PRINTFY or a third party.</p></div>
 <div class="panel estimate-panel"><p class="stl-eyebrow" data-calc-copy="estimateEyebrow">INSTANT ESTIMATE</p><h3 id="estimatePrice" aria-live="polite">— EGP</h3><p id="estimateStatus" class="status">Choose a model to calculate.</p><dl id="estimateBreakdown" class="breakdown" hidden></dl><button id="orderButton" class="primary" type="button" disabled data-calc-copy="continueWhatsapp">Continue on WhatsApp</button><p class="fine-print" data-calc-copy="estimateFine">Estimate only. The final price is confirmed after review; attach the STL in WhatsApp.</p></div></div></section>
 <section class="disclosure"><h3 data-calc-copy="disclosureTitle">How the estimate works</h3><p data-calc-copy="disclosureBody">This is a mesh-based estimate, not a slicer quote. Confirm final grams and time in a slicer before printing.</p><p id="pricingNote">Pricing is read from estimator settings.</p><p id="assumptionsNote">Print assumptions are provisional.</p><p id="buildVolumeNote">Build volume is read from printer settings.</p></section></div>
-<p class="mt-4 text-sm sub"><a href="https://makerworld.com/" target="_blank" rel="noopener noreferrer" data-i18n="customBtn2">Browse Designs on MakerWorld</a> <span aria-hidden="true">↗</span></p></div></section>
+<a href="https://makerworld.com/" target="_blank" rel="noopener noreferrer" class="btn-outline px-5 text-sm mt-4" data-i18n="customBtn2">Browse Designs on MakerWorld</a></div></section>
 
-<!-- WHY CHOOSE US -->
-<section id="why" class="section border-t ink-line surface">
-  <div class="max-w-6xl mx-auto px-5 sm:px-6">
-    <h2 class="section-title mb-10" data-i18n="whyTitle">Why Choose PRINTFY 3D?</h2>
-    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-5">
-      <div class="card p-5"><div class="icon-circle mb-4" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l9 5v10l-9 5-9-5V7z"></path><path d="M3 7l9 5 9-5M12 12v10"></path></svg></div><h3 class="font-semibold mb-2" data-i18n="why1T">High-Quality Printing</h3><p class="text-sm sub" data-i18n="why1D">Precision printing with premium materials on every order.</p></div>
-      <div class="card p-5"><div class="icon-circle mb-4" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"></path></svg></div><h3 class="font-semibold mb-2" data-i18n="why2T">Unique &amp; Creative Designs</h3><p class="text-sm sub" data-i18n="why2D">Original pieces you won't find anywhere else.</p></div>
-      <div class="card p-5"><div class="icon-circle mb-4" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg></div><h3 class="font-semibold mb-2" data-i18n="why3T">Personalized Products</h3><p class="text-sm sub" data-i18n="why3D">Made around what you actually want.</p></div>
-      <div class="card p-5"><div class="icon-circle mb-4" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7z"></path></svg></div><h3 class="font-semibold mb-2" data-i18n="why4T">Fast &amp; Reliable Service</h3><p class="text-sm sub" data-i18n="why4D">Clear timelines and dependable delivery.</p></div>
-    </div>
-  </div>
-</section>
+
+
 
 <!-- FINAL CTA -->
 <!-- INSTAGRAM -->
-<section id="instagram" class="section border-t ink-line surface" style="padding-block:3.5rem;">
+<section id="instagram" class="section border-t ink-line surface" style="padding-block:2.5rem;">
   <div class="max-w-3xl mx-auto px-5 sm:px-6 text-center">
     <p class="eyebrow brand mb-3" data-i18n="igEyebrow">Follow our work</p>
     <h2 class="section-title" style="font-size:clamp(1.6rem,4vw,2.25rem);" data-i18n="igTitle">See our latest prints on Instagram</h2>
@@ -676,8 +666,8 @@
 </section>
 
 <!-- CUSTOMER REVIEWS --><section id="customerReviews" class="section border-t ink-line" style="padding-block:2.5rem;"><div class="max-w-6xl mx-auto px-5 sm:px-6 text-center"><p class="eyebrow brand mb-3" data-i18n="reviewsLink">Customer reviews</p><h2 class="section-title mb-3" style="font-size:clamp(1.6rem,4vw,2.25rem);" data-i18n="reviewsSummary">Customer reviews</h2><a href="https://www.printfy3d-eg.com/reviews/" class="btn-outline" data-i18n="reviewsCta">See customer reviews</a></div></section><!-- FAQ -->
-<section id="homeTestimonials" class="section border-t ink-line hidden" aria-labelledby="testimonialsTitle"><div class="max-w-6xl mx-auto px-5 sm:px-6"><p class="eyebrow brand mb-3 text-center" data-i18n="testimonialsEyebrow">Customer words</p><h2 id="testimonialsTitle" class="section-title text-center mb-8" data-i18n="testimonialsTitle">Customer reviews</h2><div id="testimonialGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div></div></section><section id="recentCustomerOrders" class="section border-t ink-line hidden" aria-labelledby="recentOrdersTitle"><div class="max-w-6xl mx-auto px-5 sm:px-6"><p class="eyebrow brand mb-3 text-center" data-i18n="recentOrdersEyebrow">Made for our customers</p><h2 id="recentOrdersTitle" class="section-title text-center mb-8" data-i18n="recentOrdersTitle">Recent customer orders</h2><div id="recentOrdersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div></div></section><section id="materialsAbout" class="section border-t ink-line surface"><div class="max-w-6xl mx-auto px-5 sm:px-6 grid md:grid-cols-2 gap-6"><article class="card p-6"><p class="eyebrow brand mb-2" data-i18n="materialsEyebrow">Materials</p><h2 class="section-title mb-3" data-i18n="materialsTitle">Materials and care</h2><p class="text-sm sub leading-7" data-i18n="materialsBody">Available listings that specify material currently name PLA. If your project needs a particular strength, flexibility, or heat tolerance, ask us about the specific design before ordering.</p></article><article class="card p-6"><p class="eyebrow brand mb-2" data-i18n="aboutEyebrow">About the workshop</p><h2 class="section-title mb-3" data-i18n="aboutTitle">PRINTFY 3D in Cairo</h2><p class="text-sm sub leading-7" data-i18n="aboutBody">We make custom and catalog 3D prints in Cairo and confirm orders through WhatsApp. Workshop visiting hours are not published yet; message us to confirm before visiting.</p></article></div></section>
-<section id="faq" class="section border-t ink-line" style="padding-block:3.5rem;">
+<section id="homeTestimonials" class="section border-t ink-line hidden" aria-labelledby="testimonialsTitle"><div class="max-w-6xl mx-auto px-5 sm:px-6"><p class="eyebrow brand mb-3 text-center" data-i18n="testimonialsEyebrow">Customer words</p><h2 id="testimonialsTitle" class="section-title text-center mb-8" data-i18n="testimonialsTitle">Customer reviews</h2><div id="testimonialGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div></div></section><section id="recentCustomerOrders" class="section border-t ink-line hidden" aria-labelledby="recentOrdersTitle"><div class="max-w-6xl mx-auto px-5 sm:px-6"><p class="eyebrow brand mb-3 text-center" data-i18n="recentOrdersEyebrow">Made for our customers</p><h2 id="recentOrdersTitle" class="section-title text-center mb-8" data-i18n="recentOrdersTitle">Recent customer orders</h2><div id="recentOrdersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div></div></section>
+<section id="faq" class="section border-t ink-line" style="padding-block:2.5rem;">
   <div class="max-w-3xl mx-auto px-5 sm:px-6">
     <p class="eyebrow brand mb-3 text-center" data-i18n="faqEyebrow">Good to know</p>
     <h2 class="section-title text-center mb-8" style="font-size:clamp(1.6rem,4vw,2.25rem);" data-i18n="faqTitle">Frequently asked questions</h2>
@@ -691,12 +681,12 @@
       <details class="faq-item"><summary data-i18n="faq7q">What material do you use?</summary><p data-i18n="faq7a">Product records list PLA for some items. For a custom request, material details are reviewed and confirmed with the quote.</p></details>
       <details class="faq-item"><summary data-i18n="faq8q">Can I request a color?</summary><p data-i18n="faq8a">Include your preferred color in the custom request form. Color and material details are confirmed with your order.</p></details>
       <details class="faq-item"><summary data-i18n="faq9q">Can I order a personalized name gift?</summary><p data-i18n="faq9a">Yes. Name keychains and name stands can be personalized. Confirm the spelling and design before production.</p></details>
-      <details class="faq-item"><summary data-i18n="faq10q">What if my item arrives damaged or defective?</summary><p data-i18n="faq10a">Contact PRINTFY 3D with photos within 3 days of delivery so the case can be reviewed. A free reprint or refund may be offered depending on the situation.</p></details> <details class="faq-item"><summary data-i18n="faq11q">What is your returns and refund policy?</summary><p data-i18n="faq11a">Please check the Returns &amp; Refunds Policy page before ordering. For a damaged or defective item, contact PRINTFY 3D with photos within 3 days so the case can be reviewed.</p><a class="text-sm underline brand" href="/refund-policy/">Read the Returns &amp; Refunds Policy</a></details> <details class="faq-item"><summary data-i18n="faq12q">Do you accept bulk or wholesale orders?</summary><p data-i18n="faq12a">Send the product or custom brief, quantity, and target date through the custom quote form. We will confirm a quote and timeline before production.</p></details> <div class="delivery-estimate-card mt-6"><h3 class="font-semibold mb-2" data-i18n="deliveryEstimatorTitle">Check delivery by governorate</h3><div data-delivery-estimator></div></div>
+      <details class="faq-item"><summary data-i18n="faq10q">What if my item arrives damaged or defective?</summary><p data-i18n="faq10a">Contact PRINTFY 3D with photos within 3 days of delivery so the case can be reviewed. A free reprint or refund may be offered depending on the situation.</p></details> <details class="faq-item"><summary data-i18n="faq11q">What is your returns and refund policy?</summary><p data-i18n="faq11a">Please check the Returns &amp; Refunds Policy page before ordering. For a damaged or defective item, contact PRINTFY 3D with photos within 3 days so the case can be reviewed.</p><a class="text-sm underline brand" href="/refund-policy/">Read the Returns &amp; Refunds Policy</a></details> <details class="faq-item"><summary data-i18n="faq12q">Do you accept bulk or wholesale orders?</summary><p data-i18n="faq12a">Send the product or custom brief, quantity, and target date through the custom quote form. We will confirm a quote and timeline before production.</p></details> </div>
     </div>
   </div>
 </section>
 
-<section class="section" style="padding-block:4rem;">
+<section class="section" style="padding-block:2.5rem;">
   <div class="max-w-5xl mx-auto px-5 sm:px-6">
     <div class="text-center px-6 py-12 md:py-16" style="background:var(--brand); color:#fff; border-radius:24px;">
       <p class="eyebrow mb-3" style="color:rgba(255,255,255,.85);">PRINTFY 3D · Turn Ideas Into Reality.</p>
@@ -716,7 +706,7 @@
   <div class="max-w-6xl mx-auto px-5 sm:px-6 grid gap-10 md:grid-cols-3">
     <div>
       <div class="flex items-center gap-2.5 mb-3">
-        <span class="logo-mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"></path><path d="M3 7l9 5 9-5M12 12v10"></path></svg></span>
+        
         <span class="wordmark display text-lg font-bold tracking-tight">PRINTFY <span class="brand">3D</span></span>
       </div>
       <p class="font-semibold text-sm mb-1">Your Ideas. Printed.</p>
@@ -1505,9 +1495,8 @@
       {name_en:"Logo conversion",name_ar:"تحويل الشعار",pricing_type:"range",minimum_amount:50,maximum_amount:100},
       {name_en:"New custom design",name_ar:"تصميم مخصص جديد",pricing_type:"range",minimum_amount:100,maximum_amount:200},
       {name_en:"Rush order",name_ar:"طلب مستعجل",pricing_type:"percentage",percentage_rate:20},
-      {name_en:"Delivery",name_ar:"التوصيل",pricing_type:"separate"}
     ];
-    const options=customizationOptions.length?customizationOptions:defaults;
+    const options=(customizationOptions.length?customizationOptions:defaults).filter(o=>!/delivery|توصيل/i.test((o.name_en||'')+' '+(o.name_ar||'')));
     $('chargesCard').classList.remove('hidden');
     wrap.innerHTML = options.map(o => `
       <li class="flex justify-between gap-4 py-2.5"><span>${esc(lang==='ar' ? (o.name_ar || o.name_en) : o.name_en)}</span><span class="font-bold whitespace-nowrap">${formatCharge(o, lang)}</span></li>
