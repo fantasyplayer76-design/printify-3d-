@@ -2634,7 +2634,7 @@
 
 
 
-<script src="/assets/delivery-estimator.js" defer></script><script type="module" src="/custom-print/calculator.js"></script></body></html>
+<script src="/assets/delivery-estimator.js" defer></script><script>(()=>{const target=document.getElementById('stl-calculator');if(!target)return;let loaded=false;const load=()=>{if(loaded)return;loaded=true;const script=document.createElement('script');script.type='module';script.src='/custom-print/calculator.js';script.onerror=()=>{loaded=false};document.body.appendChild(script)};if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){observer.disconnect();load()}},{rootMargin:'250px 0px'});observer.observe(target)}else load()})();</script></body></html>
 
 
 
