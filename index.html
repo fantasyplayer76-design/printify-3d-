@@ -1347,7 +1347,7 @@
     const grid = $('productGrid');
     if(silent !== true){
       grid.setAttribute('aria-busy','true');
-      grid.innerHTML = skeletonCards(8);
+      if(grid.dataset.prerendered !== 'true') grid.innerHTML = skeletonCards(8);
       $('catalogGroups').innerHTML = `<p class="sub text-sm">${getLang()==='ar' ? 'جاري التحميل…' : 'Loading…'}</p>`;
     }
 
