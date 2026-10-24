@@ -163,7 +163,7 @@ function renderModel() {
   measured = { x: size.x, y: size.y, z: size.z, volumeCm3, triangles };
   const center = geometry.boundingBox.getCenter(new THREE.Vector3());
   geometry.translate(-center.x, -center.y, -center.z);
-  const material = new THREE.MeshStandardMaterial({ color: 0xd96b45, roughness: .6, metalness: 0 });
+  const material = new THREE.MeshStandardMaterial({ color: colorInput.value, roughness: .6, metalness: 0 });
   currentMesh = new THREE.Mesh(geometry, material);
   scene.add(currentMesh);
   const maxDim = Math.max(size.x, size.y, size.z);
