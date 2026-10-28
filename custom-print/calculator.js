@@ -294,7 +294,7 @@ async function start() {
 }
 
 applyInlineLanguage();
-$('langToggle')?.addEventListener('click',()=>setTimeout(applyInlineLanguage,0));
+window.addEventListener('printfy:languagechange', applyInlineLanguage);
 fileInput.addEventListener('change',event=>readFile(event.currentTarget.files?.[0]));
 materialSelect.addEventListener('change', updateEstimate);
 colorInput.addEventListener('input', () => { if (currentMesh) { currentMesh.material.color.set(colorInput.value); renderer.render(scene, camera); } updateEstimate(); });
