@@ -9,7 +9,34 @@
     "filamentEgpPerGram": 2.5,
     "machineEgpPerHour": 30,
     "setupFeeEgp": 10,
-    "profitMarginPercent": 35
+    "profitMarginPercent": 35,
+    "minimumOrderEgp": 100,
+    "extraColorEgp": 25,
+    "maxColors": 4,
+    "finishingEgp": {
+      "sanding": 40,
+      "painting": 120,
+      "assembly": 80
+    },
+    "designFeesEgp": {
+      "simple": 200,
+      "medium": 500,
+      "complex": 1200
+    },
+    "quantityDiscounts": [
+      {
+        "min": 5,
+        "percent": 10
+      },
+      {
+        "min": 20,
+        "percent": 20
+      },
+      {
+        "min": 50,
+        "percent": 30
+      }
+    ]
   },
   "estimate": {
     "shellAllowance": 0.18,
