@@ -2550,13 +2550,14 @@
     if(!root||!grid)return;
     if(!testimonialsLoaded){testimonialsLoaded=true;try{const r=await fetch('/assets/reviews.json',{cache:'no-store'});if(r.ok){const data=await r.json();HOME_TESTIMONIALS=Array.isArray(data)?data.filter(x=>x&&x.approved===true&&x.review_en&&x.review_ar):[];}}catch(e){HOME_TESTIMONIALS=[];}}
     const ar=getLang()==='ar';
-    const card=r=>{
+    const card=(r,short=false)=>{
       const rating=Number(r.rating),quote=ar?r.review_ar:r.review_en,name=ar?(r.customer_name_ar||r.customer_name_en||'عميل PRINTFY 3D'):(r.customer_name_en||'PRINTFY 3D customer');
+      const preview=short&&quote.length>180?quote.slice(0,177).trimEnd()+'…':quote;
       const stars=rating>=1&&rating<=5?'<p class="text-amber-600 mb-3" aria-label="'+rating+' out of 5 stars">'+'★'.repeat(rating)+'☆'.repeat(5-rating)+'</p>':'';
-      return '<article class="card p-5 text-start" lang="'+(ar?'ar':'en')+'" dir="'+(ar?'rtl':'ltr')+'">'+stars+'<p class="text-sm leading-7">'+esc(quote)+'</p><p class="mt-3 text-xs sub">'+esc(name)+'</p></article>';
+      return '<article class="card p-5 text-start" lang="'+(ar?'ar':'en')+'" dir="'+(ar?'rtl':'ltr')+'">'+stars+'<p class="text-sm leading-7">'+esc(preview)+'</p><p class="mt-3 text-xs sub">'+esc(name)+'</p></article>';
     };
     root.classList.toggle('hidden',HOME_TESTIMONIALS.length===0);grid.innerHTML=HOME_TESTIMONIALS.map(card).join('');
-    if(top){top.classList.toggle('hidden',HOME_TESTIMONIALS.length===0);$('shopReviewGrid').innerHTML=HOME_TESTIMONIALS.slice(0,3).map(card).join('');}
+    if(top){top.classList.toggle('hidden',HOME_TESTIMONIALS.length===0);$('shopReviewGrid').innerHTML=HOME_TESTIMONIALS.slice(0,3).map(r=>card(r,true)).join('');}
     let schema=document.getElementById('review-jsonld');
     if(HOME_TESTIMONIALS.length){
       const rated=HOME_TESTIMONIALS.filter(r=>Number(r.rating)>=1&&Number(r.rating)<=5);
