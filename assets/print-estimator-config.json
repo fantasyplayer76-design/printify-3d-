@@ -25,14 +25,6 @@
     {
       "id": "petg",
       "densityGPerCm3": 1.27
-    },
-    {
-      "id": "abs",
-      "densityGPerCm3": 1.04
-    },
-    {
-      "id": "tpu",
-      "densityGPerCm3": 1.2
     }
   ]
 }
