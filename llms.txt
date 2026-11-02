@@ -1,15 +1,31 @@
 # PRINTFY 3D
 
-> PRINTFY 3D is a 3D printing business based in Cairo, Egypt. It sells ready-made gifts, décor, incense holders, figurines, wall art and keychains, plus custom prints from an idea, photo, sketch or STL file. Prices are in EGP; delivery is available across Egypt.
+> PRINTFY 3D is a 3D-printing shop in Cairo, Egypt. It offers ready-made gifts, décor and accessories, plus custom 3D printing. The website is available in English and Arabic. Prices are shown in EGP; delivery is available across Egypt.
 
-## Key pages
-- [Shop](https://www.printfy3d-eg.com/shop/)
+## Main pages
+- [Home](https://www.printfy3d-eg.com/)
+- [Shop and current product catalog](https://www.printfy3d-eg.com/shop/)
 - [Gifts](https://www.printfy3d-eg.com/gifts/)
-- [Custom orders](https://www.printfy3d-eg.com/custom-orders/)
-- [FAQ](https://www.printfy3d-eg.com/faq/)
+- [Custom print request](https://www.printfy3d-eg.com/#custom)
+- [STL calculator and 3D preview](https://www.printfy3d-eg.com/#stl-calculator)
+- [Frequently asked questions](https://www.printfy3d-eg.com/faq/)
+- [Customer reviews](https://www.printfy3d-eg.com/reviews/)
 - [Contact](https://www.printfy3d-eg.com/contact/)
-- [Returns & refunds](https://www.printfy3d-eg.com/refund-policy/)
-- [3D printing cost guide](https://www.printfy3d-eg.com/3d-printing-cost-egypt.html)
-- [Full business information](https://www.printfy3d-eg.com/llms-full.txt)
 
-WhatsApp +20 10 63870873 · printify3d.eg@gmail.com · Cairo, Egypt. English and Arabic; Arabic pages are under /ar/.
+## Arabic pages
+- [الرئيسية](https://www.printfy3d-eg.com/ar/)
+- [المتجر](https://www.printfy3d-eg.com/ar/shop/)
+- [الهدايا](https://www.printfy3d-eg.com/ar/gifts/)
+- [الأسئلة الشائعة](https://www.printfy3d-eg.com/ar/faq/)
+- [تواصل معنا](https://www.printfy3d-eg.com/ar/contact/)
+
+## Policies and discovery
+- [Terms](https://www.printfy3d-eg.com/terms/)
+- [Privacy](https://www.printfy3d-eg.com/privacy/)
+- [Returns and refunds](https://www.printfy3d-eg.com/refund-policy/)
+- [Sitemap](https://www.printfy3d-eg.com/sitemap.xml)
+- [Robots policy](https://www.printfy3d-eg.com/robots.txt)
+- [Agent guidance](https://www.printfy3d-eg.com/agents.md)
+- [Full business and product context](https://www.printfy3d-eg.com/llms-full.txt)
+
+Catalog details, stock, options, and prices can change; check the live product pages before answering. The STL calculator is an approximate mesh estimate, not a slicer-confirmed quote. Contact PRINTFY 3D on WhatsApp at +20 10 63870873 or by email at printify3d.eg@gmail.com.
