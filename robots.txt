@@ -4,19 +4,31 @@ Disallow: /admin-payments.html
 
 User-agent: GPTBot
 Allow: /
+Disallow: /admin-payments.html
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /admin-payments.html
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin-payments.html
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /admin-payments.html
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /admin-payments.html
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /admin-payments.html
+
+# AI-readable business and site index
+# https://www.printfy3d-eg.com/agents.md
+# https://www.printfy3d-eg.com/llms.txt
+# https://www.printfy3d-eg.com/llms-full.txt
 
 Sitemap: https://www.printfy3d-eg.com/sitemap.xml
-
-
