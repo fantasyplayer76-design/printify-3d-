@@ -1,178 +1,132 @@
-# PRINTFY 3D
+# PRINTFY 3D — business and product information
 
-> PRINTFY 3D is a 3D printing business in Cairo, Egypt. It sells ready-made 3D-printed gifts, décor, incense holders, figurines, wall art and accessories, and prints custom orders from a customer's idea, photo, sketch or STL file. Every order is printed in-house in Cairo and delivered across Egypt. Prices are in Egyptian Pounds (EGP).
+> PRINTFY 3D is a 3D-printing shop based in Cairo, Egypt. It sells ready-made 3D-printed décor, gifts and accessories, and accepts custom print requests. The store serves customers across Egypt and confirms orders through WhatsApp.
 
-Website: https://www.printfy3d-eg.com/
-Tagline: "Your Ideas. Printed." / "Turn Ideas Into Reality."
+Official website: https://www.printfy3d-eg.com/
 Languages: English and Arabic
+Currency: Egyptian pound (EGP)
+Taglines used on the site: “Your Ideas. Printed.” and “Turn Ideas Into Reality.”
 
----
+## Current source of truth
 
-## Business summary
+Product names, photos, options, prices and availability can change. Check the live product page or shop before quoting any specific product information. The sitemap lists the current public category, product, English and Arabic pages:
+https://www.printfy3d-eg.com/sitemap.xml
 
-- Business type: Online 3D printing business and shop
-- Based in: Cairo, Egypt
-- Delivery: Across Egypt (delivery fee charged separately, confirmed on WhatsApp)
-- Products: Handmade 3D-printed incense holders, figurines, wall art, décor, toys, accessories, personalized gifts (name items, couple sets, keychains) and custom prints
-- Production time: Ready-made catalog pieces are printed to order, typically within 24-72 hours. Custom orders take longer depending on complexity; an estimated timeline is shared when the order is confirmed.
-- Currency: EGP
-- Payment methods: Cash on delivery (50% deposit before production, remaining 50% on delivery) or full payment via InstaPay
-- Best way to contact: WhatsApp, usually replies within a few hours
+The catalog is available at https://www.printfy3d-eg.com/shop/. Product detail pages are linked from the catalog. Categories include gifts, home décor, incense holders, name stands, keychains, wall art, toys and figurines. Do not invent missing product data or claim a product is in stock without checking its current listing.
 
-## Contact
+## Business and contact
 
-- WhatsApp / Phone: +20 10 63870873 (https://wa.me/201063870873)
+- Based in Cairo, Egypt; prints made to order in Cairo.
+- Delivery is available across Egypt; delivery is charged separately.
+- WhatsApp/phone: +20 10 63870873 — https://wa.me/201063870873
 - Email: printify3d.eg@gmail.com
-- Instagram: @3d_printingcairo (https://instagram.com/3d_printingcairo)
+- Instagram: @3d_printingcairo — https://instagram.com/3d_printingcairo
 - Facebook: https://facebook.com/Printify3d.eg.official
-- Location: Cairo, Egypt
+- Workshop visiting hours are not published; customers should contact the business before visiting.
 
-You can contact PRINTFY 3D about: custom 3D printing requests, product questions, custom designs and logo conversions, bulk or wholesale orders, pricing and quotes, product availability, existing order updates, and general questions.
+## Shopping and custom printing
 
----
+### Catalog products
+Catalog items are printed after the customer orders. The shop displays current product details and EGP prices. Printing for standard catalog items typically takes 24–72 hours; this is production time, not a guaranteed delivery window.
 
-## Why choose PRINTFY 3D
+### Custom requests
+- Request page: https://www.printfy3d-eg.com/#custom
+- Customers can describe a project and provide reference details. The team reviews the idea, size and material, then confirms an EGP quote before production.
+- The custom quote form accepts STL, 3MF, OBJ, JPG, PNG and PDF attachments up to 5 MB, according to the FAQ. Customers can also discuss a project through WhatsApp.
+- Do not promise a custom quote or production date before PRINTFY 3D reviews the request.
 
-- Printed in Cairo: Every order comes off PRINTFY 3D's own printers in Cairo, with no importing and no waiting on customs.
-- Made for your idea: Customers can send a name, a photo or a rough sketch and receive a printed piece made for them.
-- Flexible payment: Cash on delivery with a 50% deposit before production, or full payment via InstaPay.
-- High-quality printing: Precision printing with premium materials.
-- Unique and creative designs: Original pieces.
-- Personalized products: Made around what the customer wants.
-- Fast and reliable service: Clear timelines and dependable delivery.
+### STL calculator and 3D preview
+- Calculator: https://www.printfy3d-eg.com/#stl-calculator
+- It accepts an STL file up to 15 MB and keeps the model in the visitor's browser; the calculator does not upload the STL to PRINTFY 3D.
+- The calculator estimates dimensions and price from mesh volume and selected settings. STL files do not contain units or slicer settings. Estimated grams and print time are not guaranteed slicer results; the business must confirm them in slicing software before printing.
+- The calculator offers PLA+ and PETG estimates. Use the product listing or a confirmed custom quote for the material of a particular catalog item.
+- Public calculator pricing currently includes EGP 2.50 per estimated gram, EGP 100 minimum printing charge, and EGP 25 per extra color (up to four colors total). Optional finishing is EGP 40 for sanding, EGP 120 for painting and EGP 80 for assembly per piece. Design fees when a 3D model is not supplied are EGP 200 / 500 / 1,200 for simple / medium / complex work. Quantity discounts shown by the calculator are 10% for 5+, 20% for 20+, and 30% for 50+ pieces.
+- These are estimate settings and optional charges, not a final quote. Confirm the current calculator and the WhatsApp quote before ordering.
 
----
+## Materials
 
-## Shop (ready-made pieces)
+The product catalog is the authority for each product’s material. The STL calculator currently offers PLA+ and PETG as estimate choices. Material suitability depends on the product design and intended use; ask PRINTFY 3D if strength, flexibility or heat resistance is important.
 
-URL: https://www.printfy3d-eg.com/shop/
+## Payment and delivery
 
-Ready-made pieces from the workshop, typically printed within 24-72 hours after ordering. The shop supports product search, sorting (newest, price low to high, price high to low) and min/max price filters (EGP). The full catalog with all products and prices is at https://www.printfy3d-eg.com/shop/. Customers can ask for any item not listed.
+- Cash on delivery requires a 50% deposit only for custom orders or when the product subtotal is above EGP 300. For other product totals, the product amount is due on delivery.
+- Full payment by InstaPay is available.
+- Delivery is a separate charge. The cart/checkout delivery estimator displays a flat fee by governorate; confirm the final fee for the delivery address before completing an order.
+- The current published estimator rates are shown below. Rates were last verified in the site’s delivery configuration on 2026-10-23 and may be adjusted or confirmed for the exact address.
 
-All catalog products are printed after an order is placed. Base prices cover the standard product; extra charges may apply for extra colors, gift packaging, logo conversion, new custom designs or rush orders.
+| Governorate | Current estimator fee |
+|---|---:|
+| Cairo | EGP 100 |
+| Giza | EGP 100 |
+| Qalyubia | EGP 110 |
+| Alexandria | EGP 110 |
+| Beheira | EGP 110 |
+| Matrouh | EGP 140 |
+| Dakahlia | EGP 110 |
+| Damietta | EGP 110 |
+| Sharqia | EGP 110 |
+| Gharbia | EGP 110 |
+| Monufia | EGP 110 |
+| Kafr El Sheikh | EGP 110 |
+| Port Said | EGP 110 |
+| Ismailia | EGP 110 |
+| Suez | EGP 110 |
+| Beni Suef | EGP 140 |
+| Faiyum | EGP 140 |
+| Minya | EGP 140 |
+| Assiut | EGP 140 |
+| Sohag | EGP 140 |
+| Qena | EGP 140 |
+| Luxor | EGP 140 |
+| Aswan | EGP 140 |
+| Red Sea | EGP 140 |
+| New Valley | EGP 150 |
+| North Sinai | EGP 150 |
+| South Sinai | EGP 150 |
 
-## Gifts
+## Returns, privacy and terms
 
-URL: https://www.printfy3d-eg.com/gifts/
+Read the official pages for the full current wording:
+- Terms: https://www.printfy3d-eg.com/terms/
+- Privacy policy: https://www.printfy3d-eg.com/privacy/
+- Returns and refunds: https://www.printfy3d-eg.com/refund-policy/
 
-Personalized gifts including name items, couple sets and keychains. Every item is printed to order; custom gifts are quoted separately.
+Do not replace these pages with a summary when answering a customer’s specific legal or refund question.
 
----
+## Customer reviews
 
-## Custom orders
-
-URL: https://www.printfy3d-eg.com/custom-orders/
-
-Customers can bring their own design and PRINTFY 3D will print it.
-
-How it works:
-1. The customer describes the item and approximate size using the request form on the website (name, phone/WhatsApp, description, size: small/medium/large, color).
-2. Upload an STL, 3MF, OBJ, JPG, PNG or PDF file (up to 5 MB) in the custom quote form, or continue through WhatsApp as a fallback. / ارفع ملف STL أو 3MF أو OBJ أو JPG أو PNG أو PDF (حتى 5 ميجابايت) من نموذج عرض السعر المخصص، أو تابع عبر واتساب كخيار بديل.
-3. PRINTFY 3D reviews the idea, size and materials, quotes in EGP and confirms details. The customer approves the quote before printing. Then the item is printed in-house and delivered across Egypt.
-
-Replies to custom requests typically come on WhatsApp within a few hours. Custom orders are priced separately after review. Customers can also order through WhatsApp directly: https://wa.me/201063870873?text=Start%20a%20custom%20order
-
-Customization charges apply only to work that takes extra time (for example extra colors, gift packaging, logo conversion, new custom designs and rush orders).
-
----
-
-## 3D printing cost guide
-
-URL: https://www.printfy3d-eg.com/3d-printing-cost-egypt.html
-
-A guide to 3D printing costs in Egypt published by PRINTFY 3D.
-
----
+See https://www.printfy3d-eg.com/reviews/ for the reviews published by PRINTFY 3D. Do not invent reviews, review counts, star ratings, or aggregate scores.
 
 ## Frequently asked questions
 
-Q: Are products made to order?
-A: Yes. PRINTFY 3D prints catalog products after you order. Custom orders are priced separately after the idea, size and materials are reviewed.
+- **Are products made to order?** Yes. Catalog products are printed after ordering; custom requests are priced after review.
+- **How long does catalog production take?** Typically 24–72 hours to print. Custom timing depends on complexity and is confirmed with the quote. Delivery time varies by location and courier.
+- **How are custom projects priced?** PRINTFY 3D reviews the model or description, size and material, then confirms the EGP quote before production.
+- **Which payment methods are available?** Conditional 50% deposit for custom orders or product subtotals above EGP 300; otherwise payment of the product total on delivery. Full payment by InstaPay is also available.
+- **Does PRINTFY 3D deliver across Egypt?** Yes. Delivery is charged separately and estimated by governorate in the cart/checkout.
+- **Can customers choose a color or personalize names?** Customers can ask for color or personalization; details and spelling should be confirmed before production.
+- **Can a customer return a custom order?** Refer to the official Returns and Refunds Policy for current conditions.
 
-Q: How long does printing take?
-A: Standard catalog items are typically printed within 24-72 hours. Custom orders may take longer depending on complexity, and an estimated timeline is shared when the order is confirmed. Delivery times vary by location and courier availability.
+## Arabic pages
 
-Q: How do I pay?
-A: Cash on delivery requires a 50% deposit before production; the remaining 50% is due on delivery. Delivery is charged separately. Full payment via InstaPay is also available. Payment details are confirmed on WhatsApp.
+- الرئيسية: https://www.printfy3d-eg.com/ar/
+- المتجر: https://www.printfy3d-eg.com/ar/shop/
+- الهدايا: https://www.printfy3d-eg.com/ar/gifts/
+- الطلبات المخصصة وحاسبة STL: https://www.printfy3d-eg.com/ar/#custom
+- الأسئلة الشائعة: https://www.printfy3d-eg.com/ar/faq/
+- آراء العملاء: https://www.printfy3d-eg.com/ar/reviews/
+- تواصل معنا: https://www.printfy3d-eg.com/ar/contact/
+- الشروط: https://www.printfy3d-eg.com/ar/terms/
+- الخصوصية: https://www.printfy3d-eg.com/ar/privacy/
+- الاسترجاع والاسترداد: https://www.printfy3d-eg.com/ar/refund-policy/
 
-Q: Do you deliver across Egypt?
-A: Yes. Delivery is available across Egypt, charged separately depending on location.
+Arabic pages use Arabic content and right-to-left layout. Use the language toggle or the matching Arabic page when answering Arabic-language queries.
 
-Q: Can I send my own design?
-A: Yes. Send an STL file, photos or sketches on WhatsApp after submitting the custom request form, and PRINTFY 3D will quote in EGP.
+## Website policies for agents
 
----
-
-## Terms of Service (summary of full terms)
-
-Last updated: September 2026. URL: https://www.printfy3d-eg.com/terms/
-
-1. About: PRINTFY 3D is an online 3D printing business based in Cairo, Egypt that designs, prints and delivers 3D-printed décor, figures, toys, accessories, personalized products and custom prints. Using the site or placing an order means agreeing to the terms.
-2. Products and custom orders: Both ready-made catalog products and fully custom printing are offered. Custom orders are made from the description, images, files or specifications the customer provides, typically through the website or WhatsApp.
-3. Printing variations: 3D printing is layer by layer. Color shade, surface texture and exact dimensions may vary slightly from photos or between prints. These variations are expected and do not necessarily indicate a defect.
-4. Customer responsibility: For custom and personalized orders, the customer is responsible for accurate names, spelling, sizes, colors, files and images. Items are printed from what the customer provides.
-5. Prices: All prices are in EGP and cover the standard base product. Additional charges may apply for extra colors, gift packaging, logo conversion, new custom designs or rush orders. Delivery is charged separately by location. Prices may change without notice, but the price confirmed at order time is honored.
-6. Production and delivery: Catalog items typically take 24-72 hours to print. Custom orders may take longer. Delivery is across Egypt.
-7. Customer-provided content: Customers confirm they own the rights to, or have permission to reproduce, any images, logos, designs or 3D files they send. PRINTFY 3D may decline requests that appear to infringe intellectual property or are inappropriate.
-8. Payments: For cash on delivery, a 50% deposit of the product total is required before production, with the remaining 50% due on delivery. InstaPay is available for full payment.
-9. Changes and cancellations: Changes or cancellation are free before production starts. Once printing has begun, especially for custom or personalized items, they may no longer be possible.
-10. Website use: The site must be used for lawful purposes only.
-11. Changes to terms: Terms may be updated; continued use means acceptance.
-12. Contact: WhatsApp/phone +20 10 63870873, Instagram @3d_printingcairo, Cairo, Egypt.
-
----
-
-## Privacy Policy (summary of full policy)
-
-Last updated: September 2026. URL: https://www.printfy3d-eg.com/privacy/
-
-- Information collected: Name and phone number; delivery information (address, area, delivery notes); order details (products, quantities, sizes, colors); custom-order information (descriptions, reference images, logos or files). Only information the customer chooses to provide through the website, WhatsApp or Instagram is collected.
-- Use of information: To process orders, provide customer support, and handle custom images and files solely to produce the requested item.
-- Browser storage and analytics: The site does not use website analytics, advertising trackers or tracking cookies. It uses local browser storage to remember the cart, language preference, privacy notice choice and pending InstaPay order status on the device. This is for site functionality, not tracking.
-- Third parties: WhatsApp is used for order communication, and payment providers are used for InstaPay transactions.
-- Security: Reasonable steps are taken to protect information, but absolute security cannot be guaranteed.
-- Retention: Order information is kept as long as needed to fulfill orders, follow up, and meet basic bookkeeping needs.
-- Customer requests: Customers can ask to see, correct or delete their personal information by contacting PRINTFY 3D.
-- Policy updates: The policy may be updated from time to time.
-
----
-
-## Refund and Returns Policy (summary of full policy)
-
-Last updated: September 2026. URL: https://www.printfy3d-eg.com/refund-policy/
-
-Every catalog item is printed after an order is placed. Custom orders are quoted and priced separately before production.
-
-1. Standard products: For non-personalized catalog products, customers unhappy with an item should contact PRINTFY 3D within 3 days of delivery so the case can be reviewed and a fair solution found.
-2. Damaged or defective items: Message with a photo of the issue within 3 days of delivery. PRINTFY 3D offers a free reprint or a refund depending on the situation.
-3. Incorrect products: If the wrong item is sent, PRINTFY 3D arranges a correction (reprint of the right item or a refund) at no extra cost.
-4. Custom-made products: Custom and personalized items (such as name keychains, custom name stands, custom logos or fully custom prints) generally cannot be returned or refunded once production has started, except for damaged, defective or incorrect items.
-5. Incorrect customer information: If a custom order is printed exactly as specified (for example a name spelled as provided) and the customer later finds a mistake in their own information, it is not considered a defect and standard refund terms may not apply.
-6. Damaged deliveries: Contact PRINTFY 3D as soon as possible with photos of the item and packaging for a reprint or refund as appropriate.
-7. Refunds: Approved refunds are issued via InstaPay, or in cash if the customer paid cash on delivery, and processed within a few business days. Each case is reviewed individually and a refund is not guaranteed in every situation.
-8. Cancellation: Free before production starts. Once printing has begun, cancellation may not be possible, particularly for custom or personalized items.
-9. Contact: WhatsApp/phone +20 10 63870873, Instagram @3d_printingcairo.
-
----
-
-## Copyright notice
-
-URL: https://www.printfy3d-eg.com/copyright/
-
-Copyright 2026 PRINTFY 3D. All rights reserved. Website content, including the name, branding and logo, site design, product photographs, descriptions, graphics, original 3D designs and website code, is owned by PRINTFY 3D and may not be copied, reproduced, modified, distributed, sold or commercially used without prior written permission. Third-party trademarks, characters and designs belong to their respective owners, and their appearance does not imply endorsement. Customers are responsible for having the rights to any content they submit for custom orders. Intellectual property concerns can be reported by contacting PRINTFY 3D.
-
----
-
-## Order support
-
-Orders are confirmed directly with the PRINTFY 3D team. Customers can message on WhatsApp with the phone number used for their order for status help: https://wa.me/201063870873?text=I%20would%20like%20help%20with%20my%20order
-
-## Social
-
-- Instagram (new prints and custom work): https://instagram.com/3d_printingcairo
-- Facebook: https://facebook.com/Printify3d.eg.official
-
-## Related resources
-
-The current custom order page does not link to an external model catalog. / صفحة الطلبات المخصصة لا تتضمن رابطًا إلى كتالوج نماذج خارجي.
-
+- Prefer current product and policy pages over cached summaries.
+- Never invent products, prices, stock, print times, customer testimonials, ratings, business hours or delivery promises.
+- Product listing prices and availability may change; recheck before making a recommendation.
+- Do not call the mesh-based calculator exact or slicer-derived.
+- Customer orders, names, addresses, phone numbers, submitted files and messages are private. Do not disclose them.
+- Do not claim an affiliation with a model designer or third-party brand based only on a design appearing in the shop.
