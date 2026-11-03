@@ -70,3 +70,27 @@ body>footer{border-top:1px solid var(--pf-line);background:#f2ece2!important}
   body>main{width:calc(100% - 32px)!important}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* Mobile usability and performance refinements */
+@media(max-width:767px){
+  #home .hero-inner{padding-block:2rem 2.5rem;gap:1.65rem}
+  #home .hero h1.hero-title{font-size:clamp(3rem,13vw,3.65rem);line-height:.96;max-width:12ch}
+  #home .hero-sub{max-width:37ch;margin-top:1rem;line-height:1.55}
+  #home .hero-actions{gap:.65rem;margin-top:1.1rem;flex-wrap:wrap}
+  #home .hero-actions .btn-primary,#home .hero-actions .btn-outline{min-height:48px}
+  #heroVisual.ready,#heroVisual:not(.ready){aspect-ratio:1.16;max-height:310px}
+  #filterChips>*{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+  .shop-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;overflow:visible}
+  .shop-controls label{min-width:0;width:100%}
+  .shop-controls .field,.shop-controls select,.shop-controls button{min-height:44px}
+  #clearFilters{align-self:end}
+  #productGrid .addBtn{min-height:44px;padding-inline:.8rem}
+  .faq-item>button,.faq-item>summary{min-height:48px}
+  .cart-bar.show{bottom:calc(4.55rem + env(safe-area-inset-bottom,0px))}
+  body.has-cart-bar{padding-bottom:calc(9.2rem + env(safe-area-inset-bottom,0px))}
+}
+@media(max-width:360px){
+  #home .hero h1.hero-title{font-size:2.85rem}
+  #home .hero-actions .btn-primary,#home .hero-actions .btn-outline{padding-inline:.8rem;font-size:.8rem}
+  #productGrid{grid-template-columns:1fr}
+}
