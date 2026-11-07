@@ -1,0 +1,249 @@
+(() => {
+  'use strict';
+
+  const API = 'https://bnctkequiekxznkbntzd.supabase.co';
+  // This is the site's existing public anon key. Never put a service-role key in browser code.
+  const PUBLIC_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJuY3RrZXF1aWVreHpua2JudHpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3ODg3MjMsImV4cCI6MjEwNTM2NDcyM30.ACSOu3xHIrykmdKJSiHD7hMndd-xirN0aohTj2XNTZo';
+  const SITE = 'https://www.printfy3d-eg.com';
+  const PHONE = '201063870873';
+  const params = new URLSearchParams(location.search);
+  const slug = params.get('slug') || decodeURIComponent(location.pathname.split('/').filter(Boolean).at(-1) || '');
+  const arabicRoute = location.pathname.startsWith('/ar/');
+  let language = arabicRoute ? 'ar' : (location.pathname.startsWith('/shop/') ? 'en' : ((params.get('lang') || localStorage.getItem('printify3d_lang') || 'en') === 'ar' ? 'ar' : 'en'));
+  const productPath=(productSlug,lang=language)=>`/${lang==='ar'?'ar/':''}shop/${encodeURIComponent(productSlug)}/`;
+  let currentProduct = null;
+  let siblings = [];
+  let productVariants = [];
+  let gallery = [];
+  let galleryIndex = 0;
+
+  const text = {
+    en: {exit:'Close', home:'Home', shop:'Shop', loading:'Loading product…', failed:'This product could not be loaded.', retry:'Try again', available:'Available to order', unavailable:'Currently unavailable', add:'Add to cart', added:'Added to cart', buy:'Order via WhatsApp', quantity:'Quantity', description:'Description', features:'Key features', specs:'Specifications', material:'Material', dimensions:'Dimensions', printTime:'Print time', options:'Choose an option', customize:'Customization', request:'Tell us what you would like customized (optional)', related:'Related products', shipping:'Shipping', shippingText:'Delivery is charged separately. Check the current fee in your cart or checkout.', returns:'Returns', returnsText:'See our returns and refunds policy.', support:'Support', supportText:'Questions? Message PRINTFY 3D on WhatsApp.', noImage:'Product photo unavailable', cartError:'Could not save your cart. Please enable browser storage and try again.'},
+    ar: {exit:'إغلاق', home:'الرئيسية', shop:'المتجر', loading:'جارٍ تحميل المنتج…', failed:'تعذر تحميل هذا المنتج.', retry:'إعادة المحاولة', available:'متاح للطلب', unavailable:'غير متاح حالياً', add:'أضف إلى السلة', added:'تمت الإضافة إلى السلة', buy:'اطلب عبر واتساب', quantity:'الكمية', description:'الوصف', features:'المميزات', specs:'المواصفات', material:'الخامة', dimensions:'الأبعاد', printTime:'وقت الطباعة', options:'اختر خياراً', customize:'تخصيص', request:'اكتب تفاصيل التخصيص المطلوبة (اختياري)', related:'منتجات مشابهة', shipping:'الشحن', shippingText:'تُحسب رسوم التوصيل منفصلة. تحقق من الرسوم الحالية في السلة أو إتمام الطلب.', returns:'الاستبدال والاسترجاع', returnsText:'اطلع على سياسة الاسترجاع.', support:'الدعم', supportText:'هل لديك سؤال؟ راسل PRINTFY 3D على واتساب.', noImage:'صورة المنتج غير متاحة', cartError:'تعذر حفظ السلة. فعّل مساحة التخزين في المتصفح ثم حاول مرة أخرى.'}
+  };
+  const t = (key) => text[language][key];
+  const esc = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const isAvailable = (product) => product.available !== false && Number(product.stock ?? 1) > 0;
+  const getName = (p) => language === 'ar' ? (p.name_ar || p.name_en || p.name) : (p.name_en || p.name);
+  const getDescription = (p) => language === 'ar' ? (p.desc_ar || p.desc_en || p.description || '') : (p.desc_en || p.description || '');
+  const money = (value) => new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en-EG', {style:'currency', currency:'EGP', maximumFractionDigits:0}).format(Number(value || 0));
+  const isImageUrl = (value) => typeof value === 'string' && (/^https?:\/\//i.test(value) || /^data:image\//i.test(value));
+  const apiFetch = async (table, query) => {
+    const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),12000);
+    try {
+      const response = await fetch(`${API}/rest/v1/${table}?${query}`, {headers:{apikey:PUBLIC_KEY, Authorization:`Bearer ${PUBLIC_KEY}`}, cache:'no-store',signal:controller.signal});
+      if (!response.ok) throw new Error(`Catalog request failed (${response.status})`);
+      return await response.json();
+    } finally { clearTimeout(timer); }
+  };
+  function setMeta(selector, value, attr='content') {
+    let node = document.head.querySelector(selector);
+    if (!node) { node=document.createElement('meta'); if (selector.startsWith('meta[property=')) node.setAttribute('property', selector.match(/"([^"]+)/)[1]); else node.setAttribute('name', selector.match(/"([^"]+)/)[1]); document.head.append(node); }
+    node.setAttribute(attr, value);
+  }
+  function setCanonical(href) {
+    let node = document.head.querySelector('link[rel="canonical"]');
+    if (!node) { node=document.createElement('link'); node.rel='canonical'; document.head.append(node); }
+    node.href=href;
+  }
+  function updateStructuredData(product) {
+    const title = getName(product);
+    const description = getDescription(product) || `${title} by PRINTFY 3D. 3D Printing Cairo.`;
+    const productSchema = {
+      '@context':'https://schema.org', '@type':'Product', name:title, description,
+      brand:{'@type':'Brand',name:'PRINTFY 3D'}, image:gallery.filter(isImageUrl),
+      offers:{'@type':'Offer',url:`${SITE}${productPath(product.slug,language)}`,price:Number(product.price),priceCurrency:'EGP',availability:isAvailable(product)?'https://schema.org/InStock':'https://schema.org/OutOfStock',seller:{'@type':'Organization',name:'PRINTFY 3D'}}
+    };
+    const crumbs = {'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[
+      {'@type':'ListItem',position:1,name:t('home'),item:`${SITE}/${language==='ar'?'ar/':''}`},
+      {'@type':'ListItem',position:2,name:t('shop'),item:`${SITE}/${language==='ar'?'ar/':''}shop/`},
+      {'@type':'ListItem',position:3,name:title,item:`${SITE}${productPath(product.slug,language)}`}
+    ]};
+    let node = document.querySelector('#pdp-jsonld');
+    if(!node){node=document.createElement('script');node.type='application/ld+json';node.id='pdp-jsonld';document.head.append(node);}
+    node.textContent=JSON.stringify([productSchema,crumbs]);
+  }
+  function updateSeo(product) {
+    const name = getName(product), description = `${getDescription(product) || name} — PRINTFY 3D, 3D printing in Cairo, Egypt.`;
+    const title = `${name} | PRINTFY 3D`;
+    const canonical=`${SITE}${productPath(product.slug,language)}`;
+    document.title=title;
+    setMeta('meta[name="description"]', description.slice(0,160));
+    setMeta('meta[property="og:type"]','product');
+    setMeta('meta[property="og:site_name"]','PRINTFY 3D');
+    setMeta('meta[property="og:title"]',title);
+    setMeta('meta[property="og:description"]',description.slice(0,200));
+    setMeta('meta[property="og:url"]',canonical);
+    const image=gallery.find(isImageUrl);
+    if(image){setMeta('meta[property="og:image"]',image);setMeta('meta[name="twitter:card"]','summary_large_image');}
+    setCanonical(canonical);
+    for(const [locale,url] of [['en',`${SITE}${productPath(product.slug,'en')}`],['ar-EG',`${SITE}${productPath(product.slug,'ar')}`],['x-default',`${SITE}${productPath(product.slug,'en')}`]]){
+      let link=document.head.querySelector(`link[rel="alternate"][hreflang="${locale}"]`);
+      if(!link){link=document.createElement('link');link.rel='alternate';link.hreflang=locale;document.head.append(link);}
+      link.href=url;
+    }
+    updateStructuredData(product);
+  }
+  function imageSources(product) {
+    const base=product.slug.startsWith('spring-lizard-')?'spring-lizard':product.slug;
+    let preRendered=[];
+    const socialImage=document.querySelector('meta[property="og:image"]')?.content;
+    if(socialImage){try{const imageUrl=new URL(socialImage,location.href);if(imageUrl.origin===location.origin)preRendered=[imageUrl.pathname];}catch{}}
+    const extra=product.slug==='nfc-display'?['/assets/products/nfc-display-detail-1.webp','/assets/products/nfc-display-detail-2.webp']:[];
+    const primary=preRendered.length?[]:(product.image_url?[product.image_url]:[]);
+    return [...new Set([...preRendered,...extra,...primary].filter(value=>isImageUrl(value)||value?.startsWith('/assets/')))];
+  }
+  function renderGallery() {
+    const stage=document.querySelector('#pdpImageStage'), thumbs=document.querySelector('#pdpThumbs');
+    const src=gallery[galleryIndex];
+    if (!src) {stage.innerHTML=`<div class="pdp-no-image" role="img" aria-label="${esc(t('noImage'))}">${esc(t('noImage'))}</div>`; thumbs.innerHTML='';return;}
+    stage.innerHTML=`<button class="pdp-zoom" type="button" aria-label="${language==='ar'?'تكبير الصورة':'Zoom image'}"><img src="${esc(src)}" alt="${esc(getName(currentProduct))} — PRINTFY 3D" width="900" height="700" fetchpriority="high" decoding="async"></button>`;
+    const image=stage.querySelector('img');
+    const base=currentProduct.slug.startsWith('spring-lizard-')?'spring-lizard':currentProduct.slug;
+    const fallbacks=gallery.filter(url=>url!==src);
+    image.addEventListener('error',()=>{
+      const next=fallbacks.shift();
+      if(next)image.src=next;
+      else {stage.innerHTML=`<div class="pdp-no-image" role="img" aria-label="${esc(t('noImage'))}">${esc(t('noImage'))}</div>`;}
+    });
+    stage.querySelector('.pdp-zoom').addEventListener('click',()=>{const dialog=document.querySelector('#pdpZoom');dialog.querySelector('img').src=image.currentSrc||image.src;dialog.querySelector('img').alt=getName(currentProduct);dialog.showModal();});
+    thumbs.innerHTML=gallery.length>1?gallery.map((url,index)=>`<button type="button" class="pdp-thumb${index===galleryIndex?' is-active':''}" data-gallery-index="${index}" aria-label="${language==='ar'?'الصورة':'Image'} ${index+1}" aria-pressed="${index===galleryIndex}"><img src="${esc(url)}" alt="" width="56" height="56" loading="lazy" decoding="async"></button>`).join(''):'';
+    thumbs.querySelectorAll('[data-gallery-index]').forEach(button=>button.addEventListener('click',()=>{galleryIndex=Number(button.dataset.galleryIndex);renderGallery();}));
+  }
+  function whatsappUrl(product, qty) {
+    const note=document.querySelector('#customRequest')?.value.trim()||'';
+    const option=language==='ar'?'تفاصيل التخصيص':'Customization';
+    const priceText=product.customizable
+      ? (language==='ar'?`السعر الأساسي ${money(product.price)} للقطعة، الإجمالي الأساسي ${money(Number(product.price)*qty)}. يتم تأكيد السعر النهائي بعد التخصيص.`:`Base catalog price: ${money(product.price)} each. Base total: ${money(Number(product.price)*qty)}. Final customization price to be confirmed.`)
+      : (language==='ar'?`السعر ${money(product.price)} للقطعة، الإجمالي ${money(Number(product.price)*qty)}.`:`Price: ${money(product.price)} each. Total: ${money(Number(product.price)*qty)}.`);
+    const message=language==='ar'
+      ? `مرحباً PRINTFY 3D، أريد طلب ${getName(product)}، الكمية ${qty}، ${priceText}${note?`\n${option}: ${note}`:''}`
+      : `Hello PRINTFY 3D, I’d like to order ${getName(product)}. Quantity: ${qty}. ${priceText}${note?`\n${option}: ${note}`:''}`;
+    return `https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`;
+  }
+  function updateWhatsapp() {
+    const input=document.querySelector('#pdpQty');
+    const qty=Math.max(1,Math.min(99,Math.trunc(Number(input.value)||1)));
+    input.value=qty;
+    if(currentProduct) document.querySelector('#pdpWhatsapp').href=whatsappUrl(currentProduct,qty);
+  }
+  function addToCart() {
+    const product=currentProduct, qty=Number(document.querySelector('#pdpQty').value);
+    if(!product || !isAvailable(product) || !Number.isInteger(qty) || qty<1 || qty>99) return;
+    try {
+      const cart=JSON.parse(localStorage.getItem('printify3d_cart')||'{}');
+      const id=String(product.id), prior=Number(cart[id]||0);
+      cart[id]=Math.min(99,prior+qty);
+      localStorage.setItem('printify3d_cart',JSON.stringify(cart));
+      localStorage.setItem('printify3d_open_cart','1');
+      const button=document.querySelector('#pdpAdd');
+      button.textContent=t('added');
+      setTimeout(()=>{if(button.isConnected)button.textContent=t('add');},1500);
+      setTimeout(()=>{location.href=`/${language==='ar'?'ar/':''}#shop`;},250);
+    } catch(e) { document.querySelector('#pdpStatus').textContent=t('cartError'); }
+  }
+  function relatedMarkup(products) {
+    return products.filter(p=>p.slug!==currentProduct.slug).slice(0,6).map(p=>{
+      const image=isImageUrl(p.image_url)?`<img src="${esc(p.image_url)}" alt="${esc(getName(p))}" loading="lazy" decoding="async">`:'<span class="pdp-related-placeholder" aria-hidden="true">3D</span>';
+      return `<a class="pdp-related-card" href="${productPath(p.slug,language)}">${image}<span>${esc(getName(p))}</span><strong>${esc(money(p.price))}</strong></a>`;
+    }).join('');
+  }
+  function variantMarkup() {
+    const groups=[['spongebob-card-pink','spongebob-card-green','spongebob-card-bundle'],['spring-lizard-big','spring-lizard-small']];
+    const group=groups.find(items=>items.includes(currentProduct.slug));if(!group)return '';
+    const items=productVariants.filter(product=>group.includes(product.slug));
+    const label=product=>product.slug==='spongebob-card-pink'?(language==='ar'?'وردي':'Pink'):product.slug==='spongebob-card-green'?(language==='ar'?'أخضر':'Green'):product.slug==='spongebob-card-bundle'?(language==='ar'?'اللونان':'Both colors'):product.slug==='spring-lizard-big'?(language==='ar'?'كبير':'Big'):(language==='ar'?'صغير':'Small');
+    const title=language==='ar'?'اختر اللون أو المقاس':'Choose a color or size';
+    return items.length>1?'<section class="pdp-options" aria-labelledby="pdpVariantsTitle"><h2 id="pdpVariantsTitle">'+esc(title)+'</h2><div class="pdp-variant-list" role="region" tabindex="0" aria-label="'+esc(title)+'">'+items.map(product=>{const img=product.slug.startsWith('spring-lizard-')?'/assets/products/spring-lizard.webp':'/assets/products/'+product.slug+'.webp';return '<a class="pdp-variant-slide'+(product.slug===currentProduct.slug?' is-selected':'')+'" href="'+esc(productPath(product.slug,language))+'"'+(product.slug===currentProduct.slug?' aria-current="page"':'')+'><img src="'+esc(img)+'" alt="'+esc(label(product))+' — '+esc(getName(product))+'" width="160" height="160" loading="lazy" decoding="async"><span>'+esc(label(product))+'</span><strong>'+esc(money(product.price))+'</strong></a>';}).join('')+'</div></section>':'';
+  }
+  function render(product, related, categoryMap, variants) {
+    currentProduct=product; siblings=related; productVariants=variants;
+    gallery=imageSources(product);galleryIndex=0;
+    document.documentElement.lang=language;document.documentElement.dir=language==='ar'?'rtl':'ltr';
+    document.querySelector('#langToggle').href=productPath(slug,language==='ar'?'en':'ar');
+    document.querySelector('#langToggle').textContent=language==='ar'?'English':'العربية';
+    const nav=document.querySelector('.pdp-header nav');
+    const navLinks=nav?.querySelectorAll('a');
+    if(navLinks?.length>=3){navLinks[0].href=`/${language==='ar'?'ar/':''}shop/`;navLinks[0].textContent=t('shop');navLinks[1].textContent=language==='ar'?'طلبات مخصصة':'Custom orders';navLinks[2].textContent=language==='ar'?'تواصل معنا':'Contact';}
+    const footer=document.querySelector('.pdp-footer');
+    if(footer&&language==='ar'){
+      const footerIntro=footer.querySelector('p');if(footerIntro)footerIntro.textContent='طباعة ثلاثية الأبعاد في القاهرة · القاهرة، مصر';
+      const labels=['المتجر','الأسئلة الشائعة','تواصل معنا','الاسترجاع والاسترداد','دعم واتساب'];
+      footer.querySelectorAll('nav a').forEach((link,index)=>{if(labels[index])link.textContent=labels[index];});
+    }
+    const name=getName(product),desc=getDescription(product),cat=categoryMap[product.category]||product.category||t('shop');
+    document.querySelector('#pdpContent').innerHTML=`
+      <nav class="pdp-crumbs" aria-label="${language==='ar'?'مسار التنقل':'Breadcrumb'}"><a href="/${language==='ar'?'ar/':''}">${esc(t('home'))}</a><span aria-hidden="true">›</span><a href="/${language==='ar'?'ar/':''}shop/">${esc(t('shop'))}</a><span aria-hidden="true">›</span><span aria-current="page">${esc(name)}</span></nav>
+      <div class="pdp-layout"><section class="pdp-gallery" aria-label="${language==='ar'?'صور المنتج':'Product images'}"><div id="pdpImageStage" class="pdp-image-stage"></div><div id="pdpThumbs" class="pdp-thumbs" aria-label="${language==='ar'?'صور مصغرة':'Image thumbnails'}"></div></section>
+      <section class="pdp-info"><p class="pdp-eyebrow">${esc(cat)} · PRINTFY 3D</p><h1>${esc(name)}</h1><p class="pdp-price">${product.customizable?`${language==='ar'?'يبدأ من':'From'} `:''}${esc(money(product.price))}</p><p class="pdp-stock ${isAvailable(product)?'is-available':'is-unavailable'}"><span aria-hidden="true">${isAvailable(product)?'●':'○'}</span> ${esc(isAvailable(product)?t('available'):t('unavailable'))}</p>${desc?`<div class="pdp-description"><h2>${esc(t('description'))}</h2><p>${esc(desc)}</p></div>`:''}${variantMarkup()}<div class="pdp-purchase"><label for="pdpQty">${esc(t('quantity'))}</label><div class="pdp-quantity"><button type="button" id="qtyDown" aria-label="${language==='ar'?'تقليل الكمية':'Decrease quantity'}">−</button><input id="pdpQty" type="number" min="1" max="99" value="1" inputmode="numeric"><button type="button" id="qtyUp" aria-label="${language==='ar'?'زيادة الكمية':'Increase quantity'}">+</button></div><button id="pdpAdd" class="pdp-primary" type="button" ${isAvailable(product)?'':'disabled'}>${esc(t('add'))}</button><a id="pdpWhatsapp" class="pdp-whatsapp" href="#" target="_blank" rel="noopener noreferrer">${esc(t('buy'))}</a></div>${product.customizable?`<div class="pdp-custom"><label for="customRequest">${esc(t('customize'))}</label><textarea id="customRequest" rows="3" maxlength="500" aria-describedby="customRequestHelp" placeholder="${esc(t('request'))}"></textarea><p id="customRequestHelp" class="pdp-custom-help">${language==='ar'?'تفاصيل التخصيص تُرسل عبر واتساب لتأكيد السعر النهائي.':'Send customization details via WhatsApp so we can confirm the final price.'}</p></div>`:''}<div class="pdp-trust"><section><h2>${esc(t('shipping'))}</h2><p>${esc(t('shippingText'))}</p></section><section><h2>${esc(t('returns'))}</h2><p>${esc(t('returnsText'))} <a href="/${language==='ar'?'ar/':''}refund-policy/">${language==='ar'?'التفاصيل':'Read policy'}</a></p></section></div></section></div>
+      ${product.material||product.dims||product.time_en||product.time_ar?`<section class="pdp-specs"><h2>${esc(t('specs'))}</h2><dl>${product.material?`<div><dt>${esc(t('material'))}</dt><dd>${esc(product.material)}</dd></div>`:''}${product.dims?`<div><dt>${esc(t('dimensions'))}</dt><dd>${esc(product.dims)}</dd></div>`:''}${(language==='ar'?(product.time_ar||product.time_en):product.time_en)?`<div><dt>${esc(t('printTime'))}</dt><dd>${esc(language==='ar'?(product.time_ar||product.time_en):product.time_en)}</dd></div>`:''}</dl></section>`:''}
+      <section class="pdp-related"${relatedMarkup(related)?'':' hidden'}><h2>${esc(t('related'))}</h2><div class="pdp-related-grid">${relatedMarkup(related)}</div></section>`;
+    renderGallery();updateSeo(product);
+    document.querySelector('#pdpStatus').textContent='';
+    document.querySelector('#pdpContent').hidden=false; const fallback=document.querySelector('.pdp-static-fallback');if(fallback)fallback.hidden=true;
+    document.querySelector('#qtyDown').addEventListener('click',()=>{const input=document.querySelector('#pdpQty');input.value=Math.max(1,Number(input.value||1)-1);updateWhatsapp();});
+    document.querySelector('#qtyUp').addEventListener('click',()=>{const input=document.querySelector('#pdpQty');input.value=Math.min(99,Number(input.value||1)+1);updateWhatsapp();});
+    document.querySelector('#pdpQty').addEventListener('input',updateWhatsapp);
+    document.querySelector('#pdpAdd').addEventListener('click',addToCart);
+    document.querySelector('#customRequest')?.addEventListener('input',()=>{
+      document.querySelector('#pdpAdd').disabled=!isAvailable(product)||Boolean(document.querySelector('#customRequest').value.trim());
+      updateWhatsapp();
+    });
+    updateWhatsapp();
+  }
+  async function loadRelated(query) {
+    try {
+      const related=await apiFetch('products',query);
+      siblings=related;
+      const markup=relatedMarkup(related);
+      const section=document.querySelector('.pdp-related'), grid=document.querySelector('.pdp-related-grid');
+      if(grid)grid.innerHTML=markup;
+      if(section)section.hidden=!markup;
+    } catch(error) { /* related products are optional */ }
+  }
+  function addExitButton() {
+    const main=document.querySelector('.pdp-main');
+    if(!main||document.querySelector('#pdpExit'))return;
+    const style=document.createElement('style');
+    style.textContent='.pdp-exit{display:flex;align-items:center;gap:8px;position:sticky;top:10px;z-index:40;width:max-content;min-height:44px;margin:0 0 4px;margin-inline-start:auto;padding:0 16px;border:1px solid var(--pdp-line);border-radius:999px;background:#fff;color:var(--pdp-ink);font:inherit;font-weight:650;cursor:pointer;box-shadow:0 2px 10px rgba(33,23,19,.08)}.pdp-exit span:first-child{font-size:1.4rem;line-height:1}.pdp-exit:focus-visible{outline:3px solid var(--pdp-accent);outline-offset:3px}.pdp-primary,.pdp-primary:hover{color:#fff}';
+    document.head.append(style);
+    const button=document.createElement('button');
+    button.id='pdpExit';button.type='button';button.className='pdp-exit';
+    button.innerHTML='<span aria-hidden="true">×</span><span>'+esc(t('exit'))+'</span>';
+    button.addEventListener('click',()=>{
+      const shop=`/${language==='ar'?'ar/':''}#shop`;
+      let fromHome=false;
+      try{const ref=new URL(document.referrer);fromHome=ref.origin===location.origin&&['/','/ar/'].includes(ref.pathname)&&history.length>1;}catch{}
+      if(fromHome)history.back();else location.href=shop;
+    });
+    main.prepend(button);
+  }
+  async function loadProduct() {
+    const status=document.querySelector('#pdpStatus');status.textContent=t('loading');
+    document.querySelector('#pdpRetry').hidden=true;
+    try {
+      const [rows,cats]=await Promise.all([
+        apiFetch('products',`select=id,slug,name,name_en,name_ar,category,price,stock,description,desc_en,desc_ar,material,dims,time_en,time_ar,customizable,available,image_url&slug=eq.${encodeURIComponent(slug)}&limit=1`),
+        apiFetch('categories','select=slug,name_en,name_ar')
+      ]);
+      if(!rows.length)throw new Error('Product not found');
+      const product=rows[0];
+      const variants=(product.slug.startsWith('spongebob-card-'))?['spongebob-card-pink','spongebob-card-green','spongebob-card-bundle']:(product.slug.startsWith('spring-lizard-'))?['spring-lizard-big','spring-lizard-small']:[];
+      const relatedQuery=`select=id,slug,name,name_en,name_ar,category,price,stock,image_url&available=eq.true&category=eq.${encodeURIComponent(product.category)}&order=slug.asc&limit=12`;
+      const variantRows=variants.length?await apiFetch('products',`select=id,slug,name,name_en,name_ar,category,price,stock,image_url,available&available=eq.true&slug=in.(${variants.join(',')})`):[];
+      const categoryMap=Object.fromEntries(cats.map(c=>[c.slug,language==='ar'?(c.name_ar||c.name_en):(c.name_en||c.name_ar)]));
+      render(product,[],categoryMap,variantRows);
+      loadRelated(relatedQuery);
+    } catch(error) {
+      status.textContent=t('failed');document.querySelector('#pdpRetry').hidden=false;
+    }
+  }
+  document.querySelector('#pdpRetry').addEventListener('click',loadProduct);
+  const langLink=document.querySelector('#langToggle');if(langLink)langLink.addEventListener('click',()=>{localStorage.setItem('printify3d_lang',language==='ar'?'en':'ar');});
+  document.querySelector('#pdpZoomClose').addEventListener('click',()=>document.querySelector('#pdpZoom').close());
+  document.querySelector('#pdpZoom').addEventListener('click',event=>{if(event.target.id==='pdpZoom')event.currentTarget.close();});
+  if(!localStorage.getItem('printify3d_lang'))localStorage.setItem('printify3d_lang',language);
+  addExitButton();
+  loadProduct();
+})();
+
