@@ -1,12 +1,12 @@
 {
   "currency": "EGP",
-  "last_verified": "2026-10-23",
+  "last_verified": "2026-11-25",
   "governorates": [
     {
       "slug": "cairo",
       "name_en": "Cairo",
       "name_ar": "القاهرة",
-      "fee_egp": 100,
+      "fee_egp": 120,
       "days_min": null,
       "days_max": null
     },
@@ -14,15 +14,7 @@
       "slug": "giza",
       "name_en": "Giza",
       "name_ar": "الجيزة",
-      "fee_egp": 100,
-      "days_min": null,
-      "days_max": null
-    },
-    {
-      "slug": "qalyubia",
-      "name_en": "Qalyubia",
-      "name_ar": "القليوبية",
-      "fee_egp": 110,
+      "fee_egp": 120,
       "days_min": null,
       "days_max": null
     },
@@ -30,23 +22,31 @@
       "slug": "alexandria",
       "name_en": "Alexandria",
       "name_ar": "الإسكندرية",
-      "fee_egp": 110,
+      "fee_egp": 120,
       "days_min": null,
       "days_max": null
     },
     {
-      "slug": "beheira",
-      "name_en": "Beheira",
-      "name_ar": "البحيرة",
-      "fee_egp": 110,
+      "slug": "cairo-outskirts",
+      "name_en": "Cairo outskirts",
+      "name_ar": "أطراف القاهرة",
+      "fee_egp": 120,
       "days_min": null,
       "days_max": null
     },
     {
-      "slug": "matrouh",
-      "name_en": "Matrouh",
-      "name_ar": "مطروح",
-      "fee_egp": 140,
+      "slug": "giza-outskirts",
+      "name_en": "Giza outskirts",
+      "name_ar": "أطراف الجيزة",
+      "fee_egp": 120,
+      "days_min": null,
+      "days_max": null
+    },
+    {
+      "slug": "qalyubia",
+      "name_en": "Qalyubia",
+      "name_ar": "القليوبية",
+      "fee_egp": 125,
       "days_min": null,
       "days_max": null
     },
@@ -54,15 +54,7 @@
       "slug": "dakahlia",
       "name_en": "Dakahlia",
       "name_ar": "الدقهلية",
-      "fee_egp": 110,
-      "days_min": null,
-      "days_max": null
-    },
-    {
-      "slug": "damietta",
-      "name_en": "Damietta",
-      "name_ar": "دمياط",
-      "fee_egp": 110,
+      "fee_egp": 125,
       "days_min": null,
       "days_max": null
     },
@@ -70,7 +62,7 @@
       "slug": "sharqia",
       "name_en": "Sharqia",
       "name_ar": "الشرقية",
-      "fee_egp": 110,
+      "fee_egp": 125,
       "days_min": null,
       "days_max": null
     },
@@ -78,7 +70,7 @@
       "slug": "gharbia",
       "name_en": "Gharbia",
       "name_ar": "الغربية",
-      "fee_egp": 110,
+      "fee_egp": 125,
       "days_min": null,
       "days_max": null
     },
@@ -86,7 +78,15 @@
       "slug": "monufia",
       "name_en": "Monufia",
       "name_ar": "المنوفية",
-      "fee_egp": 110,
+      "fee_egp": 125,
+      "days_min": null,
+      "days_max": null
+    },
+    {
+      "slug": "beheira",
+      "name_en": "Beheira",
+      "name_ar": "البحيرة",
+      "fee_egp": 125,
       "days_min": null,
       "days_max": null
     },
@@ -94,7 +94,15 @@
       "slug": "kafr-el-sheikh",
       "name_en": "Kafr El Sheikh",
       "name_ar": "كفر الشيخ",
-      "fee_egp": 110,
+      "fee_egp": 125,
+      "days_min": null,
+      "days_max": null
+    },
+    {
+      "slug": "damietta",
+      "name_en": "Damietta",
+      "name_ar": "دمياط",
+      "fee_egp": 125,
       "days_min": null,
       "days_max": null
     },
@@ -102,7 +110,7 @@
       "slug": "port-said",
       "name_en": "Port Said",
       "name_ar": "بورسعيد",
-      "fee_egp": 110,
+      "fee_egp": 125,
       "days_min": null,
       "days_max": null
     },
@@ -110,7 +118,7 @@
       "slug": "ismailia",
       "name_en": "Ismailia",
       "name_ar": "الإسماعيلية",
-      "fee_egp": 110,
+      "fee_egp": 125,
       "days_min": null,
       "days_max": null
     },
@@ -118,7 +126,15 @@
       "slug": "suez",
       "name_en": "Suez",
       "name_ar": "السويس",
-      "fee_egp": 110,
+      "fee_egp": 125,
+      "days_min": null,
+      "days_max": null
+    },
+    {
+      "slug": "faiyum",
+      "name_en": "Fayoum",
+      "name_ar": "الفيوم",
+      "fee_egp": 140,
       "days_min": null,
       "days_max": null
     },
@@ -126,14 +142,6 @@
       "slug": "beni-suef",
       "name_en": "Beni Suef",
       "name_ar": "بني سويف",
-      "fee_egp": 140,
-      "days_min": null,
-      "days_max": null
-    },
-    {
-      "slug": "faiyum",
-      "name_en": "Faiyum",
-      "name_ar": "الفيوم",
       "fee_egp": 140,
       "days_min": null,
       "days_max": null
@@ -187,18 +195,18 @@
       "days_max": null
     },
     {
-      "slug": "red-sea",
-      "name_en": "Red Sea",
-      "name_ar": "البحر الأحمر",
-      "fee_egp": 140,
+      "slug": "matrouh",
+      "name_en": "Matrouh",
+      "name_ar": "مطروح",
+      "fee_egp": 160,
       "days_min": null,
       "days_max": null
     },
     {
-      "slug": "new-valley",
-      "name_en": "New Valley",
-      "name_ar": "الوادي الجديد",
-      "fee_egp": 150,
+      "slug": "north-coast",
+      "name_en": "North Coast",
+      "name_ar": "الساحل الشمالي",
+      "fee_egp": 160,
       "days_min": null,
       "days_max": null
     },
@@ -206,7 +214,7 @@
       "slug": "north-sinai",
       "name_en": "North Sinai",
       "name_ar": "شمال سيناء",
-      "fee_egp": 150,
+      "fee_egp": 210,
       "days_min": null,
       "days_max": null
     },
@@ -214,7 +222,39 @@
       "slug": "south-sinai",
       "name_en": "South Sinai",
       "name_ar": "جنوب سيناء",
-      "fee_egp": 150,
+      "fee_egp": 210,
+      "days_min": null,
+      "days_max": null
+    },
+    {
+      "slug": "sharm-el-sheikh",
+      "name_en": "Sharm El Sheikh",
+      "name_ar": "شرم الشيخ",
+      "fee_egp": 210,
+      "days_min": null,
+      "days_max": null
+    },
+    {
+      "slug": "red-sea",
+      "name_en": "Red Sea",
+      "name_ar": "البحر الأحمر",
+      "fee_egp": 200,
+      "days_min": null,
+      "days_max": null
+    },
+    {
+      "slug": "new-valley",
+      "name_en": "New Valley",
+      "name_ar": "الوادي الجديد",
+      "fee_egp": 180,
+      "days_min": null,
+      "days_max": null
+    },
+    {
+      "slug": "oases",
+      "name_en": "Oases",
+      "name_ar": "الواحات",
+      "fee_egp": 180,
       "days_min": null,
       "days_max": null
     }
