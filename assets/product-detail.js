@@ -112,8 +112,8 @@
   }
   function whatsappUrl(product, qty) {
     const note=document.querySelector('#customRequest')?.value.trim()||'';
-    const option=language==='ar'?'تفاصيل التخصيص':'Customization';
-    const priceText=product.customizable
+    const option=product.slug==='custom-name-stand'?(language==='ar'?'الاسم المطلوب طباعته':'Name to print'):(language==='ar'?'تفاصيل التخصيص':'Customization');
+    const priceText=product.customizable && product.slug!=='custom-name-stand'
       ? (language==='ar'?`السعر الأساسي ${money(product.price)} للقطعة، الإجمالي الأساسي ${money(Number(product.price)*qty)}. يتم تأكيد السعر النهائي بعد التخصيص.`:`Base catalog price: ${money(product.price)} each. Base total: ${money(Number(product.price)*qty)}. Final customization price to be confirmed.`)
       : (language==='ar'?`السعر ${money(product.price)} للقطعة، الإجمالي ${money(Number(product.price)*qty)}.`:`Price: ${money(product.price)} each. Total: ${money(Number(product.price)*qty)}.`);
     const message=language==='ar'
@@ -130,11 +130,17 @@
   function addToCart() {
     const product=currentProduct, qty=Number(document.querySelector('#pdpQty').value);
     if(!product || !isAvailable(product) || !Number.isInteger(qty) || qty<1 || qty>99) return;
+    const customNameInput=document.querySelector('#customRequest');
+    if(product.slug==='custom-name-stand' && !customNameInput?.value.trim()){customNameInput?.focus();return;}
     try {
       const cart=JSON.parse(localStorage.getItem('printify3d_cart')||'{}');
       const id=String(product.id), prior=Number(cart[id]||0);
       cart[id]=Math.min(99,prior+qty);
       localStorage.setItem('printify3d_cart',JSON.stringify(cart));
+      if(product.slug==='custom-name-stand'){
+        const saved=JSON.parse(localStorage.getItem('printify3d_names')||'{}'),names=Array.isArray(saved[id])?saved[id]:[],added=cart[id]-prior,name=customNameInput.value.trim().replace(/[\\u0000-\\u001f\\u007f<>]/g,'').slice(0,30);
+        for(let i=0;i<added;i++)names.push({a:name,b:''});saved[id]=names.slice(0,99);localStorage.setItem('printify3d_names',JSON.stringify(saved));
+      }
       localStorage.setItem('printify3d_open_cart','1');
       const button=document.querySelector('#pdpAdd');
       button.textContent=t('added');
@@ -175,10 +181,11 @@
     document.querySelector('#pdpContent').innerHTML=`
       <nav class="pdp-crumbs" aria-label="${language==='ar'?'مسار التنقل':'Breadcrumb'}"><a href="/${language==='ar'?'ar/':''}">${esc(t('home'))}</a><span aria-hidden="true">›</span><a href="/${language==='ar'?'ar/':''}shop/">${esc(t('shop'))}</a><span aria-hidden="true">›</span><span aria-current="page">${esc(name)}</span></nav>
       <div class="pdp-layout"><section class="pdp-gallery" aria-label="${language==='ar'?'صور المنتج':'Product images'}"><div id="pdpImageStage" class="pdp-image-stage"></div><div id="pdpThumbs" class="pdp-thumbs" aria-label="${language==='ar'?'صور مصغرة':'Image thumbnails'}"></div></section>
-      <section class="pdp-info"><p class="pdp-eyebrow">${esc(cat)} · PRINTFY 3D</p><h1>${esc(name)}</h1><p class="pdp-price">${product.customizable?`${language==='ar'?'يبدأ من':'From'} `:''}${esc(money(product.price))}</p><p class="pdp-stock ${isAvailable(product)?'is-available':'is-unavailable'}"><span aria-hidden="true">${isAvailable(product)?'●':'○'}</span> ${esc(isAvailable(product)?t('available'):t('unavailable'))}</p>${desc?`<div class="pdp-description"><h2>${esc(t('description'))}</h2><p>${esc(desc)}</p></div>`:''}${variantMarkup()}<div class="pdp-purchase"><label for="pdpQty">${esc(t('quantity'))}</label><div class="pdp-quantity"><button type="button" id="qtyDown" aria-label="${language==='ar'?'تقليل الكمية':'Decrease quantity'}">−</button><input id="pdpQty" type="number" min="1" max="99" value="1" inputmode="numeric"><button type="button" id="qtyUp" aria-label="${language==='ar'?'زيادة الكمية':'Increase quantity'}">+</button></div><button id="pdpAdd" class="pdp-primary" type="button" ${isAvailable(product)?'':'disabled'}>${esc(t('add'))}</button><a id="pdpWhatsapp" class="pdp-whatsapp" href="#" target="_blank" rel="noopener noreferrer">${esc(t('buy'))}</a></div>${product.customizable?`<div class="pdp-custom"><label for="customRequest">${esc(t('customize'))}</label><textarea id="customRequest" rows="3" maxlength="500" aria-describedby="customRequestHelp" placeholder="${esc(t('request'))}"></textarea><p id="customRequestHelp" class="pdp-custom-help">${language==='ar'?'تفاصيل التخصيص تُرسل عبر واتساب لتأكيد السعر النهائي.':'Send customization details via WhatsApp so we can confirm the final price.'}</p></div>`:''}<div class="pdp-trust"><section><h2>${esc(t('shipping'))}</h2><p>${esc(t('shippingText'))}</p></section><section><h2>${esc(t('returns'))}</h2><p>${esc(t('returnsText'))} <a href="/${language==='ar'?'ar/':''}refund-policy/">${language==='ar'?'التفاصيل':'Read policy'}</a></p></section><section><h2>${esc(t('support'))}</h2><p>${esc(t('supportText'))} <a href="https://wa.me/${PHONE}" target="_blank" rel="noopener noreferrer">WhatsApp</a></p></section></div></section></div>
+      <section class="pdp-info"><p class="pdp-eyebrow">${esc(cat)} · PRINTFY 3D</p><h1>${esc(name)}</h1><p class="pdp-price">${product.customizable&&product.slug!=='custom-name-stand'?`${language==='ar'?'يبدأ من':'From'} `:''}${product.slug==='custom-name-stand'?(language==='ar'?'صغير · ':'Small · '):''}${esc(money(product.price))}</p><p class="pdp-stock ${isAvailable(product)?'is-available':'is-unavailable'}"><span aria-hidden="true">${isAvailable(product)?'●':'○'}</span> ${esc(isAvailable(product)?t('available'):t('unavailable'))}</p>${desc?`<div class="pdp-description"><h2>${esc(t('description'))}</h2><p>${esc(desc)}</p></div>`:''}${variantMarkup()}<div class="pdp-purchase"><label for="pdpQty">${esc(t('quantity'))}</label><div class="pdp-quantity"><button type="button" id="qtyDown" aria-label="${language==='ar'?'تقليل الكمية':'Decrease quantity'}">−</button><input id="pdpQty" type="number" min="1" max="99" value="1" inputmode="numeric"><button type="button" id="qtyUp" aria-label="${language==='ar'?'زيادة الكمية':'Increase quantity'}">+</button></div><button id="pdpAdd" class="pdp-primary" type="button" ${isAvailable(product)?'':'disabled'}>${esc(t('add'))}</button><a id="pdpWhatsapp" class="pdp-whatsapp" href="#" target="_blank" rel="noopener noreferrer">${esc(t('buy'))}</a></div>${product.customizable?`<div class="pdp-custom"><label for="customRequest">${product.slug==='custom-name-stand'?(language==='ar'?'الاسم المطلوب طباعته':'Name to print'):esc(t('customize'))}</label><textarea id="customRequest" rows="3" maxlength="500" aria-describedby="customRequestHelp" placeholder="${esc(t('request'))}"></textarea><p id="customRequestHelp" class="pdp-custom-help">${language==='ar'?'تفاصيل التخصيص تُرسل عبر واتساب لتأكيد السعر النهائي.':'Send customization details via WhatsApp so we can confirm the final price.'}</p></div>`:''}<div class="pdp-trust"><section><h2>${esc(t('shipping'))}</h2><p>${esc(t('shippingText'))}</p></section><section><h2>${esc(t('returns'))}</h2><p>${esc(t('returnsText'))} <a href="/${language==='ar'?'ar/':''}refund-policy/">${language==='ar'?'التفاصيل':'Read policy'}</a></p></section><section><h2>${esc(t('support'))}</h2><p>${esc(t('supportText'))} <a href="https://wa.me/${PHONE}" target="_blank" rel="noopener noreferrer">WhatsApp</a></p></section></div></section></div>
       ${product.material||product.dims||product.time_en||product.time_ar?`<section class="pdp-specs"><h2>${esc(t('specs'))}</h2><dl>${product.material?`<div><dt>${esc(t('material'))}</dt><dd>${esc(product.material)}</dd></div>`:''}${product.dims?`<div><dt>${esc(t('dimensions'))}</dt><dd>${esc(product.dims)}</dd></div>`:''}${(language==='ar'?(product.time_ar||product.time_en):product.time_en)?`<div><dt>${esc(t('printTime'))}</dt><dd>${esc(language==='ar'?(product.time_ar||product.time_en):product.time_en)}</dd></div>`:''}</dl></section>`:''}
       ${desc||product.material||product.dims||product.time_en||product.time_ar||product.customizable?`<section class="pdp-features"><h2>${esc(t('features'))}</h2><ul>${product.material?`<li>${esc(t('material'))}: ${esc(product.material)}</li>`:''}${product.dims?`<li>${esc(t('dimensions'))}: ${esc(product.dims)}</li>`:''}${(language==='ar'?(product.time_ar||product.time_en):product.time_en)?`<li>${esc(t('printTime'))}: ${esc(language==='ar'?(product.time_ar||product.time_en):product.time_en)}</li>`:''}${product.customizable?`<li>${language==='ar'?'يمكن طلب تخصيص هذا المنتج. أرسل التفاصيل عبر واتساب.':'Customization can be requested; share details via WhatsApp.'}</li>`:''}</ul></section>`:''}
       <section class="pdp-related"><h2>${esc(t('related'))}</h2><div class="pdp-related-grid">${relatedMarkup(related)}</div></section>`;
+    if(product.slug==='custom-name-stand'){const field=document.querySelector('#customRequest');if(field){const input=document.createElement('input');input.id='customRequest';input.type='text';input.maxLength=30;input.autocomplete='off';input.required=true;input.placeholder=language==='ar'?'اكتب الاسم':'Type the name';input.value=field.value;input.className=field.className;field.replaceWith(input);}}
     renderGallery();updateSeo(product);
     document.querySelector('#pdpStatus').textContent='';
     document.querySelector('#pdpContent').hidden=false; const fallback=document.querySelector('.pdp-static-fallback');if(fallback)fallback.hidden=true;
@@ -187,7 +194,7 @@
     document.querySelector('#pdpQty').addEventListener('input',updateWhatsapp);
     document.querySelector('#pdpAdd').addEventListener('click',addToCart);
     document.querySelector('#customRequest')?.addEventListener('input',()=>{
-      document.querySelector('#pdpAdd').disabled=!isAvailable(product)||Boolean(document.querySelector('#customRequest').value.trim());
+      document.querySelector('#pdpAdd').disabled=!isAvailable(product)||(product.slug==='custom-name-stand'?!document.querySelector('#customRequest').value.trim():Boolean(document.querySelector('#customRequest').value.trim()));
       updateWhatsapp();
     });
     updateWhatsapp();
