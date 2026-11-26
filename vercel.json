@@ -49,6 +49,55 @@
   ],
   "redirects": [
     {
+      "source": "/shop/custom-name-stand",
+      "destination": "/shop/",
+      "permanent": true
+    },
+    {
+      "source": "/shop/custom-name-stand/",
+      "destination": "/shop/",
+      "permanent": true
+    },
+    {
+      "source": "/ar/shop/custom-name-stand",
+      "destination": "/ar/shop/",
+      "permanent": true
+    },
+    {
+      "source": "/ar/shop/custom-name-stand/",
+      "destination": "/ar/shop/",
+      "permanent": true
+    },
+    {
+      "source": "/product.html",
+      "has": [
+        {
+          "type": "query",
+          "key": "slug",
+          "value": "custom-name-stand"
+        },
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "ar"
+        }
+      ],
+      "destination": "/ar/shop/",
+      "permanent": true
+    },
+    {
+      "source": "/product.html",
+      "has": [
+        {
+          "type": "query",
+          "key": "slug",
+          "value": "custom-name-stand"
+        }
+      ],
+      "destination": "/shop/",
+      "permanent": true
+    },
+    {
       "source": "/custom-orders",
       "destination": "/#stl-calculator",
       "permanent": true
