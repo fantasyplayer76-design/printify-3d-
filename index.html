@@ -1132,6 +1132,7 @@
         </div>
         <p id="transferAmountSummary" class="text-sm font-semibold p-3 mt-2 rounded-lg border ink-line" role="status" aria-live="polite"></p>
       </fieldset>
+      <section id="checkoutProofSection" class="hidden proof-upload-card space-y-3" aria-labelledby="checkoutProofTitle"><p id="checkoutProofTitle" class="field-label mb-1" data-i18n="checkoutProofTitle">Payment transfer details and proof</p><p class="text-sm sub" data-i18n="checkoutProofInstructions">Transfer the amount shown above, then attach your payment screenshot before placing the order.</p><p class="rounded-xl border ink-line p-3"><strong data-i18n="checkoutProofWallet">Payment account</strong>: <b id="checkoutProofAccount" dir="ltr"></b></p><a id="checkoutProofOpen" class="btn-outline inline-flex" href="https://ipn.eg/S/marwanmaro36/instapay/60PlFm" target="_blank" rel="noopener noreferrer" data-i18n="checkoutProofOpen">Open InstaPay</a><label for="checkoutProofFile" class="field-label" data-i18n="checkoutProofChoose">Choose payment screenshot (required)</label><input id="checkoutProofFile" type="file" accept="image/png,image/jpeg,image/webp" class="proof-file-input" aria-describedby="checkoutProofHint checkoutProofError"><p id="checkoutProofHint" class="text-xs sub" data-i18n="checkoutProofLimit">PNG, JPG or WebP · maximum 5 MB</p><div id="checkoutProofPreview" class="proof-preview hidden" aria-live="polite"><img id="checkoutProofPreviewImage" alt=""><p class="text-sm"><strong id="checkoutProofFileName"></strong></p></div><p id="checkoutProofError" class="hidden text-sm font-semibold" role="alert" aria-live="assertive"></p></section>
       <p id="codDepositNote" class="deposit-notice" data-i18n="codDepositWhy" role="note">A 50% deposit applies only to custom orders or product totals above EGP 300; otherwise pay the full product total on delivery.</p>
       <input id="ckWebsite" type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
     </div>
@@ -1373,7 +1374,7 @@
     transferFullHint:{en:"Includes delivery",ar:"يشمل التوصيل"},
     transferHalf:{en:"Pay a 50% deposit",ar:"ادفع مقدم 50٪"},
     transferHalfHint:{en:"The other half is due on delivery",ar:"النصف المتبقي يُدفع عند الاستلام"},
-    transferAmountSummary:{en:"Pay now: {due} · Order total: {total} · Remaining: {balance}",ar:"المطلوب الآن: {due} · إجمالي الطلب: {total} · المتبقي: {balance}"}, transferChooseWallet:{en:"Choose InstaPay or Vodafone Cash above to activate these transfer amounts.",ar:"اختار إنستاباي أو فودافون كاش بالأعلى لتفعيل مبلغ التحويل."},
+    transferAmountSummary:{en:"Pay now: {due} · Order total: {total} · Remaining: {balance}",ar:"المطلوب الآن: {due} · إجمالي الطلب: {total} · المتبقي: {balance}"}, transferChooseWallet:{en:"Choose InstaPay or Vodafone Cash above to activate these transfer amounts.",ar:"اختار إنستاباي أو فودافون كاش بالأعلى لتفعيل مبلغ التحويل."}, checkoutProofTitle:{en:"Payment transfer details and proof",ar:"بيانات التحويل وإثبات الدفع"}, checkoutProofInstructions:{en:"Transfer the amount shown above, then attach your payment screenshot before placing the order.",ar:"حوّل المبلغ الموضح بالأعلى ثم أرفق صورة التحويل قبل تأكيد الطلب."}, checkoutProofWallet:{en:"Payment account",ar:"حساب التحويل"}, checkoutProofChoose:{en:"Choose payment screenshot (required)",ar:"اختر صورة إثبات الدفع (مطلوب)"}, checkoutProofLimit:{en:"PNG, JPG or WebP · maximum 5 MB",ar:"PNG أو JPG أو WebP · بحد أقصى 5 ميجا"}, checkoutProofOpen:{en:"Open InstaPay",ar:"افتح إنستاباي"}, checkoutProofNoFile:{en:"Attach the payment screenshot before placing your order.",ar:"أرفق صورة التحويل قبل تأكيد الطلب."}, checkoutProofBadFile:{en:"Choose a PNG, JPG or WebP image up to 5 MB.",ar:"اختر صورة PNG أو JPG أو WebP حتى 5 ميجا."},
     orderWaBtn:{en:"Continue on WhatsApp",ar:"كمّل على واتساب"}, orderShopMore:{en:"Continue shopping",ar:"كمّل تسوق"},
     toastView:{en:"View cart",ar:"عرض العربة"},
     ckNamePh:{en:"Full name",ar:"الاسم بالكامل"}, ckMobilePh:{en:"Mobile number (e.g. 01012345678)",ar:"رقم الموبايل (مثال: 01012345678)"},
@@ -2326,6 +2327,7 @@
     const total=cartTotal()+fee, due=selectedPlan()==='half'?Math.round(total*50)/100:total;
     const summary=$('transferAmountSummary');
     if(summary) summary.textContent=transfer?T('transferAmountSummary').replace('{due}',fmt(due)).replace('{total}',fmt(total)).replace('{balance}',fmt(Math.max(0,total-due))):T('transferChooseWallet');
+    const proof=$('checkoutProofSection'),account=$('checkoutProofAccount'),open=$('checkoutProofOpen');if(proof)proof.classList.toggle('hidden',!transfer);if(account)account.textContent=selectedWallet()==='vodafone'?VODAFONE_NUMBER:INSTAPAY_HANDLE;if(open){open.classList.toggle('hidden',selectedWallet()==='vodafone');open.href=INSTAPAY_LINK;}
   }
   const CHECKOUT_KEY_STORAGE = 'printify3d_checkout_request';
   function keyForCart(){
@@ -2386,6 +2388,8 @@
       deliveryNotes = namesNotes + (deliveryNotes && room > 0 ? ' | NOTE: ' + deliveryNotes.slice(0, room) : '');
     }
     const method = selectedMethod();
+    let transferProofFile=null;
+    if(method!=='cod'){const input=$('checkoutProofFile'),file=input&&input.files&&input.files[0],err=$('checkoutProofError');const typeOk=file&&(['image/png','image/jpeg','image/webp'].includes(file.type)||(!file.type&&/\\.(png|jpe?g|webp)$/i.test(file.name)));if(!file){err.textContent=T('checkoutProofNoFile');err.classList.remove('hidden');input?.focus();input?.scrollIntoView({block:'center',behavior:'smooth'});return;}if(!typeOk||file.size>MAX_PROOF_BYTES){err.textContent=T('checkoutProofBadFile');err.classList.remove('hidden');input.focus();return;}err.classList.add('hidden');transferProofFile=file;}
     const wallet = method === 'instapay' ? selectedWallet() : null;
     // The server treats Vodafone Cash exactly like InstaPay (proof upload + admin review). The note tells the admin which wallet to check.
     if(wallet === 'vodafone'){ deliveryNotes = ('[Wallet: Vodafone Cash]' + (deliveryNotes ? ' | ' + deliveryNotes : '')).slice(0, NOTES_MAX); }
@@ -2439,8 +2443,9 @@
           const ipText = [waLabel, '', `${orderLabel}: ${d.order_number}`, 'Payment: ' + (transferWallet === 'vodafone' ? 'Vodafone Cash' : 'InstaPay'), transferPlan==='half'?'Payment plan: 50% deposit':'Payment plan: full payment', '', ...lines, ...nameWa, '', `${lang==='ar'?'إجمالي الطلب':'Order total'}: ${fmt(transferTotal)}`, `${lang==='ar'?'المطلوب الآن':'Pay now'}: ${fmt(amt)}`, ...(transferPlan==='half'?[ `${lang==='ar'?'المتبقي عند الاستلام':'Remaining due on delivery'}: ${fmt(transferTotal-amt)}`]:[])].join('\n');
           addOrder({ number: String(d.order_number), token: String(d.payment.order_token), amount: amt, wallet: transferWallet, paymentPlan:transferPlan, state: 'awaiting_proof', receipt:{items:receiptItems,total:transferTotal,amountDue:amt,plan:transferPlan,method:transferWallet},
                      wa: `https://wa.me/${WHATSAPP_ORDER}?text=${encodeURIComponent(ipText)}` });
-          // Present the proof uploader first. Keep the idempotency key until that screen renders,
-          // so a browser-side failure can safely replay this same server order instead of duplicating it.
+          // Attach the screenshot selected in checkout using the server-issued order token.
+          // Receipt uploader remains available if this upload needs a retry.
+          try{const proofResult=await uploadProof({number:String(d.order_number),token:String(d.payment.order_token)},transferProofFile);if(!proofResult.ok&&!(proofResult.status===409&&proofResult.data?.code==='already_submitted'))console.warn('Proof upload needs retry',proofResult.status,proofResult.data?.code);}catch(proofError){console.warn('Proof upload needs retry',proofError);}
           viewOrder = String(d.order_number);
           renderCart(); renderBanner();
           showReceipt({number:String(d.order_number),items:receiptItems,total:transferTotal,amountDue:amt,plan:transferPlan,method:transferWallet,wallet:transferWallet},false);
@@ -2905,6 +2910,7 @@
 
   document.querySelectorAll('input[name="payMethod"]').forEach(r => r.addEventListener('change', () => { applyCartStep(); syncTransferPlan(); }));
   document.querySelectorAll('input[name="transferPlan"]').forEach(r => r.addEventListener('change', () => { syncTransferPlan(); clearCheckoutKey(); }));
+  document.addEventListener('change',e=>{if(e.target?.id!=='checkoutProofFile')return;const f=e.target.files?.[0],err=$('checkoutProofError'),preview=$('checkoutProofPreview');err?.classList.add('hidden');if(!f){preview?.classList.add('hidden');return;}const ok=['image/png','image/jpeg','image/webp'].includes(f.type)||(!f.type&&/\\.(png|jpe?g|webp)$/i.test(f.name));if(!ok||f.size>MAX_PROOF_BYTES){err.textContent=T('checkoutProofBadFile');err.classList.remove('hidden');preview.classList.add('hidden');return;}if(window.checkoutProofPreviewUrl)URL.revokeObjectURL(window.checkoutProofPreviewUrl);window.checkoutProofPreviewUrl=URL.createObjectURL(f);$('checkoutProofPreviewImage').src=window.checkoutProofPreviewUrl;$('checkoutProofPreviewImage').alt=f.name;$('checkoutProofFileName').textContent=f.name;preview.classList.remove('hidden');});
 
   // ---- Init ----
   renderBanner(); pollOrders();
