@@ -2131,7 +2131,7 @@
       const input=e.target, file=input.files && input.files[0], preview=$('proofPreview'), image=$('proofPreviewImage'), name=$('proofFileName');
       if(proofPreviewUrl){ URL.revokeObjectURL(proofPreviewUrl); proofPreviewUrl=''; }
       if(!file || !preview || !image || !name) return;
-      const okType=/^image\\/(png|jpeg|webp)$/.test(file.type) || (!file.type && /\\.(png|jpe?g|webp)$/i.test(file.name));
+      const okType=/^image\/(png|jpeg|webp)$/.test(file.type) || (!file.type && /\.(png|jpe?g|webp)$/i.test(file.name));
       if(!okType || file.size > MAX_PROOF_BYTES){ preview.classList.add('hidden'); return; }
       proofPreviewUrl=URL.createObjectURL(file); image.src=proofPreviewUrl; image.alt=P('selectedFile')+': '+file.name; name.textContent=file.name; preview.classList.remove('hidden');
       const err=$('proofError'); if(err) err.classList.add('hidden');
