@@ -2479,12 +2479,19 @@
     }catch(err){
       console.error(err);
       if(confirmedOrderNumber && selectedMethod() !== 'cod'){
-        // A transfer order may already exist even if rendering failed. Restore the cart and preserve
-        // its request key: the next attempt replays the same order and brings the proof screen back.
-        cart = {...checkoutCartSnapshot}; saveCart(); updateCartBadge();
-        surfaceCheckoutError(lang==='ar'
-          ? `تم تسجيل طلب التحويل رقم ${confirmedOrderNumber} لكنه لم يُعرض. الطلب غير مدفوع. اضغط «تأكيد الطلب» مرة أخرى لفتح رفع الإثبات بأمان دون إنشاء طلب مكرر.`
-          : `Transfer order ${confirmedOrderNumber} was received, but its payment screen did not open. It is not paid. Press Place Order again to reopen proof upload safely; the saved request key prevents a duplicate.`);
+        // The order was accepted. Open its saved proof panel directly instead of asking the
+        // customer to place the order again. This avoids duplicate-order anxiety and exposes upload.
+        const savedTransferOrder=orders.find(o=>o.number===confirmedOrderNumber);
+        if(savedTransferOrder){
+          cart={};cartStep='cart';cartNotice='';clearCheckoutKey();saveCart();updateCartBadge();
+          viewOrder=confirmedOrderNumber;renderBanner();renderCart();
+          requestAnimationFrame(()=>{const body=$('cartBody');if(body)body.scrollTo({top:0,behavior:'smooth'});});
+        }else{
+          cart={...checkoutCartSnapshot};saveCart();updateCartBadge();
+          surfaceCheckoutError(lang==='ar'
+            ? `تم تسجيل طلب التحويل رقم ${confirmedOrderNumber}. الطلب غير مدفوع بعد. افتح شريط الدفع أعلى الصفحة لرفع صورة التحويل، أو راسلنا على واتساب.`
+            : `Transfer order ${confirmedOrderNumber} was received but is not paid yet. Open the payment notice at the top of the page to upload your screenshot, or contact us on WhatsApp.`);
+        }
       } else if(confirmedOrderNumber){
         // The server confirmed COD; never tell the customer the request failed.
         cart = {}; cartStep = 'cart'; cartNotice = ''; clearCheckoutKey(); saveCart();
