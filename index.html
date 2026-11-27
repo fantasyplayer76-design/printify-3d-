@@ -1039,7 +1039,7 @@
         <label class="pay-opt"><input type="radio" name="payMethod" id="payVodafone" value="vodafone"><span><strong data-i18n="payVfT">Vodafone Cash</strong><small data-i18n="payVfD">Pay now, then upload a screenshot of your transfer</small></span></label>
         </div>
       </fieldset>
-      <fieldset id="transferPlanField" class="hidden mt-3">
+      <fieldset id="transferPlanField" class="mt-3">
         <legend class="field-label" data-i18n="transferPlanTitle">Choose transfer amount</legend>
         <div class="grid gap-2 mt-2">
           <label class="pay-opt"><input type="radio" name="transferPlan" id="transferFull" value="full" checked><span><strong data-i18n="transferFull">Pay the full order total</strong><small data-i18n="transferFullHint">Includes delivery</small></span></label>
@@ -1283,12 +1283,12 @@
     payTitle:{en:"Payment method",ar:"طريقة الدفع"},
     payCodT:{en:"Cash on delivery",ar:"الدفع عند الاستلام"}, payCodD:{en:"50% deposit only for custom orders or product totals above EGP 300; otherwise pay on delivery",ar:"مقدم 50٪ للطلبات المخصصة أو إجمالي المنتجات فوق 300 جنيه فقط؛ وإلا يُدفع المبلغ عند الاستلام"},
     payIpT:{en:"InstaPay",ar:"إنستاباي"}, payVfT:{en:"Vodafone Cash",ar:"فودافون كاش"}, payVfD:{en:"Choose full payment or a 50% deposit; then upload your transfer screenshot.",ar:"اختار دفع كامل المبلغ أو مقدم 50٪، ثم ارفع لقطة التحويل."}, cartStepsVf:{en:"Place your order, pay the selected amount by Vodafone Cash, and upload the transfer screenshot.",ar:"أرسل طلبك، وادفع المبلغ الذي اخترته بفودافون كاش، ثم ارفع لقطة التحويل."}, payIpD:{en:"Choose full payment or a 50% deposit; then upload your transfer screenshot.",ar:"اختار دفع كامل المبلغ أو مقدم 50٪، ثم ارفع لقطة التحويل."},
-    transferPlanTitle:{en:"Choose transfer amount",ar:"اختار مبلغ التحويل"},
+    transferPlanTitle:{en:"Transfer amount for InstaPay / Vodafone Cash",ar:"مبلغ التحويل عبر إنستاباي أو فودافون كاش"},
     transferFull:{en:"Pay the full order total",ar:"ادفع إجمالي الطلب بالكامل"},
     transferFullHint:{en:"Includes delivery",ar:"يشمل التوصيل"},
     transferHalf:{en:"Pay a 50% deposit",ar:"ادفع مقدم 50٪"},
     transferHalfHint:{en:"The other half is due on delivery",ar:"النصف المتبقي يُدفع عند الاستلام"},
-    transferAmountSummary:{en:"Pay now: {due} · Order total: {total} · Remaining: {balance}",ar:"المطلوب الآن: {due} · إجمالي الطلب: {total} · المتبقي: {balance}"},
+    transferAmountSummary:{en:"Pay now: {due} · Order total: {total} · Remaining: {balance}",ar:"المطلوب الآن: {due} · إجمالي الطلب: {total} · المتبقي: {balance}"}, transferChooseWallet:{en:"Choose InstaPay or Vodafone Cash above to activate these transfer amounts.",ar:"اختار إنستاباي أو فودافون كاش بالأعلى لتفعيل مبلغ التحويل."},
     orderWaBtn:{en:"Continue on WhatsApp",ar:"كمّل على واتساب"}, orderShopMore:{en:"Continue shopping",ar:"كمّل تسوق"},
     toastView:{en:"View cart",ar:"عرض العربة"},
     ckNamePh:{en:"Full name",ar:"الاسم بالكامل"}, ckMobilePh:{en:"Mobile number (e.g. 01012345678)",ar:"رقم الموبايل (مثال: 01012345678)"},
@@ -2187,11 +2187,11 @@
   function selectedPlan(){ const r=document.querySelector('input[name="transferPlan"]:checked'); return r && r.value === 'half' ? 'half' : 'full'; }
   function syncTransferPlan(){
     const field=$('transferPlanField'); if(!field) return;
-    const transfer=selectedMethod() !== 'cod'; field.classList.toggle('hidden',!transfer);
+    const transfer=selectedMethod() !== 'cod'; field.disabled=!transfer; field.classList.remove('hidden');
     const fee=Number.isFinite(selectedDelivery.fee)?selectedDelivery.fee:0;
     const total=cartTotal()+fee, due=selectedPlan()==='half'?Math.round(total*50)/100:total;
     const summary=$('transferAmountSummary');
-    if(summary) summary.textContent=T('transferAmountSummary').replace('{due}',fmt(due)).replace('{total}',fmt(total)).replace('{balance}',fmt(Math.max(0,total-due)));
+    if(summary) summary.textContent=transfer?T('transferAmountSummary').replace('{due}',fmt(due)).replace('{total}',fmt(total)).replace('{balance}',fmt(Math.max(0,total-due))):T('transferChooseWallet');
   }
   const CHECKOUT_KEY_STORAGE = 'printify3d_checkout_request';
   function keyForCart(){
