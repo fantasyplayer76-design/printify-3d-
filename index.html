@@ -228,6 +228,7 @@
   .receipt-confirmation{position:relative;margin:1.6rem 0 1.15rem;padding:3.2rem 1rem 1.2rem;border:1px solid #ead8c7;border-radius:18px;background:linear-gradient(145deg,#f6ede2,#fffaf4);color:#211713;overflow:visible;}
   .receipt-confirmation>span:first-child:not(.receipt-success-mark){display:none;}
   .receipt-confirmation p{max-width:34rem;margin-inline:auto;color:#61564e;line-height:1.6;}
+  .receipt-status-pill{display:inline-flex;align-items:center;min-height:36px;padding:.4rem .9rem;border:1px solid rgba(165,76,64,.35);border-radius:999px;color:var(--brand-text);font-size:.85rem;font-weight:800;background:#fffaf4;}
   .receipt-success-mark{position:absolute;top:-29px;left:50%;display:grid;place-items:center;width:58px;height:58px;transform:translateX(-50%);border:4px solid #fffdf9;border-radius:50%;background:var(--brand);color:#fff;box-shadow:0 0 0 2px var(--brand),0 8px 18px rgba(144,62,49,.22);animation:receipt-check-pop .55s cubic-bezier(.2,.9,.25,1.2) .45s both;}
   .receipt-success-mark svg{width:28px;height:28px;stroke-width:3;}
   .receipt-confirmation-transfer{border-color:rgba(193,80,46,.26);}
@@ -1343,7 +1344,7 @@
     chargesSub:{en:"Base prices stay low — these apply only to work that takes extra time.",ar:"الأسعار الأساسية بسيطة — دي بس للشغل اللي بياخد وقت إضافي."},
     codDepositWhy:{en:"A 50% deposit applies only to custom orders or product totals above EGP 300; otherwise pay the full product total on delivery.",ar:"يُطبق مقدم 50٪ على الطلبات المخصصة أو إجمالي المنتجات فوق 300 جنيه فقط؛ وإلا يُدفع إجمالي المنتجات عند الاستلام."},
     deliveryFeeTitle:{en:"Delivery fees by area",ar:"رسوم التوصيل حسب المنطقة"},
-    deliveryFeeTodo:{en:"Delivery is charged separately and confirmed on WhatsApp.",ar:"تُحسب رسوم التوصيل الثابتة حسب المحافظة وتُضاف إلى الإجمالي."},
+    deliveryFeeTodo:{en:"Choose your governorate to see the flat delivery fee; it is included in the order total.",ar:"اختر المحافظة لمعرفة رسوم التوصيل الثابتة؛ وهي مضافة إلى إجمالي الطلب."},
     testimonialsEyebrow:{en:"Customer words",ar:"آراء العملاء"},
     testimonialsTitle:{en:"Customer reviews",ar:"آراء العملاء"},
     whyTitle:{en:"Why Choose PRINTFY 3D?",ar:"ليه تختار PRINTFY 3D؟"},
@@ -1366,7 +1367,7 @@
     cartTitle:{en:"Your Cart",ar:"عربة التسوق"}, cartTotalLabel:{en:"Total",ar:"الإجمالي"},
     cartCheckoutBtn:{en:"Place Order",ar:"إتمام الطلب"}, cartContinueBtn:{en:"Checkout",ar:"متابعة الدفع"},
     cartEdit:{en:"Edit cart",ar:"تعديل العربة"}, cartDetailsTitle:{en:"Delivery details",ar:"بيانات التوصيل"},
-    cartDeliveryNote:{en:"Delivery is charged separately and confirmed on WhatsApp.",ar:"التوصيل بيتحسب منفصل ونأكده على واتساب."},
+    cartDeliveryNote:{en:"Delivery fee is included in the total and shown separately above.",ar:"رسوم التوصيل مضافة للإجمالي وموضحة بشكل منفصل بالأعلى."},
     cartEmptyTitle:{en:"Your cart is empty",ar:"عربة التسوق فاضية"}, cartEmptySub:{en:"Pick a piece from the shop to get started.",ar:"اختار قطعة من المتجر عشان تبدأ."},
     cartEmptyBtn:{en:"Browse products",ar:"تصفح المنتجات"},
     orderDoneTitle:{en:"Order placed!",ar:"تم إرسال طلبك!"},
@@ -2014,7 +2015,7 @@
     if(kind==='success'){ okEl.textContent = msg; okEl.classList.remove('hidden'); }
   }
   function surfaceCheckoutError(msg){
-    cartNotice=msg;
+    cartNotice='';
     cartStep='details';
     viewOrder=null;
     setCheckoutMsg('error',msg);
@@ -2106,7 +2107,7 @@
     title:{en:'ORDER RECEIPT',ar:'إيصال الطلب'}, order:{en:'Order',ar:'رقم الطلب'}, total:{en:'ORDER TOTAL',ar:'إجمالي الطلب'},
     payNow:{en:'PAYMENT SENT FOR REVIEW',ar:'المبلغ المحول للمراجعة'}, remaining:{en:'Remaining on delivery',ar:'المتبقي عند الاستلام'},
     depositPaid:{en:'50% DEPOSIT CONFIRMED',ar:'تم تأكيد مقدم 50٪'},
-    received:{en:'Thank you! Your order is in.',ar:'شكراً لك! استلمنا طلبك.'},
+    received:{en:'Thank you! Your order is in.',ar:'شكراً لك! استلمنا طلبك.'}, orderReceived:{en:'Order received',ar:'تم استلام الطلب'},
     receivedBody:{en:"Next: upload your transfer screenshot so we can verify payment. Your order is not marked paid until we review it.",ar:'الخطوة التالية: ارفع صورة التحويل لمراجعة الدفع. لن يتم تسجيل الطلب كمدفوع إلا بعد مراجعة الإيصال.'}, codReceivedBody:{en:"We’ve received your order. We’ll confirm delivery details shortly.",ar:'وصلنا طلبك وسنؤكد معك تفاصيل التوصيل قريباً.'}, uploadProof:{en:"Upload transfer proof",ar:"ارفع إثبات التحويل"},
     printReceipt:{en:'Print / Save receipt',ar:'طباعة / حفظ الإيصال'},
     placed:{en:'ORDER PLACED',ar:'تم استلام الطلب'}, paid:{en:'PAYMENT CONFIRMED',ar:'تم تأكيد الدفع'},
@@ -2136,7 +2137,7 @@
       <div id="receiptPaper">
       <button id="receiptClose" type="button" class="icon-btn" aria-label="${lang==='ar'?'إغلاق':'Close'}" style="position:absolute;top:.45rem;inset-inline-end:.45rem;width:34px;height:34px;background:#fff;">×</button>
       <p class="text-center text-[11px] tracking-[.24em] font-semibold sub mb-2">PRINTFY 3D · CAIRO</p>
-      <div class="receipt-confirmation ${method==='cod'?'receipt-confirmation-cod':'receipt-confirmation-transfer'}" role="status"><span class="inline-flex items-center justify-center w-11 h-11 rounded-full" style="background:rgba(255,255,255,.12);color:#f3a089;">${ICON_CHECK}</span><span class="receipt-success-mark" aria-hidden="true">${ICON_CHECK}</span><h3>${RT('received')}</h3><p>${method==='cod'?RT('codReceivedBody'):data.proofSubmitted?T('checkoutProofPending'):RT('receivedBody')}</p></div>
+      <div class="receipt-confirmation ${method==='cod'?'receipt-confirmation-cod':'receipt-confirmation-transfer'}" role="status"><span class="inline-flex items-center justify-center w-11 h-11 rounded-full" style="background:rgba(255,255,255,.12);color:#f3a089;">${ICON_CHECK}</span><span class="receipt-status-pill">${RT('orderReceived')}</span><span class="receipt-success-mark" aria-hidden="true">${ICON_CHECK}</span><h3>${RT('received')}</h3><p>${method==='cod'?RT('codReceivedBody'):data.proofSubmitted?T('checkoutProofPending'):RT('receivedBody')}</p></div>
       <hr class="receipt-rule"><h2 id="receiptTitle" class="text-center text-2xl font-extrabold tracking-wide">${RT('title')}</h2>
       <p class="text-center text-xs sub mt-2">${RT('order')}: <strong dir="ltr">${esc(data.number || '')}</strong></p>
       <p class="text-center text-[11px] font-bold mt-3" style="color:${isPaid?'var(--ok)':method==='instapay'?'#946200':'var(--brand-text)'}">${data.proofSubmitted?T('checkoutProofPending'):state}</p>
