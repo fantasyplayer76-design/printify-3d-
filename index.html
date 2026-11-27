@@ -237,6 +237,8 @@
   .receipt-price-count{font-variant-numeric:tabular-nums;color:var(--brand-text);}
   .receipt-row{font-size:.9rem;}
   #receiptPaper .receipt-action{opacity:1;animation:receipt-ink .35s ease 1.25s both;}
+  .receipt-contact-card{display:grid;gap:.6rem;margin-top:1.1rem;padding:1rem;border:1px solid #e7d9cb;border-radius:16px;background:#fffaf4;}
+  .receipt-contact-card a{font-weight:700;color:var(--brand-text);text-decoration:underline;text-underline-offset:3px;min-height:44px;display:flex;align-items:center;}
   #receiptProofSubmit{box-shadow:0 8px 20px rgba(160,70,58,.22);}
   @keyframes receipt-check-pop{0%{opacity:0;scale:.45}72%{opacity:1;scale:1.14}100%{opacity:1;scale:1}}
   @media(max-width:480px){#receiptPaper{padding:1.3rem 1rem 1.5rem;border-radius:20px 20px 16px 16px}.receipt-confirmation{padding-inline:.8rem}.receipt-confirmation p{font-size:.92rem}}
@@ -1110,12 +1112,15 @@
         <input id="ckGovernorate" data-i18n-placeholder="ckGovPh" placeholder="Choose a governorate above" aria-label="Governorate" class="field" readonly required>
         <input id="ckAddress" autocomplete="street-address" data-i18n-placeholder="ckAddressPh" placeholder="Street / area" aria-label="Street or area" class="field">
       </div>
-      <div class="grid grid-cols-3 gap-3">
-        <input id="ckBuilding" data-i18n-placeholder="ckBuildingPh" placeholder="Building" aria-label="Building" class="field">
-        <input id="ckFloor" data-i18n-placeholder="ckFloorPh" placeholder="Floor" aria-label="Floor" class="field">
-        <input id="ckApartment" data-i18n-placeholder="ckAptPh" placeholder="Apt" aria-label="Apartment" class="field">
-      </div>
-      <textarea id="ckNotes" rows="2" data-i18n-placeholder="ckNotesPh" placeholder="Delivery notes (optional)" aria-label="Delivery notes" class="field"></textarea>
+      <details class="rounded-xl border ink-line px-4 py-3">
+        <summary class="cursor-pointer font-semibold" data-i18n="ckMoreDetails">Add apartment or delivery notes (optional)</summary>
+        <div class="grid grid-cols-3 gap-3 mt-3">
+          <input id="ckBuilding" data-i18n-placeholder="ckBuildingPh" placeholder="Building" aria-label="Building" class="field">
+          <input id="ckFloor" data-i18n-placeholder="ckFloorPh" placeholder="Floor" aria-label="Floor" class="field">
+          <input id="ckApartment" data-i18n-placeholder="ckAptPh" placeholder="Apt" aria-label="Apartment" class="field">
+        </div>
+        <textarea id="ckNotes" rows="2" data-i18n-placeholder="ckNotesPh" placeholder="Delivery notes (optional)" aria-label="Delivery notes" class="field mt-3"></textarea>
+      </details>
       <fieldset class="pt-1">
         <legend class="field-label" data-i18n="payTitle">Payment method</legend>
         <div class="grid gap-2">
@@ -1380,7 +1385,7 @@
     ckNamePh:{en:"Full name",ar:"الاسم بالكامل"}, ckMobilePh:{en:"Mobile number (e.g. 01012345678)",ar:"رقم الموبايل (مثال: 01012345678)"},
     ckGovPh:{en:"Choose a governorate above",ar:"اختر المحافظة أعلاه"}, ckAddressPh:{en:"Street / area",ar:"الشارع / المنطقة"},
     ckBuildingPh:{en:"Building",ar:"المبنى"}, ckFloorPh:{en:"Floor",ar:"الدور"}, ckAptPh:{en:"Apt",ar:"الشقة"},
-    ckNotesPh:{en:"Delivery notes (optional)",ar:"ملاحظات التوصيل (اختياري)"},
+    ckNotesPh:{en:"Delivery notes (optional)",ar:"ملاحظات التوصيل (اختياري)"}, ckMoreDetails:{en:"Add apartment or delivery notes (optional)",ar:"أضف رقم الشقة أو ملاحظات التوصيل (اختياري)"}, checkoutProofPending:{en:"Payment screenshot received — your payment is awaiting review.",ar:"تم استلام صورة التحويل — الدفع في انتظار المراجعة."}, receiptHelp:{en:"Questions about your order?",ar:"عندك سؤال عن طلبك؟"}, receiptWhatsApp:{en:"Message PRINTFY on WhatsApp",ar:"راسل PRINTFY على واتساب"}, receiptEmail:{en:"Email PRINTFY",ar:"راسل PRINTFY بالبريد"},
     instapayBtn:{en:"Pay via InstaPay",ar:"ادفع عبر إنستاباي"},
     cartNote:{en:"Choose Cash on delivery, InstaPay or Vodafone Cash above. We'll confirm your order on WhatsApp either way.", ar:"اختار الدفع عند الاستلام أو إنستاباي أو فودافون كاش فوق. هنأكد طلبك على واتساب في الحالتين."},
     cartStepsIp:{en:"Step 1: Place your order. Step 2: Pay with InstaPay and upload your screenshot.",ar:"الخطوة 1: أرسل طلبك. الخطوة 2: ادفع عبر إنستاباي وارفع لقطة الشاشة."},
@@ -2131,17 +2136,18 @@
       <div id="receiptPaper">
       <button id="receiptClose" type="button" class="icon-btn" aria-label="${lang==='ar'?'إغلاق':'Close'}" style="position:absolute;top:.45rem;inset-inline-end:.45rem;width:34px;height:34px;background:#fff;">×</button>
       <p class="text-center text-[11px] tracking-[.24em] font-semibold sub mb-2">PRINTFY 3D · CAIRO</p>
-      <div class="receipt-confirmation ${method==='cod'?'receipt-confirmation-cod':'receipt-confirmation-transfer'}" role="status"><span class="inline-flex items-center justify-center w-11 h-11 rounded-full" style="background:rgba(255,255,255,.12);color:#f3a089;">${ICON_CHECK}</span><span class="receipt-success-mark" aria-hidden="true">${ICON_CHECK}</span><h3>${RT('received')}</h3><p>${method==='cod'?RT('codReceivedBody'):RT('receivedBody')}</p></div>
+      <div class="receipt-confirmation ${method==='cod'?'receipt-confirmation-cod':'receipt-confirmation-transfer'}" role="status"><span class="inline-flex items-center justify-center w-11 h-11 rounded-full" style="background:rgba(255,255,255,.12);color:#f3a089;">${ICON_CHECK}</span><span class="receipt-success-mark" aria-hidden="true">${ICON_CHECK}</span><h3>${RT('received')}</h3><p>${method==='cod'?RT('codReceivedBody'):data.proofSubmitted?T('checkoutProofPending'):RT('receivedBody')}</p></div>
       <hr class="receipt-rule"><h2 id="receiptTitle" class="text-center text-2xl font-extrabold tracking-wide">${RT('title')}</h2>
       <p class="text-center text-xs sub mt-2">${RT('order')}: <strong dir="ltr">${esc(data.number || '')}</strong></p>
-      <p class="text-center text-[11px] font-bold mt-3" style="color:${isPaid?'var(--ok)':method==='instapay'?'#946200':'var(--brand-text)'}">${state}</p>
+      <p class="text-center text-[11px] font-bold mt-3" style="color:${isPaid?'var(--ok)':method==='instapay'?'#946200':'var(--brand-text)'}">${data.proofSubmitted?T('checkoutProofPending'):state}</p>
       <hr class="receipt-rule">${rows || `<p class="text-sm sub text-center">${esc(RT('subtotal'))}</p>`}
       <hr class="receipt-rule"><div class="receipt-row font-extrabold"><span>${RT('total')}</span><span class="receipt-price-count" data-count-up="${total}" aria-label="${esc(fmt(total))}">0 ${cur()}</span></div>
       <div class="receipt-row text-sm font-bold"><span>${RT('payNow')}</span><span class="receipt-price-count" data-count-up="${amountDue}" aria-label="${esc(fmt(amountDue))}">0 ${cur()}</span></div>
       ${remaining>0?`<div class="receipt-row text-sm"><span>${RT('remaining')}</span><span>${fmt(remaining)}</span></div>`:''}
       <div class="receipt-row text-xs sub"><span>${method==='vodafone'?RT('vodafone'):method==='instapay'?RT('instapay'):RT('cod')}</span><span></span></div>
       <hr class="receipt-rule"><p class="text-center font-extrabold text-xl tracking-wide mt-5">${RT('thanks')}</p><div class="receipt-barcode" aria-hidden="true"></div>
-      ${method!=='cod'&&!isPaid?`<section id="receiptProofUploadCard" class="proof-upload-card space-y-3 mt-5" aria-labelledby="receiptProofTitle"><div><p id="receiptProofTitle" class="field-label mb-1">${RT('uploadProof')}</p><p class="text-sm sub">${P('uploadHint')}</p></div><input id="receiptProofFile" type="file" accept="image/png,image/jpeg,image/webp" class="proof-file-input" aria-label="${RT('uploadProof')}" aria-describedby="receiptProofError"><div class="proof-preview hidden" aria-live="polite"><img alt=""><p class="text-sm"><span class="sub">${P('selectedFile')}:</span> <strong></strong></p></div><p id="receiptProofError" role="alert" aria-live="assertive" class="hidden text-sm font-medium" style="color:var(--brand-text);"></p><p data-proof-success role="status" class="hidden text-sm font-semibold" style="color:var(--ok);"></p><button id="receiptProofSubmit" type="button" class="btn-primary btn-lg w-full" data-number="${esc(data.number||'')}">${P('submit')}</button></section>`:''}
+      <section class="receipt-contact-card"><p class="font-bold mb-2">${T('receiptHelp')}</p><a href="https://wa.me/${WHATSAPP_ORDER}?text=${encodeURIComponent((lang==='ar'?'استفسار عن الطلب ':'Question about order ')+(data.number||''))}" target="_blank" rel="noopener noreferrer">${T('receiptWhatsApp')}</a><a href="mailto:printify3d.eg@gmail.com">${T('receiptEmail')}</a></section>
+      ${method!=='cod'&&!isPaid&&!data.proofSubmitted?`<section id="receiptProofUploadCard" class="proof-upload-card space-y-3 mt-5" aria-labelledby="receiptProofTitle"><div><p id="receiptProofTitle" class="field-label mb-1">${RT('uploadProof')}</p><p class="text-sm sub">${P('uploadHint')}</p></div><input id="receiptProofFile" type="file" accept="image/png,image/jpeg,image/webp" class="proof-file-input" aria-label="${RT('uploadProof')}" aria-describedby="receiptProofError"><div class="proof-preview hidden" aria-live="polite"><img alt=""><p class="text-sm"><span class="sub">${P('selectedFile')}:</span> <strong></strong></p></div><p id="receiptProofError" role="alert" aria-live="assertive" class="hidden text-sm font-medium" style="color:var(--brand-text);"></p><p data-proof-success role="status" class="hidden text-sm font-semibold" style="color:var(--ok);"></p><button id="receiptProofSubmit" type="button" class="btn-primary btn-lg w-full" data-number="${esc(data.number||'')}">${P('submit')}</button></section>`:''}
       <button id="receiptPrint" type="button" class="btn-outline btn-lg w-full mt-3 receipt-action">${RT('printReceipt')}</button>
       <button id="receiptContinue" type="button" class="btn-outline btn-lg w-full mt-3 receipt-action">${RT('close')}</button>
       </div>
@@ -2445,10 +2451,11 @@
                      wa: `https://wa.me/${WHATSAPP_ORDER}?text=${encodeURIComponent(ipText)}` });
           // Attach the screenshot selected in checkout using the server-issued order token.
           // Receipt uploader remains available if this upload needs a retry.
-          try{const proofResult=await uploadProof({number:String(d.order_number),token:String(d.payment.order_token)},transferProofFile);if(!proofResult.ok&&!(proofResult.status===409&&proofResult.data?.code==='already_submitted'))console.warn('Proof upload needs retry',proofResult.status,proofResult.data?.code);}catch(proofError){console.warn('Proof upload needs retry',proofError);}
+          let proofSubmitted=false;
+          try{const proofResult=await uploadProof({number:String(d.order_number),token:String(d.payment.order_token)},transferProofFile);if(proofResult.ok||(proofResult.status===409&&proofResult.data?.code==='already_submitted')){proofSubmitted=true;const savedProofOrder=orders.find(o=>o.number===String(d.order_number));if(savedProofOrder){savedProofOrder.state='under_review';saveOrders();renderBanner();}}else console.warn('Proof upload needs retry',proofResult.status,proofResult.data?.code);}catch(proofError){console.warn('Proof upload needs retry',proofError);}
           viewOrder = String(d.order_number);
           renderCart(); renderBanner();
-          showReceipt({number:String(d.order_number),items:receiptItems,total:transferTotal,amountDue:amt,plan:transferPlan,method:transferWallet,wallet:transferWallet},false);
+          showReceipt({number:String(d.order_number),items:receiptItems,total:transferTotal,amountDue:amt,plan:transferPlan,method:transferWallet,wallet:transferWallet,proofSubmitted},false);
           cart = {}; cartStep = 'cart'; cartNotice = ''; saveCart(); updateCartBadge();
           clearCheckoutKey();
           return;
