@@ -501,6 +501,56 @@
 
 /* cart: keep the form visible while the phone keyboard is open */
 @media (max-width:639px){#cartDrawer:focus-within #cartFooter [data-i18n="cartDeliveryNote"],#cartDrawer:focus-within #cartStepsNote,#cartDrawer:focus-within #cartNote{display:none!important}#cartDrawer:focus-within #cartFooter{padding-top:.5rem}}
+
+  /* PRINTFY clean storefront layout */
+  body{background:#f2f2f0;color:#241f1d}
+  .site-header{background:rgba(255,255,255,.96);border-bottom:1px solid #ece9e6;backdrop-filter:blur(12px)}
+  .site-header>div{max-width:1200px!important}
+  #mainContent{max-width:1280px;margin-inline:auto;background:#fff}
+  #home{background:#fff!important;color:#241f1d!important;min-height:0}
+  #home .hero-inner{max-width:1200px!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(2rem,5vw,4.5rem);padding-block:clamp(3.5rem,7vw,5.5rem)}
+  #home .hero-copy{max-width:35rem}
+  #home .hero h1.hero-title{font-size:clamp(2.8rem,5.6vw,4.6rem);max-width:10ch;line-height:1.02;letter-spacing:-.04em}
+  #home .hero-sub{max-width:27rem;font-size:clamp(1rem,1.4vw,1.15rem);color:#69635f;margin-top:1.2rem}
+  #home .hero-eyebrow{margin-bottom:1.05rem;letter-spacing:.16em}
+  #home .hero-actions{margin-top:1.6rem}
+  #home .hero-photo-wrap{display:block;position:relative;aspect-ratio:1.08;overflow:hidden;border-radius:22px;background:#f3f1ef;box-shadow:0 16px 48px rgba(35,27,23,.08)}
+  #home .hero-photo-wrap img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .45s ease}
+  #home .hero-photo-wrap:hover img{transform:scale(1.025)}
+  #home .hero-photo-tag{position:absolute;inset:auto auto 1rem 1rem;padding:.55rem .75rem;border-radius:999px;background:rgba(255,255,255,.94);color:#a34240;font-size:.68rem;font-weight:700;letter-spacing:.12em}
+  html[dir="rtl"] #home .hero-photo-tag{left:auto;right:1rem}
+  #featuredCollections{background:#fff!important;padding-block:1rem 3.5rem}
+  .collection-heading{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1.1rem}
+  .collection-heading .hero-eyebrow{margin:0 0 .45rem}
+  .collection-heading .section-title{margin:0;font-size:clamp(1.5rem,2.5vw,2rem)}
+  .collection-all{color:#a34240;font-size:.88rem;font-weight:700;text-decoration:underline;text-underline-offset:4px}
+  .featured-collection-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+  .featured-collection-card{display:flex;flex-direction:column;text-align:start;overflow:hidden;width:100%;border:1px solid #eeece9;border-radius:16px;background:#faf9f8;color:#241f1d;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s}
+  .featured-collection-card:hover{transform:translateY(-3px);border-color:#d8c5c2;box-shadow:0 12px 30px rgba(35,27,23,.08)}
+  .featured-collection-photo{display:block;aspect-ratio:1.25;background:#f0eeeb;overflow:hidden}
+  .featured-collection-photo img{display:block;width:100%;height:100%;object-fit:cover}
+  .featured-collection-copy{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.85rem 1rem}
+  .featured-collection-copy strong{font-family:var(--font-display,Georgia,serif);font-size:1.12rem;font-weight:600}
+  .featured-collection-copy span{color:#a34240;font-size:.8rem;font-weight:700}
+  #shop{background:#fff!important;padding-top:2.5rem}
+  #shop .max-w-6xl{max-width:1200px}
+  #shopReviews,#homeTestimonials,#recentCustomerOrders,#catalog,#custom,#faq,#customerReviews{background:#fff}
+  #footer{background:#f7f6f4}
+  @media(max-width:767px){
+    #mainContent{width:100%}
+    #home .hero-inner{grid-template-columns:1fr;gap:1.5rem;padding-block:2.6rem 2.1rem}
+    #home .hero h1.hero-title{font-size:clamp(2.55rem,12vw,3.5rem);max-width:11ch}
+    #home .hero-sub{margin-top:.9rem;font-size:1rem;line-height:1.55}
+    #home .hero-actions{margin-top:1.2rem}
+    #home .hero-photo-wrap{aspect-ratio:1.12;border-radius:16px}
+    #featuredCollections{padding-block:.75rem 2.2rem}
+    .featured-collection-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+    .featured-collection-card:last-child:nth-child(odd){grid-column:1/-1}
+    .featured-collection-photo{aspect-ratio:1.12}
+    .featured-collection-copy{padding:.7rem .75rem}
+    .featured-collection-copy strong{font-size:1rem}
+  }
+  @media(prefers-reduced-motion:reduce){#home .hero-photo-wrap img,.featured-collection-card{transition:none!important}}
 </style><script defer data-domain="www.printfy3d-eg.com" src="https://plausible.io/js/script.js"></script><script defer src="/assets/analytics.js"></script><script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LocalBusiness","name":"PRINTFY 3D","url":"https://www.printfy3d-eg.com/","slogan":"Turn Ideas Into Reality.","description":"Made-to-order 3D printing and personalized 3D printed products in Cairo, Egypt.","telephone":"+20 10 63870873","address":{"@type":"PostalAddress","addressLocality":"Cairo","addressCountry":"EG"},"areaServed":{"@type":"Country","name":"Egypt"},"sameAs":["https://instagram.com/3d_printingcairo","https://facebook.com/Printify3d.eg.official"],"email":"printify3d.eg@gmail.com"}
 </script>
@@ -560,7 +610,7 @@
 <main id="main">
 <!-- HERO -->
 <section id="home" class="hero">
-  <div class="hero-inner max-w-6xl mx-auto px-5 sm:px-6">
+  <div class="hero-inner max-w-6xl mx-auto px-5 sm:px-6 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
     <div class="hero-copy">
       <p class="hero-eyebrow" data-i18n="heroEyebrow">Printed layer by layer in Cairo</p>
       <h1 class="hero-title" data-i18n="heroTitle">3D Printing in Cairo,<br><em>made personal.</em></h1>
@@ -570,6 +620,19 @@
         <a href="/#custom" class="btn-outline btn-lg" data-i18n="heroBtn2">Print my idea</a>
       </div>
     </div>
+    <a id="heroFeatureLink" class="hero-photo-wrap" href="/#shop" aria-label="Explore a PRINTFY 3D product">
+      <img id="heroFeatureImage" src="/assets/products/low-poly-wolf-800.jpg" alt="Low-poly wolf, 3D printed by PRINTFY 3D" width="800" height="800" fetchpriority="high" decoding="async">
+      <span class="hero-photo-tag" aria-hidden="true">PRINTFY 3D · CAIRO</span>
+    </a>
+  </div>
+</section>
+<section id="featuredCollections" class="section featured-collections" aria-labelledby="featuredCollectionsTitle">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6">
+    <div class="collection-heading">
+      <div><p class="hero-eyebrow">PRINTFY PICKS</p><h2 id="featuredCollectionsTitle" class="section-title">Shop by collection</h2></div>
+      <a href="/#shop" class="collection-all">All products</a>
+    </div>
+    <div id="featuredCollectionGrid" class="featured-collection-grid" aria-live="polite"></div>
   </div>
 </section>
 <section id="shopReviews" class="section border-b ink-line hidden" aria-labelledby="shopReviewsTitle"><div class="max-w-6xl mx-auto px-5 sm:px-6"><h2 id="shopReviewsTitle" class="section-title text-center mb-5" data-i18n="testimonialsEyebrow">Customer reviews</h2><div id="shopReviewGrid" class="grid md:grid-cols-3 gap-4"></div></div></section>
@@ -1460,7 +1523,38 @@
   }
 
   // ---- Hero: editorial product photography ----
-  function renderHero() {}
+  function renderHero(){
+    const featured=products.find(p=>p.slug==='low-poly-wolf')||products.find(p=>p.image);
+    const image=$('heroFeatureImage'),link=$('heroFeatureLink');
+    if(featured&&image){
+      const src=(window.EMBEDDED_IMAGES&&window.EMBEDDED_IMAGES[featured.slug])||featured.image;
+      if(src)image.src=src;
+      const lang=getLang(),name=featured[lang]?.name||featured.en?.name||'PRINTFY 3D product';
+      image.alt=`${name} — ${lang==='ar'?'طباعة ثلاثية الأبعاد من PRINTFY 3D':'3D printed by PRINTFY 3D'}`;
+      if(link){link.href=pdpUrl(featured.slug,lang);link.setAttribute('aria-label',lang==='ar'?`استكشف ${name}`:`Explore ${name}`);}
+    }
+    renderFeaturedCollections();
+  }
+  function renderFeaturedCollections(){
+    const wrap=$('featuredCollectionGrid');if(!wrap)return;
+    const lang=getLang(),active=categories.filter(c=>products.some(p=>p.catKey===c.slug)).slice(0,3);
+    wrap.innerHTML=active.map(c=>{
+      const product=products.find(p=>p.catKey===c.slug);if(!product)return '';
+      const label=c[lang]||c.en||c.slug;
+      return `<button type="button" class="featured-collection-card" data-collection-filter="${esc(c.slug)}" aria-label="${esc(lang==='ar'?'تصفح فئة '+label:'Browse '+label)}">
+        <span class="featured-collection-photo">${productMedia(product,34,'',false,'cover')}</span>
+        <span class="featured-collection-copy"><strong>${esc(label)}</strong><span>${lang==='ar'?'تسوق ←':'Shop →'}</span></span>
+      </button>`;
+    }).join('');
+    const title=$('featuredCollectionsTitle'),eyebrow=wrap.parentElement.querySelector('.hero-eyebrow'),all=wrap.parentElement.querySelector('.collection-all');
+    if(title)title.textContent=lang==='ar'?'تسوق حسب الفئة':'Shop by collection';
+    if(eyebrow)eyebrow.textContent=lang==='ar'?'مختارات PRINTFY':'PRINTFY PICKS';
+    if(all)all.textContent=lang==='ar'?'كل المنتجات':'All products';
+  }
+  $('featuredCollections')?.addEventListener('click',e=>{
+    const button=e.target.closest('[data-collection-filter]');if(!button)return;
+    currentFilter=button.dataset.collectionFilter;renderChips();renderGrid();location.hash='shop';
+  });
 
   // ---- Full catalog (price list) ----
   function renderCatalog(){
