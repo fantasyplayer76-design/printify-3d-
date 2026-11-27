@@ -545,13 +545,6 @@
     <div id="heroVisual" aria-label="Featured products"><img class="hero-visual-placeholder" src="/assets/products/low-poly-wolf-800.jpg" alt="Low-poly wolf — 3D printed by PRINTFY 3D" width="800" height="533" fetchpriority="high" decoding="async"></div>
   </div>
 </section>
-<section class="trust-strip" aria-label="PRINTFY 3D service information">
-  <div class="trust-strip-inner">
-    <div><span class="trust-mark" aria-hidden="true">✦</span><strong data-i18n="trustMade">Made to order</strong></div>
-    <div><span class="trust-mark" aria-hidden="true">◷</span><strong data-i18n="trustReady">Ready in 24–72 hours</strong></div>
-    <div><span class="trust-mark" aria-hidden="true">⌖</span><strong data-i18n="trustDelivery">Delivery across Egypt · Cash on delivery, InstaPay or Vodafone Cash</strong></div>
-  </div>
-</section>
 <section id="shopReviews" class="section border-b ink-line hidden" aria-labelledby="shopReviewsTitle"><div class="max-w-6xl mx-auto px-5 sm:px-6"><h2 id="shopReviewsTitle" class="section-title text-center mb-5" data-i18n="testimonialsEyebrow">Customer reviews</h2><div id="shopReviewGrid" class="grid md:grid-cols-3 gap-4"></div></div></section>
 <section id="shop" class="section">
   <div class="max-w-6xl mx-auto px-5 sm:px-6">
@@ -1099,12 +1092,19 @@
 <script>
   const $ = id => document.getElementById(id);
 
-  // Reveal-on-scroll for main-site sections only (policy pages are excluded so they never render blank)
-  document.querySelectorAll('#mainContent section').forEach(el => el.classList.add('fade-up'));
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, {threshold:0.05});
-  document.querySelectorAll('#mainContent section').forEach(el => io.observe(el));
+  // Reveal long sections as soon as any part enters the viewport.
+  // A non-zero ratio threshold hid the tall, single-column mobile catalog indefinitely.
+  const mainSections = [...document.querySelectorAll('#mainContent section')];
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+      });
+    }, { threshold: 0 });
+    mainSections.forEach(section => { section.classList.add('fade-up'); io.observe(section); });
+  } else {
+    mainSections.forEach(section => section.classList.add('in'));
+  }
   document.querySelector('#home')?.classList.add('in');
 
   // ---- Mobile menu ----
