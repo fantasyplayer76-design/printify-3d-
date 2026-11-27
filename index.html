@@ -1039,6 +1039,14 @@
         <label class="pay-opt"><input type="radio" name="payMethod" id="payVodafone" value="vodafone"><span><strong data-i18n="payVfT">Vodafone Cash</strong><small data-i18n="payVfD">Pay now, then upload a screenshot of your transfer</small></span></label>
         </div>
       </fieldset>
+      <fieldset id="transferPlanField" class="hidden mt-3">
+        <legend class="field-label" data-i18n="transferPlanTitle">Choose transfer amount</legend>
+        <div class="grid gap-2 mt-2">
+          <label class="pay-opt"><input type="radio" name="transferPlan" id="transferFull" value="full" checked><span><strong data-i18n="transferFull">Pay the full order total</strong><small data-i18n="transferFullHint">Includes delivery</small></span></label>
+          <label class="pay-opt"><input type="radio" name="transferPlan" id="transferHalf" value="half"><span><strong data-i18n="transferHalf">Pay a 50% deposit</strong><small data-i18n="transferHalfHint">The other half is due on delivery</small></span></label>
+        </div>
+        <p id="transferAmountSummary" class="text-sm font-semibold p-3 mt-2 rounded-lg border ink-line" role="status" aria-live="polite"></p>
+      </fieldset>
       <p id="codDepositNote" class="deposit-notice" data-i18n="codDepositWhy" role="note">A 50% deposit applies only to custom orders or product totals above EGP 300; otherwise pay the full product total on delivery.</p>
       <input id="ckWebsite" type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
     </div>
@@ -1274,7 +1282,13 @@
     customSentMsg:{en:"Request received! Now tap “Continue on WhatsApp” and send your photos or STL file there.",ar:"استلمنا طلبك! دلوقتي اضغط «كمّل على واتساب» وابعت صورك أو ملف STL هناك."},
     payTitle:{en:"Payment method",ar:"طريقة الدفع"},
     payCodT:{en:"Cash on delivery",ar:"الدفع عند الاستلام"}, payCodD:{en:"50% deposit only for custom orders or product totals above EGP 300; otherwise pay on delivery",ar:"مقدم 50٪ للطلبات المخصصة أو إجمالي المنتجات فوق 300 جنيه فقط؛ وإلا يُدفع المبلغ عند الاستلام"},
-    payIpT:{en:"InstaPay",ar:"إنستاباي"}, payVfT:{en:"Vodafone Cash",ar:"فودافون كاش"}, payVfD:{en:"Pay now, then upload a screenshot of your transfer",ar:"ادفع الآن ثم ارفع لقطة شاشة التحويل"}, cartStepsVf:{en:"Step 1: Place your order. Step 2: Pay with Vodafone Cash and upload your screenshot.",ar:"الخطوة 1: أرسل طلبك. الخطوة 2: ادفع عبر فودافون كاش وارفع لقطة الشاشة."}, payIpD:{en:"Pay now, then upload a screenshot of your transfer",ar:"ادفع الآن ثم ارفع لقطة شاشة للتحويل"},
+    payIpT:{en:"InstaPay",ar:"إنستاباي"}, payVfT:{en:"Vodafone Cash",ar:"فودافون كاش"}, payVfD:{en:"Choose full payment or a 50% deposit; then upload your transfer screenshot.",ar:"اختار دفع كامل المبلغ أو مقدم 50٪، ثم ارفع لقطة التحويل."}, cartStepsVf:{en:"Place your order, pay the selected amount by Vodafone Cash, and upload the transfer screenshot.",ar:"أرسل طلبك، وادفع المبلغ الذي اخترته بفودافون كاش، ثم ارفع لقطة التحويل."}, payIpD:{en:"Choose full payment or a 50% deposit; then upload your transfer screenshot.",ar:"اختار دفع كامل المبلغ أو مقدم 50٪، ثم ارفع لقطة التحويل."},
+    transferPlanTitle:{en:"Choose transfer amount",ar:"اختار مبلغ التحويل"},
+    transferFull:{en:"Pay the full order total",ar:"ادفع إجمالي الطلب بالكامل"},
+    transferFullHint:{en:"Includes delivery",ar:"يشمل التوصيل"},
+    transferHalf:{en:"Pay a 50% deposit",ar:"ادفع مقدم 50٪"},
+    transferHalfHint:{en:"The other half is due on delivery",ar:"النصف المتبقي يُدفع عند الاستلام"},
+    transferAmountSummary:{en:"Pay now: {due} · Order total: {total} · Remaining: {balance}",ar:"المطلوب الآن: {due} · إجمالي الطلب: {total} · المتبقي: {balance}"},
     orderWaBtn:{en:"Continue on WhatsApp",ar:"كمّل على واتساب"}, orderShopMore:{en:"Continue shopping",ar:"كمّل تسوق"},
     toastView:{en:"View cart",ar:"عرض العربة"},
     ckNamePh:{en:"Full name",ar:"الاسم بالكامل"}, ckMobilePh:{en:"Mobile number (e.g. 01012345678)",ar:"رقم الموبايل (مثال: 01012345678)"},
@@ -1734,7 +1748,7 @@
     const details = hasItems && cartStep === 'details';
     $('checkoutFields').classList.toggle('hidden', !details);
     $('cartStepsNote').classList.toggle('hidden', !details);
-    $('cartStepsNote').textContent = selectedMethod() === 'instapay' ? T(selectedWallet()==='vodafone' ? 'cartStepsVf' : 'cartStepsIp') : T('cartStepsNote');
+    $('cartStepsNote').textContent = selectedMethod() !== 'cod' ? T(selectedWallet()==='vodafone' ? 'cartStepsVf' : 'cartStepsIp') : T('cartStepsNote');
     const codSelected = selectedMethod() === 'cod';
     const depositRequired = codDepositRequired();
     const codDeposit = cartTotal() * 0.5;
@@ -1746,6 +1760,7 @@
     $('cartNote').classList.toggle('hidden', !details);
     $('cartCheckoutLabel').textContent = details ? T('cartCheckoutBtn') : T('cartContinueBtn');
     $('cartFooter').classList.toggle('hidden', !hasItems);
+    syncTransferPlan();
   }
 
   function renderCart(){
@@ -1912,6 +1927,9 @@
   const PAY = {
     title:{en:'Your order',ar:'طلبك'}, amount:{en:'Amount to pay',ar:'المبلغ المطلوب'},
     delivNote:{en:'Delivery is charged separately and confirmed on WhatsApp.',ar:'التوصيل بيتحسب منفصل ونأكده على واتساب.'},
+    balanceDue:{en:'Remaining on delivery: {balance}',ar:'المتبقي عند الاستلام: {balance}'},
+    depositPaidTitle:{en:'50% deposit confirmed',ar:'تم تأكيد مقدم 50٪'},
+    depositPaidBody:{en:'Your deposit is confirmed. The remaining amount is due on delivery.',ar:'تم تأكيد المقدم. يُدفع المبلغ المتبقي عند الاستلام.'},
     s1:{en:'Send exactly this amount on InstaPay to:',ar:'حوّل هذا المبلغ بالظبط على إنستاباي إلى:'},
     open:{en:'Open InstaPay',ar:'افتح إنستاباي'}, s1Vf:{en:'Send exactly this amount by Vodafone Cash to:',ar:'حوّل هذا المبلغ بالظبط على فودافون كاش إلى:'}, bAwaitVf:{en:'payment pending — upload your Vodafone Cash proof',ar:'الدفع معلّق — ارفع إثبات فودافون كاش'}, copy:{en:'Copy',ar:'نسخ'}, copied:{en:'Copied',ar:'تم النسخ'},
     s2:{en:'Take a screenshot of the transfer confirmation.',ar:'خد لقطة شاشة لتأكيد التحويل.'},
@@ -1932,6 +1950,7 @@
     view:{en:'View',ar:'عرض'}, dismiss:{en:'Dismiss',ar:'إخفاء'},
     bAwait:{en:'payment pending — upload your InstaPay proof',ar:'الدفع معلّق — ارفع إثبات إنستاباي'},
     bReview:{en:'payment proof submitted — waiting for confirmation',ar:'تم إرسال إثبات الدفع — في انتظار التأكيد'},
+    bDeposit:{en:'50% deposit confirmed — balance due on delivery',ar:'تم تأكيد مقدم 50٪ — المتبقي عند الاستلام'},
     bRej:{en:'payment proof rejected — please submit a new one',ar:'تم رفض إثبات الدفع — ارفع إثبات جديد'},
     bPaid:{en:'payment confirmed ✓',ar:'تم تأكيد الدفع ✓'}, toastPaid:{en:'Payment confirmed',ar:'تم تأكيد الدفع'},
     errType:{en:'Please choose a PNG, JPG or WebP screenshot.',ar:'اختار لقطة شاشة بصيغة PNG أو JPG أو WebP.'},
@@ -1944,7 +1963,9 @@
   };
   const P = k => PAY[k][getLang()];
   const RECEIPT_TEXT = {
-    title:{en:'RECEIPT',ar:'إيصال'}, order:{en:'Order',ar:'رقم الطلب'}, total:{en:'TOTAL AMOUNT',ar:'الإجمالي'},
+    title:{en:'ORDER RECEIPT',ar:'إيصال الطلب'}, order:{en:'Order',ar:'رقم الطلب'}, total:{en:'ORDER TOTAL',ar:'إجمالي الطلب'},
+    payNow:{en:'PAYMENT SENT FOR REVIEW',ar:'المبلغ المحول للمراجعة'}, remaining:{en:'Remaining on delivery',ar:'المتبقي عند الاستلام'},
+    depositPaid:{en:'50% DEPOSIT CONFIRMED',ar:'تم تأكيد مقدم 50٪'},
     received:{en:'Thank you! Your order is in.',ar:'شكراً لك! استلمنا طلبك.'},
     receivedBody:{en:"We’ve received your order. We’ll confirm the next steps shortly.",ar:'وصلنا طلبك وسنؤكد معك الخطوات التالية قريباً.'},
     printReceipt:{en:'Print / Save receipt',ar:'طباعة / حفظ الإيصال'},
@@ -1963,8 +1984,11 @@
   }
   function showReceipt(data, isPaid){
     const lang = getLang(), items = receiptRows(data.items), total = Number(data.total) || 0;
-    const method = data.method === 'instapay' ? 'instapay' : 'cod';
-    const state = isPaid ? RT('paid') : method === 'instapay' ? RT('pending') : RT('placed');
+    const method = ['instapay','vodafone'].includes(data.method) ? data.method : 'cod';
+    const amountDue = Number(data.amountDue ?? total) || 0;
+    const remaining = Math.max(0,total-amountDue);
+    const depositConfirmed = isPaid && data.plan === 'half' && remaining > 0;
+    const state = depositConfirmed ? RT('depositPaid') : isPaid ? RT('paid') : method !== 'cod' ? RT('pending') : RT('placed');
     const rows = items.map((item,index) => `<div class="receipt-row" style="--row-index:${Math.min(index,7)}"><span>${esc(item.qty)} × ${esc(item.name)}</span><span>${fmt(item.price * item.qty)}</span></div>`).join('');
     const dialog = $('receiptDialog');
     dialog.innerHTML = `<div class="receipt-machine" dir="${lang==='ar'?'rtl':'ltr'}">
@@ -1978,7 +2002,9 @@
       <p class="text-center text-[11px] font-bold mt-3" style="color:${isPaid?'var(--ok)':method==='instapay'?'#946200':'var(--brand-text)'}">${state}</p>
       <hr class="receipt-rule">${rows || `<p class="text-sm sub text-center">${esc(RT('subtotal'))}</p>`}
       <hr class="receipt-rule"><div class="receipt-row font-extrabold"><span>${RT('total')}</span><span>${fmt(total)}</span></div>
-      <div class="receipt-row text-xs sub"><span>${method==='instapay'?(data.wallet==='vodafone'?RT('vodafone'):RT('instapay')):RT('cod')}</span><span></span></div>
+      <div class="receipt-row text-sm font-bold"><span>${RT('payNow')}</span><span>${fmt(amountDue)}</span></div>
+      ${remaining>0?`<div class="receipt-row text-sm"><span>${RT('remaining')}</span><span>${fmt(remaining)}</span></div>`:''}
+      <div class="receipt-row text-xs sub"><span>${method==='vodafone'?RT('vodafone'):method==='instapay'?RT('instapay'):RT('cod')}</span><span></span></div>
       <hr class="receipt-rule"><p class="text-center font-extrabold text-xl tracking-wide mt-5">${RT('thanks')}</p><div class="receipt-barcode" aria-hidden="true"></div>
       <button id="receiptPrint" type="button" class="btn-outline btn-lg w-full mt-5 receipt-action">${RT('printReceipt')}</button>
       <button id="receiptContinue" type="button" class="btn-primary btn-lg w-full mt-3 receipt-action">${RT('close')}</button>
@@ -2001,8 +2027,9 @@
       const now = Date.now();
       return a.filter(o => o && /^P3D-[A-Z0-9]{4,30}$/.test(String(o.number)) && typeof o.token === 'string' && /^[A-Za-z0-9_-]{20,100}$/.test(o.token) && Number.isFinite(Number(o.ts)) && now - Number(o.ts) < 30*86400000)
         .slice(-5).map(o => ({ number:o.number, token:o.token, amount:Number(o.amount)||0,
-          state:['awaiting_proof','under_review','paid','rejected'].includes(o.state) ? o.state : 'awaiting_proof',
-          reason: typeof o.reason === 'string' ? o.reason.slice(0,500) : '', receipt: o.receipt && Array.isArray(o.receipt.items) ? {items:o.receipt.items.slice(0,50).map(i=>({name:String(i.name||'Item').slice(0,120),qty:Math.max(1,Number(i.qty)||1),price:Math.max(0,Number(i.price)||0)})),total:Math.max(0,Number(o.receipt.total)||0),method:o.receipt.method==='instapay'?'instapay':'cod',wallet:o.receipt.wallet==='vodafone'?'vodafone':'instapay'} : null,
+          state:['awaiting_proof','under_review','paid','deposit_paid','rejected'].includes(o.state) ? o.state : 'awaiting_proof',
+          paymentPlan:o.paymentPlan==='half'?'half':'full',
+          reason: typeof o.reason === 'string' ? o.reason.slice(0,500) : '', receipt: o.receipt && Array.isArray(o.receipt.items) ? {items:o.receipt.items.slice(0,50).map(i=>({name:String(i.name||'Item').slice(0,120),qty:Math.max(1,Number(i.qty)||1),price:Math.max(0,Number(i.price)||0)})),total:Math.max(0,Number(o.receipt.total)||0),amountDue:Math.max(0,Number(o.receipt.amountDue ?? o.receipt.total)||0),plan:o.receipt.plan==='half'?'half':'full',method:['instapay','vodafone'].includes(o.receipt.method)?o.receipt.method:'instapay',wallet:o.receipt.wallet==='vodafone'?'vodafone':'instapay'} : null,
  wallet: o.wallet === 'vodafone' ? 'vodafone' : 'instapay',
           wa: typeof o.wa === 'string' && o.wa.startsWith('https://wa.me/') ? o.wa : '', ts:Number(o.ts), dismissed:!!o.dismissed }));
     }catch(e){ return []; }
@@ -2013,6 +2040,7 @@
   function addOrder(o){ orders = orders.filter(x => x.number !== o.number); orders.push({ reason:'', dismissed:false, ts:Date.now(), ...o }); orders = orders.slice(-5); saveOrders(); }
   function stateFromStatus(s){
     if(s.payment_status === 'paid') return 'paid';
+    if(s.payment_status === 'deposit_paid') return 'deposit_paid';
     if(s.proof_status === 'pending_review') return 'under_review';
     if(s.payment_status === 'payment_rejected') return 'rejected';
     return 'awaiting_proof';
@@ -2024,14 +2052,14 @@
       if(r.ok && r.data.payment_method){
         const prev = o.state;
         o.state = stateFromStatus(r.data); o.amount = Number(r.data.amount) || o.amount; o.reason = r.data.reject_reason || '';
-        if(prev !== o.state && o.state === 'paid'){ o.dismissed = false; showInfoToast(P('toastPaid') + ' · ' + o.number); if(o.receipt) showReceipt({number:o.number,...o.receipt}, true); }
+        if(prev !== o.state && ['paid','deposit_paid'].includes(o.state)){ o.dismissed = false; showInfoToast(P(o.state==='deposit_paid'?'depositPaidTitle':'toastPaid') + ' · ' + o.number); if(o.receipt) showReceipt({number:o.number,...o.receipt}, true); }
       } else if(r.status === 404){ o.gone = true; }
     }catch(e){ /* offline: keep the last known state */ }
   }
   let polling = false;
   async function pollOrders(){
     if(polling) return;
-    const live = orders.filter(o => o.state !== 'paid');
+    const live = orders.filter(o => !['paid','deposit_paid'].includes(o.state));
     if(!live.length) return;
     polling = true;
     try{
@@ -2044,13 +2072,13 @@
   }
 
   function bannerEntry(){
-    const rank = { rejected:0, awaiting_proof:1, under_review:2, paid:3 };
+    const rank = { rejected:0, awaiting_proof:1, under_review:2, deposit_paid:3, paid:4 };
     return orders.filter(o => !(o.state === 'paid' && o.dismissed)).sort((a,b) => rank[a.state]-rank[b.state] || b.ts-a.ts)[0] || null;
   }
   function renderBanner(){
     const el = $('payBanner'), o = bannerEntry();
     if(!o){ el.classList.add('hidden'); return; }
-    const map = { awaiting_proof:(o.wallet === 'vodafone' ? 'bAwaitVf' : 'bAwait'), under_review:'bReview', rejected:'bRej', paid:'bPaid' };
+    const map = { awaiting_proof:(o.wallet === 'vodafone' ? 'bAwaitVf' : 'bAwait'), under_review:'bReview', rejected:'bRej', deposit_paid:'bDeposit', paid:'bPaid' };
     $('payBannerText').textContent = `${o.number}: ${P(map[o.state])}`;
     $('payBannerView').textContent = P('view'); $('payBannerView').dataset.number = o.number;
     $('payBannerClose').classList.toggle('hidden', o.state !== 'paid'); $('payBannerClose').setAttribute('aria-label', P('dismiss'));
@@ -2063,7 +2091,7 @@
     const hasCart = Object.keys(cart).length > 0;
     const wa = o.wa ? `<a href="${esc(o.wa)}" target="_blank" rel="noopener noreferrer" class="btn-outline w-full text-sm mt-3">${P('wa')}</a>` : '';
     const head = `<div class="text-center"><p class="eyebrow sub">${P('title')}</p><p class="display text-xl font-bold" dir="ltr">${esc(o.number)}</p></div>`;
-    const amountBox = `<div class="rounded-xl p-4 text-center my-4" style="background:var(--bg);"><p class="text-xs sub">${P('amount')}</p><p style="margin:.2rem 0;">${priceHtml(o.amount).replace('price-num"','price-num" style="font-size:1.9rem;"')}</p><p class="text-xs sub">${P('delivNote')}</p></div>`;
+    const amountBox = `<div class="rounded-xl p-4 text-center my-4" style="background:var(--bg);"><p class="text-xs sub">${P('amount')}</p><p style="margin:.2rem 0;">${priceHtml(o.amount).replace('price-num"','price-num" style="font-size:1.9rem;"')}</p><p class="text-xs sub">${o.paymentPlan==='half'?P('balanceDue').replace('{balance}',fmt(Math.max(0,(o.receipt?.total||o.amount*2)-o.amount))):P('delivNote')}</p></div>`;
     const steps = `<ol class="space-y-4 text-sm mb-5">
       <li class="flex gap-3"><span class="step-num">1</span><div class="pt-1 min-w-0"><p>${P(o.wallet==='vodafone'?'s1Vf':'s1')}</p><p class="font-bold mt-1 break-all" dir="ltr" style="unicode-bidi:isolate;">${esc(o.wallet==='vodafone'?VODAFONE_NUMBER:INSTAPAY_HANDLE)}</p>
         <div class="flex gap-2 mt-2">${o.wallet==='vodafone'?'':`<a href="${esc(INSTAPAY_LINK)}" target="_blank" rel="noopener noreferrer" class="btn-primary px-4 text-xs" style="min-height:38px;">${P('open')}</a>`}<button type="button" id="ipCopy" data-copy="${esc(o.wallet==='vodafone'?VODAFONE_NUMBER:INSTAPAY_HANDLE)}" class="btn-outline px-4 text-xs" style="min-height:38px;">${P('copy')}</button></div></div></li>
@@ -2077,6 +2105,10 @@
       <p id="proofError" role="alert" aria-live="assertive" class="hidden text-sm font-medium" style="color:var(--brand-text);"></p>
       <button id="proofSubmit" type="button" class="btn-primary btn-lg w-full" data-number="${esc(o.number)}">${P('submit')}</button></section>`;
     const nav = `<div class="flex items-center justify-center gap-5 mt-5 text-sm">${hasCart ? `<button type="button" id="orderBack" class="underline sub">${P('back')}</button>` : ''}<button type="button" id="orderMore" class="underline sub">${P('more')}</button></div>`;
+    if(o.state === 'deposit_paid'){
+      return `<div class="py-4" role="status">${head}<div class="mx-auto my-5 w-14 h-14 rounded-full flex items-center justify-center" style="background:rgba(47,125,79,.12); color:var(--ok);">${ICON_CHECK}</div>
+        <h3 class="font-bold text-lg text-center mb-1">${P('depositPaidTitle')}</h3><p class="text-sm sub text-center">${P('depositPaidBody')}</p><p class="text-sm font-bold text-center mt-3">${P('balanceDue').replace('{balance}',fmt(Math.max(0,(o.receipt?.total||o.amount*2)-o.amount)))}</p>${wa}${nav}</div>`;
+    }
     if(o.state === 'paid'){
       return `<div class="py-4" role="status">${head}<div class="mx-auto my-5 w-14 h-14 rounded-full flex items-center justify-center" style="background:rgba(47,125,79,.12); color:var(--ok);">${ICON_CHECK}</div>
         <h3 class="font-bold text-lg text-center mb-1">${P('paidTitle')}</h3><p class="text-sm sub text-center">${P('paidBody')}</p>${wa}${nav}</div>`;
@@ -2149,9 +2181,18 @@
   // One idempotency key per cart contents: if the request is retried or double-submitted (or the
   // response is lost), the server returns the SAME order instead of creating another one.
   let checkoutKey = null, checkoutKeySig = '', checkoutBusy = false;
-  function cartSig(){return Object.keys(cart).sort().map(id=>id+':'+cart[id]).join(',')+'|'+selectedMethod()+'|'+JSON.stringify(cartNames);}
-  function selectedMethod(){ const r = document.querySelector('input[name="payMethod"]:checked'); return r && (r.value === 'instapay' || r.value === 'vodafone') ? 'instapay' : 'cod'; }
-  function selectedWallet(){ const r = document.querySelector('input[name="payMethod"]:checked'); return r && r.value === 'vodafone' ? 'vodafone' : 'instapay'; }
+  function cartSig(){return Object.keys(cart).sort().map(id=>id+':'+cart[id]).join(',')+'|'+selectedMethod()+'|'+selectedPlan()+'|'+JSON.stringify(cartNames);}
+  function selectedMethod(){ const r = document.querySelector('input[name="payMethod"]:checked'); return r && ['instapay','vodafone'].includes(r.value) ? r.value : 'cod'; }
+  function selectedWallet(){ return selectedMethod() === 'vodafone' ? 'vodafone' : 'instapay'; }
+  function selectedPlan(){ const r=document.querySelector('input[name="transferPlan"]:checked'); return r && r.value === 'half' ? 'half' : 'full'; }
+  function syncTransferPlan(){
+    const field=$('transferPlanField'); if(!field) return;
+    const transfer=selectedMethod() !== 'cod'; field.classList.toggle('hidden',!transfer);
+    const fee=Number.isFinite(selectedDelivery.fee)?selectedDelivery.fee:0;
+    const total=cartTotal()+fee, due=selectedPlan()==='half'?Math.round(total*50)/100:total;
+    const summary=$('transferAmountSummary');
+    if(summary) summary.textContent=T('transferAmountSummary').replace('{due}',fmt(due)).replace('{total}',fmt(total)).replace('{balance}',fmt(Math.max(0,total-due)));
+  }
   const CHECKOUT_KEY_STORAGE = 'printify3d_checkout_request';
   function keyForCart(){
     const sig = cartSig();
@@ -2222,7 +2263,8 @@
       // Only ids + quantities are sent. The server looks up real prices/availability itself.
       items: ids.map(id => ({ product_id: Number(id), qty: cart[id] })),
       client_request_id: keyForCart(),
-      payment_method: method,          // 'cod' | 'instapay' — the server decides everything else (status, amount)
+      payment_method: method,          // 'cod' | 'instapay' | 'vodafone'
+      payment_plan: method === 'cod' ? 'full' : selectedPlan(), // the server computes the payable amount
     };
 
     const btn = this;
@@ -2256,15 +2298,16 @@
         const receiptItems = Array.isArray(d.items) && d.items.length ? d.items : ids.map(id => { const p=products.find(x=>x.id===id); return {name:p[lang].name,qty:cart[id],price:p.price}; });
         // InstaPay: the order exists as payment_pending. Show the payment panel (amount comes from the SERVER).
         // Never auto-open WhatsApp here: the customer should pay and upload proof first.
-        if(method === 'instapay' && d.payment && d.payment.order_token){
-          const amt = Number(d.payment.amount);
-          const ipText = [waLabel, '', `${orderLabel}: ${d.order_number}`, 'Payment: ' + (wallet === 'vodafone' ? 'Vodafone Cash' : 'InstaPay'), '', ...lines, ...nameWa, '', `${totalLabel}: ${amt} EGP`].join('\n');
-          addOrder({ number: String(d.order_number), token: String(d.payment.order_token), amount: amt, wallet: wallet, state: 'awaiting_proof', receipt:{items:receiptItems,total:amt,method:'instapay',wallet},
+        if(method !== 'cod' && d.payment && d.payment.order_token){
+          const amt = Number(d.payment.amount), transferTotal=Number(d.payment.total)||Number(d.grand_total)||amt;
+          const transferPlan=d.payment.plan==='half'?'half':'full', transferWallet=d.payment.method==='vodafone'?'vodafone':'instapay';
+          const ipText = [waLabel, '', `${orderLabel}: ${d.order_number}`, 'Payment: ' + (transferWallet === 'vodafone' ? 'Vodafone Cash' : 'InstaPay'), transferPlan==='half'?'Payment plan: 50% deposit':'Payment plan: full payment', '', ...lines, ...nameWa, '', `${lang==='ar'?'إجمالي الطلب':'Order total'}: ${fmt(transferTotal)}`, `${lang==='ar'?'المطلوب الآن':'Pay now'}: ${fmt(amt)}`, ...(transferPlan==='half'?[ `${lang==='ar'?'المتبقي عند الاستلام':'Remaining due on delivery'}: ${fmt(transferTotal-amt)}`]:[])].join('\n');
+          addOrder({ number: String(d.order_number), token: String(d.payment.order_token), amount: amt, wallet: transferWallet, paymentPlan:transferPlan, state: 'awaiting_proof', receipt:{items:receiptItems,total:transferTotal,amountDue:amt,plan:transferPlan,method:transferWallet},
                      wa: `https://wa.me/${WHATSAPP_ORDER}?text=${encodeURIComponent(ipText)}` });
           cart = {}; cartStep = 'cart'; cartNotice = ''; clearCheckoutKey(); saveCart(); updateCartBadge();
           viewOrder = String(d.order_number); renderCart(); renderBanner();
           $('cartBody').scrollTo({top:0});
-          showReceipt({number:String(d.order_number),items:receiptItems,total:amt,method:'instapay',wallet},false);
+          showReceipt({number:String(d.order_number),items:receiptItems,total:transferTotal,amountDue:amt,plan:transferPlan,method:transferWallet,wallet:transferWallet},false);
           return;
         }
         // 2) Show the confirmation + clear the cart (only now that the order really exists)
@@ -2714,7 +2757,8 @@
   });
   window.matchMedia('(min-width: 768px)').addEventListener('change', e => { if(e.matches) setMenu(false); });
 
-  document.querySelectorAll('input[name="payMethod"]').forEach(r => r.addEventListener('change', applyCartStep));   // note under the button follows the chosen method
+  document.querySelectorAll('input[name="payMethod"]').forEach(r => r.addEventListener('change', () => { applyCartStep(); syncTransferPlan(); }));
+  document.querySelectorAll('input[name="transferPlan"]').forEach(r => r.addEventListener('change', () => { syncTransferPlan(); clearCheckoutKey(); }));
 
   // ---- Init ----
   renderBanner(); pollOrders();
