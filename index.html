@@ -1903,6 +1903,13 @@
     }
 
     const noticeHtml = cartNotice ? `<div role="alert" class="rounded-lg p-3 text-sm mb-1" style="background:rgba(193,80,46,.1); color:var(--brand-text);">${esc(cartNotice)}</div>` : '';
+    const pendingProofOrder=orders.filter(o=>['awaiting_proof','rejected'].includes(o.state)&&['instapay','vodafone'].includes(o.wallet)).sort((a,b)=>(Number(b.ts)||0)-(Number(a.ts)||0))[0];
+    const pendingProofHtml=pendingProofOrder?`<section class="proof-upload-card mb-4" role="status" aria-label="${getLang()==='ar'?'إثبات الدفع مطلوب':'Payment proof required'}">
+      <p class="font-bold mb-1">${getLang()==='ar'?'طلب تحويل في انتظار إثبات الدفع':'Transfer order awaiting payment proof'}</p>
+      <p class="text-sm sub mb-3">${esc(pendingProofOrder.number)} · ${pendingProofOrder.wallet==='vodafone'?'Vodafone Cash':'InstaPay'}</p>
+      <button type="button" class="btn-primary w-full" data-open-payment-proof="${esc(pendingProofOrder.number)}">${RT('uploadProof')}</button>
+    </section>`:'';
+
     if(items.length === 0){
       if(lastOrder){
         wrap.innerHTML = `
@@ -1916,7 +1923,7 @@
             <button type="button" id="cartContinue" class="text-sm underline sub">${T('orderShopMore')}</button>
           </div>`;
       } else {
-        wrap.innerHTML = noticeHtml + `
+        wrap.innerHTML = noticeHtml + pendingProofHtml + `
           <div class="text-center py-12">
             <div class="mx-auto mb-4 w-14 h-14 rounded-full flex items-center justify-center" style="background:var(--bg);">${ICON_BAG}</div>
             <p class="font-semibold mb-1">${T('cartEmptyTitle')}</p>
@@ -1926,7 +1933,7 @@
       }
     } else {
       const rm = lang==='ar' ? 'حذف' : 'Remove', minus = lang==='ar' ? 'تقليل الكمية' : 'Decrease quantity', plus = lang==='ar' ? 'زيادة الكمية' : 'Increase quantity';
-      wrap.innerHTML = noticeHtml + items.map(p => `
+      wrap.innerHTML = noticeHtml + pendingProofHtml + items.map(p => `
         <div class="flex gap-3 items-start">
           <div class="art w-16 h-16 rounded-xl shrink-0">${productMedia(p, 26)}</div>
           <div class="flex-1 min-w-0">
@@ -1951,6 +1958,8 @@
   }
 
   $('cartItems').addEventListener('click', e => {
+    const proofOpen=e.target.closest('[data-open-payment-proof]');
+    if(proofOpen){viewOrder=proofOpen.dataset.openPaymentProof;renderCart();$('cartBody').scrollTo({top:0,behavior:'smooth'});return;}
     const q = e.target.closest('.qtyBtn');
     if(q){
       const id = q.dataset.id, d = parseInt(q.dataset.d);
@@ -2208,7 +2217,7 @@
     if(!o){ el.classList.add('hidden'); return; }
     const map = { awaiting_proof:(o.wallet === 'vodafone' ? 'bAwaitVf' : 'bAwait'), under_review:'bReview', rejected:'bRej', deposit_paid:'bDeposit', paid:'bPaid' };
     $('payBannerText').textContent = `${o.number}: ${P(map[o.state])}`;
-    $('payBannerView').textContent = P('view'); $('payBannerView').dataset.number = o.number;
+    $('payBannerView').textContent = ['awaiting_proof','rejected'].includes(o.state) ? RT('uploadProof') : P('view'); $('payBannerView').dataset.number = o.number;
     $('payBannerClose').classList.toggle('hidden', o.state !== 'paid'); $('payBannerClose').setAttribute('aria-label', P('dismiss'));
     el.dataset.state = o.state; el.classList.remove('hidden');
   }
