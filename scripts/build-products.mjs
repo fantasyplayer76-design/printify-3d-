@@ -90,7 +90,7 @@ function renderShopCatalog(src,products,categories,assets,lang){
  src=src.replace(/<meta name="description" content="[^"]*">/i,'<meta name="description" content="'+esc(description)+'">')
    .replace(/(<meta property="og:description" content=")[^"]*(")/i,"$1"+esc(description)+"$2")
    .replace(/(<meta name="twitter:description" content=")[^"]*(")/i,"$1"+esc(description)+"$2");
- src=src.replace('href="/faq/>','href="'+(ar?"/ar/faq/":"/faq/")+'">');
+ src=src.replace('href="/faq/>','href="/faq/">').replace('href="/ar/faq/>','href="/ar/faq/">');
  if(ar)src=src.replace('href="/>English','href="/">English');
  else src=src.replace('href="/ar/>العربية','href="/ar/">العربية');
  return src;
