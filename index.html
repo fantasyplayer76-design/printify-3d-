@@ -184,9 +184,23 @@
   .pay-banner[data-state="paid"]{background:#EAF6EE;}
 
   /* Receipt printer and paper feed */
-  #receiptOverlay{z-index:110; backdrop-filter:blur(6px); background:rgba(29,25,22,.62);}
-  #receiptDialog{max-height:92vh; overflow:auto; perspective:1100px;}
-  .receipt-machine{width:min(100%,390px); margin:1rem auto 1.5rem; filter:drop-shadow(0 22px 28px rgba(0,0,0,.2));}
+  #receiptOverlay{z-index:110; backdrop-filter:blur(6px); background:rgba(29,25,22,.68); padding:calc(1rem + env(safe-area-inset-top,0px)) 1rem calc(1rem + env(safe-area-inset-bottom,0px));}
+  #receiptDialog{max-height:calc(100dvh - 2rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)); overflow:auto; overscroll-behavior:contain; perspective:1100px;}
+  .receipt-machine{width:min(100%,460px); margin:.5rem auto 1rem; filter:drop-shadow(0 22px 28px rgba(0,0,0,.2));}
+  #receiptPaper{border-radius:20px; padding:1.35rem clamp(1rem,5vw,1.6rem) 1.4rem;}
+  .proof-upload-card{border:1px solid var(--line-soft);border-radius:16px;padding:1rem;background:var(--surface-2,#fff);box-shadow:0 8px 24px rgba(27,20,13,.06);}
+  .proof-file-input{display:block;width:100%;max-width:100%;min-height:48px;padding:.65rem;border:1px dashed #b7a99a;border-radius:12px;background:var(--bg);font:inherit;color:var(--ink);}
+  .proof-file-input::file-selector-button{min-height:38px;margin-inline-end:.65rem;padding:.45rem .85rem;border:0;border-radius:9px;background:var(--brand);color:#fff;font:inherit;font-weight:700;cursor:pointer;}
+  .proof-file-input:focus-visible{outline:3px solid var(--brand);outline-offset:3px;}
+  .proof-preview{display:flex;align-items:center;gap:.75rem;min-width:0;margin-top:.75rem;padding:.65rem;border-radius:12px;background:var(--bg);}
+  .proof-preview img{width:64px;height:64px;object-fit:cover;border-radius:8px;background:#fff;}
+  .proof-preview p{min-width:0;overflow-wrap:anywhere;}
+  .receipt-confirmation{padding:.9rem .75rem 1rem;border-radius:16px;background:#211713;color:#fff;text-align:center;margin:.75rem 0 1rem;}
+  .receipt-confirmation h3{font-size:clamp(1.5rem,6vw,2rem);line-height:1.15;font-weight:800;margin:.55rem 0;}
+  .receipt-confirmation p{color:#f3e9df;}
+  #receiptDialog :focus-visible{outline:3px solid var(--brand);outline-offset:3px;border-radius:8px;}
+  @media(max-width:480px){#receiptOverlay{align-items:flex-start;padding-inline:.75rem;}#receiptDialog{width:100%;max-height:calc(100dvh - 1rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));}.receipt-machine{margin:.25rem auto .75rem;}#receiptPaper{padding-top:1.1rem;}.receipt-printer{height:64px;padding-top:9px;}.receipt-row{font-size:.9rem;}}
+  @media print{body *{visibility:hidden!important}#receiptOverlay,#receiptOverlay *{visibility:visible!important}#receiptOverlay{position:absolute!important;inset:0!important;display:block!important;overflow:visible!important;padding:0!important;background:#fff!important;backdrop-filter:none!important}#receiptDialog{max-height:none!important;overflow:visible!important;width:100%!important;max-width:none!important}.receipt-machine{width:100%!important;max-width:680px!important;margin:0 auto!important;filter:none!important}.receipt-printer,#receiptClose,#receiptContinue,#receiptPrint{display:none!important}#receiptPaper{width:100%!important;margin:0!important;box-shadow:none!important;clip-path:none!important;animation:none!important;color:#211713!important}.receipt-row{opacity:1!important;animation:none!important}.receipt-barcode{opacity:1!important;animation:none!important}body{background:#fff!important}}
   .receipt-printer{position:relative; z-index:2; height:82px; padding:13px 18px 0; border:1px solid rgba(255,255,255,.9); border-radius:20px 20px 13px 13px; background:linear-gradient(150deg,#fbfaf8,#d9d7d3); box-shadow:inset 0 2px 3px #fff, inset 0 -4px 8px rgba(40,36,30,.13),0 4px 7px rgba(40,36,30,.16); animation:printer-arrive .55s cubic-bezier(.2,.8,.2,1) both;}
   .receipt-printer:before{content:"";position:absolute;inset:7px 13px auto;height:2px;border-radius:2px;background:rgba(255,255,255,.9);}
   .receipt-slot{height:19px;border:3px solid #bdbbb8;border-radius:12px;background:linear-gradient(#383735,#161615 45%,#292826);box-shadow:inset 0 2px 3px #000,0 1px 0 #fff;}
@@ -1902,7 +1916,12 @@
     open:{en:'Open InstaPay',ar:'افتح إنستاباي'}, s1Vf:{en:'Send exactly this amount by Vodafone Cash to:',ar:'حوّل هذا المبلغ بالظبط على فودافون كاش إلى:'}, bAwaitVf:{en:'payment pending — upload your Vodafone Cash proof',ar:'الدفع معلّق — ارفع إثبات فودافون كاش'}, copy:{en:'Copy',ar:'نسخ'}, copied:{en:'Copied',ar:'تم النسخ'},
     s2:{en:'Take a screenshot of the transfer confirmation.',ar:'خد لقطة شاشة لتأكيد التحويل.'},
     s3:{en:'Upload it below (PNG, JPG or WebP, max 5 MB).',ar:'ارفعها تحت (PNG أو JPG أو WebP، حد أقصى 5 ميجا).'},
-    choose:{en:'Screenshot of your payment',ar:'لقطة شاشة التحويل'},
+    choose:{en:'Upload your transfer screenshot',ar:'ارفع لقطة شاشة التحويل'},
+    uploadHint:{en:'After you pay, upload the transfer confirmation here. PNG, JPG or WebP · up to 5 MB.',ar:'بعد التحويل، ارفع صورة تأكيد الدفع هنا. PNG أو JPG أو WebP · حتى 5 ميجا.'},
+    selectedFile:{en:'Selected file',ar:'الملف المختار'},
+    printReceipt:{en:'Print / Save receipt',ar:'طباعة / حفظ الإيصال'},
+    received:{en:'Order received',ar:'تم استلام الطلب'},
+    receivedBody:{en:"Your order is in. We’ll confirm the next steps shortly.",ar:'استلمنا طلبك. سنؤكد الخطوات التالية قريباً.'},
     submit:{en:'Submit payment proof',ar:'إرسال إثبات الدفع'}, sending:{en:'Uploading…',ar:'جاري الرفع…'},
     waitingTitle:{en:'Payment proof submitted — waiting for confirmation.',ar:'تم إرسال إثبات الدفع — في انتظار التأكيد.'},
     waitingBody:{en:"We'll check it and confirm here. You can close this window — the status also shows at the top of the page.",ar:'هنراجعه ونأكد هنا. تقدر تقفل النافذة — الحالة كمان بتظهر أعلى الصفحة.'},
@@ -1926,6 +1945,9 @@
   const P = k => PAY[k][getLang()];
   const RECEIPT_TEXT = {
     title:{en:'RECEIPT',ar:'إيصال'}, order:{en:'Order',ar:'رقم الطلب'}, total:{en:'TOTAL AMOUNT',ar:'الإجمالي'},
+    received:{en:'Thank you! Your order is in.',ar:'شكراً لك! استلمنا طلبك.'},
+    receivedBody:{en:"We’ve received your order. We’ll confirm the next steps shortly.",ar:'وصلنا طلبك وسنؤكد معك الخطوات التالية قريباً.'},
+    printReceipt:{en:'Print / Save receipt',ar:'طباعة / حفظ الإيصال'},
     placed:{en:'ORDER PLACED',ar:'تم استلام الطلب'}, paid:{en:'PAYMENT CONFIRMED',ar:'تم تأكيد الدفع'},
     pending:{en:'PAYMENT PENDING',ar:'في انتظار تأكيد الدفع'}, cod:{en:'Cash on delivery',ar:'الدفع عند الاستلام'}, instapay:{en:'InstaPay',ar:'إنستاباي'}, vodafone:{en:'Vodafone Cash',ar:'فودافون كاش'},
     thanks:{en:'THANK YOU',ar:'شكراً لك'}, close:{en:'Continue shopping',ar:'كمّل التسوق'},
@@ -1950,6 +1972,7 @@
       <div id="receiptPaper">
       <button id="receiptClose" type="button" class="icon-btn" aria-label="${lang==='ar'?'إغلاق':'Close'}" style="position:absolute;top:.45rem;inset-inline-end:.45rem;width:34px;height:34px;background:#fff;">×</button>
       <p class="text-center text-[11px] tracking-[.24em] font-semibold sub mb-2">PRINTFY 3D · CAIRO</p>
+      <div class="receipt-confirmation" role="status"><span class="inline-flex items-center justify-center w-11 h-11 rounded-full" style="background:rgba(255,255,255,.12);color:#f3a089;">${ICON_CHECK}</span><h3>${RT('received')}</h3><p>${RT('receivedBody')}</p></div>
       <hr class="receipt-rule"><h2 id="receiptTitle" class="text-center text-2xl font-extrabold tracking-wide">${RT('title')}</h2>
       <p class="text-center text-xs sub mt-2">${RT('order')}: <strong dir="ltr">${esc(data.number || '')}</strong></p>
       <p class="text-center text-[11px] font-bold mt-3" style="color:${isPaid?'var(--ok)':method==='instapay'?'#946200':'var(--brand-text)'}">${state}</p>
@@ -1957,13 +1980,15 @@
       <hr class="receipt-rule"><div class="receipt-row font-extrabold"><span>${RT('total')}</span><span>${fmt(total)}</span></div>
       <div class="receipt-row text-xs sub"><span>${method==='instapay'?(data.wallet==='vodafone'?RT('vodafone'):RT('instapay')):RT('cod')}</span><span></span></div>
       <hr class="receipt-rule"><p class="text-center font-extrabold text-xl tracking-wide mt-5">${RT('thanks')}</p><div class="receipt-barcode" aria-hidden="true"></div>
-      <button id="receiptContinue" type="button" class="btn-primary btn-lg w-full mt-6 receipt-action">${RT('close')}</button>
+      <button id="receiptPrint" type="button" class="btn-outline btn-lg w-full mt-5 receipt-action">${RT('printReceipt')}</button>
+      <button id="receiptContinue" type="button" class="btn-primary btn-lg w-full mt-3 receipt-action">${RT('close')}</button>
       </div>
     </div>`;
-    const overlay = $('receiptOverlay'); overlay.classList.remove('hidden'); overlay.classList.add('flex'); overlay.setAttribute('aria-hidden','false');
+    const overlay = $('receiptOverlay'), returnFocus = document.activeElement; overlay.classList.remove('hidden'); overlay.classList.add('flex'); overlay.setAttribute('aria-hidden','false');
     document.body.classList.add('receipt-open'); syncLock();
-    const close = () => { overlay.classList.add('hidden'); overlay.classList.remove('flex'); overlay.setAttribute('aria-hidden','true'); document.body.classList.remove('receipt-open'); syncLock(); };
+    const close = () => { overlay.classList.add('hidden'); overlay.classList.remove('flex'); overlay.setAttribute('aria-hidden','true'); document.body.classList.remove('receipt-open'); syncLock(); if(returnFocus && returnFocus.focus) returnFocus.focus(); };
     $('receiptClose').addEventListener('click', close); $('receiptContinue').addEventListener('click', close);
+    $('receiptPrint').addEventListener('click', () => window.print());
     overlay.onclick = e => { if(e.target === overlay) close(); };
     $('receiptClose').focus();
   }
@@ -2044,11 +2069,13 @@
         <div class="flex gap-2 mt-2">${o.wallet==='vodafone'?'':`<a href="${esc(INSTAPAY_LINK)}" target="_blank" rel="noopener noreferrer" class="btn-primary px-4 text-xs" style="min-height:38px;">${P('open')}</a>`}<button type="button" id="ipCopy" data-copy="${esc(o.wallet==='vodafone'?VODAFONE_NUMBER:INSTAPAY_HANDLE)}" class="btn-outline px-4 text-xs" style="min-height:38px;">${P('copy')}</button></div></div></li>
       <li class="flex gap-3"><span class="step-num">2</span><span class="pt-1">${P('s2')}</span></li>
       <li class="flex gap-3"><span class="step-num">3</span><span class="pt-1">${P('s3')}</span></li></ol>`;
-    const form = `<div class="space-y-3">
-      <label class="field-label" for="proofFile">${P('choose')}</label>
-      <input id="proofFile" type="file" accept="image/png,image/jpeg,image/webp" class="field" style="padding:.5rem;" aria-describedby="proofError">
-      <p id="proofError" role="alert" class="hidden text-sm font-medium" style="color:var(--brand-text);"></p>
-      <button id="proofSubmit" type="button" class="btn-primary btn-lg w-full" data-number="${esc(o.number)}">${P('submit')}</button></div>`;
+    const form = `<section class="proof-upload-card space-y-3" aria-labelledby="proofUploadTitle">
+      <div><p id="proofUploadTitle" class="field-label mb-1">${P('choose')}</p><p class="text-sm sub">${P('uploadHint')}</p></div>
+      <input id="proofFile" type="file" accept="image/png,image/jpeg,image/webp" class="proof-file-input" aria-label="${P('choose')}" aria-describedby="proofUploadHint proofError">
+      <p id="proofUploadHint" class="sr-only">${P('uploadHint')}</p>
+      <div id="proofPreview" class="proof-preview hidden" aria-live="polite"><img id="proofPreviewImage" alt=""><p class="text-sm"><span class="sub">${P('selectedFile')}:</span> <strong id="proofFileName"></strong></p></div>
+      <p id="proofError" role="alert" aria-live="assertive" class="hidden text-sm font-medium" style="color:var(--brand-text);"></p>
+      <button id="proofSubmit" type="button" class="btn-primary btn-lg w-full" data-number="${esc(o.number)}">${P('submit')}</button></section>`;
     const nav = `<div class="flex items-center justify-center gap-5 mt-5 text-sm">${hasCart ? `<button type="button" id="orderBack" class="underline sub">${P('back')}</button>` : ''}<button type="button" id="orderMore" class="underline sub">${P('more')}</button></div>`;
     if(o.state === 'paid'){
       return `<div class="py-4" role="status">${head}<div class="mx-auto my-5 w-14 h-14 rounded-full flex items-center justify-center" style="background:rgba(47,125,79,.12); color:var(--ok);">${ICON_CHECK}</div>
@@ -2098,6 +2125,18 @@
     }catch(e){ console.error(e); fail(P('errNet')); }
     finally{ proofBusy = false; if(document.contains(btn)){ btn.disabled = false; btn.textContent = label; } }
   }
+  let proofPreviewUrl = '';
+  document.addEventListener('change', e => {
+    if(e.target && e.target.id === 'proofFile'){
+      const input=e.target, file=input.files && input.files[0], preview=$('proofPreview'), image=$('proofPreviewImage'), name=$('proofFileName');
+      if(proofPreviewUrl){ URL.revokeObjectURL(proofPreviewUrl); proofPreviewUrl=''; }
+      if(!file || !preview || !image || !name) return;
+      const okType=/^image\\/(png|jpeg|webp)$/.test(file.type) || (!file.type && /\\.(png|jpe?g|webp)$/i.test(file.name));
+      if(!okType || file.size > MAX_PROOF_BYTES){ preview.classList.add('hidden'); return; }
+      proofPreviewUrl=URL.createObjectURL(file); image.src=proofPreviewUrl; image.alt=P('selectedFile')+': '+file.name; name.textContent=file.name; preview.classList.remove('hidden');
+      const err=$('proofError'); if(err) err.classList.add('hidden');
+    }
+  });
   $('cartItems').addEventListener('click', async e => {
     const copy = e.target.closest('#ipCopy');
     if(copy){ try{ await navigator.clipboard.writeText(copy.dataset.copy || INSTAPAY_HANDLE); copy.textContent = P('copied'); setTimeout(() => { if(document.contains(copy)) copy.textContent = P('copy'); }, 1500); }catch(_){} return; }
