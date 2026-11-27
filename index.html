@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en"><head>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!=='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-59SCG87B');</script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
@@ -559,6 +561,7 @@
 </script>
 <link rel="preload" as="style" href="/custom-print/inline.css"><link rel="stylesheet" href="/custom-print/inline.css" media="print" onload="this.media='all';this.onload=null"><noscript><link rel="stylesheet" href="/custom-print/inline.css"></noscript><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.0/examples/jsm/"}}</script><link rel="stylesheet" href="/assets/printfy-editorial.css?v=8abd62423cb70dda"></head>
 <body class="antialiased">
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-59SCG87B" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
 <a href="/#main" class="skip-link" data-i18n="skipLink">Skip to content</a>
 
 <!-- NAV -->
@@ -1113,15 +1116,12 @@
         <input id="ckGovernorate" data-i18n-placeholder="ckGovPh" placeholder="Choose a governorate above" aria-label="Governorate" class="field" readonly required>
         <input id="ckAddress" autocomplete="street-address" data-i18n-placeholder="ckAddressPh" placeholder="Street / area" aria-label="Street or area" class="field">
       </div>
-      <details class="rounded-xl border ink-line px-4 py-3">
-        <summary class="cursor-pointer font-semibold" data-i18n="ckMoreDetails">Add apartment or delivery notes (optional)</summary>
-        <div class="grid grid-cols-3 gap-3 mt-3">
-          <input id="ckBuilding" data-i18n-placeholder="ckBuildingPh" placeholder="Building" aria-label="Building" class="field">
-          <input id="ckFloor" data-i18n-placeholder="ckFloorPh" placeholder="Floor" aria-label="Floor" class="field">
-          <input id="ckApartment" data-i18n-placeholder="ckAptPh" placeholder="Apt" aria-label="Apartment" class="field">
-        </div>
-        <textarea id="ckNotes" rows="2" data-i18n-placeholder="ckNotesPh" placeholder="Delivery notes (optional)" aria-label="Delivery notes" class="field mt-3"></textarea>
-      </details>
+      <div class="grid gap-3 sm:grid-cols-3">
+        <label class="block"><span class="field-label block mb-1" data-i18n="ckBuildingLabel">Building *</span><input id="ckBuilding" data-i18n-placeholder="ckBuildingPh" placeholder="Building number" aria-label="Building" class="field" required aria-required="true" maxlength="40"></label>
+        <label class="block"><span class="field-label block mb-1" data-i18n="ckFloorLabel">Floor *</span><input id="ckFloor" data-i18n-placeholder="ckFloorPh" placeholder="Floor" aria-label="Floor" class="field" required aria-required="true" maxlength="40"></label>
+        <label class="block"><span class="field-label block mb-1" data-i18n="ckAptLabel">Apartment *</span><input id="ckApartment" data-i18n-placeholder="ckAptPh" placeholder="Apartment number" aria-label="Apartment" class="field" required aria-required="true" maxlength="40"></label>
+      </div>
+      <textarea id="ckNotes" rows="2" data-i18n-placeholder="ckNotesPh" placeholder="Delivery notes (optional)" aria-label="Delivery notes" class="field">
       <fieldset class="pt-1">
         <legend class="field-label" data-i18n="payTitle">Payment method</legend>
         <div class="grid gap-2">
@@ -1380,12 +1380,12 @@
     transferFullHint:{en:"Includes delivery",ar:"يشمل التوصيل"},
     transferHalf:{en:"Pay a 50% deposit",ar:"ادفع مقدم 50٪"},
     transferHalfHint:{en:"The other half is due on delivery",ar:"النصف المتبقي يُدفع عند الاستلام"},
-    transferAmountSummary:{en:"Pay now: {due} · Order total: {total} · Remaining: {balance}",ar:"المطلوب الآن: {due} · إجمالي الطلب: {total} · المتبقي: {balance}"}, transferChooseWallet:{en:"Choose InstaPay or Vodafone Cash above to activate these transfer amounts.",ar:"اختار إنستاباي أو فودافون كاش بالأعلى لتفعيل مبلغ التحويل."}, checkoutProofTitle:{en:"Payment transfer details and proof",ar:"بيانات التحويل وإثبات الدفع"}, checkoutProofInstructions:{en:"Transfer the amount shown above, then attach your payment screenshot before placing the order.",ar:"حوّل المبلغ الموضح بالأعلى ثم أرفق صورة التحويل قبل تأكيد الطلب."}, checkoutProofWallet:{en:"Payment account",ar:"حساب التحويل"}, checkoutProofChoose:{en:"Choose payment screenshot (required)",ar:"اختر صورة إثبات الدفع (مطلوب)"}, checkoutProofLimit:{en:"PNG, JPG or WebP · maximum 5 MB",ar:"PNG أو JPG أو WebP · بحد أقصى 5 ميجا"}, checkoutProofOpen:{en:"Open InstaPay",ar:"افتح إنستاباي"}, checkoutProofNoFile:{en:"Attach the payment screenshot before placing your order.",ar:"أرفق صورة التحويل قبل تأكيد الطلب."}, checkoutProofBadFile:{en:"Choose a PNG, JPG or WebP image up to 5 MB.",ar:"اختر صورة PNG أو JPG أو WebP حتى 5 ميجا."},
+    transferAmountSummary:{en:"Pay now: {due} · Order total: {total} · Remaining: {balance}",ar:"المطلوب الآن: {due} · إجمالي الطلب: {total} · المتبقي: {balance}"}, transferChooseWallet:{en:"Choose InstaPay or Vodafone Cash above to activate these transfer amounts.",ar:"اختار إنستاباي أو فودافون كاش بالأعلى لتفعيل مبلغ التحويل."}, checkoutProofTitle:{en:"Payment transfer details and proof",ar:"بيانات التحويل وإثبات الدفع"}, checkoutProofInstructions:{en:"Transfer the amount shown above, then attach your payment screenshot before placing the order.",ar:"حوّل المبلغ الموضح بالأعلى ثم أرفق صورة التحويل قبل تأكيد الطلب."}, checkoutProofWallet:{en:"Payment account",ar:"حساب التحويل"}, checkoutProofChoose:{en:"Choose payment screenshot (required)",ar:"اختر صورة إثبات الدفع (مطلوب)"}, checkoutProofLimit:{en:"PNG, JPG or WebP · maximum 5 MB",ar:"PNG أو JPG أو WebP · بحد أقصى 5 ميجا"}, checkoutProofOpen:{en:"Open InstaPay",ar:"افتح إنستاباي"}, checkoutProofNoFile:{en:"Attach the payment screenshot before placing your order.",ar:"أرفق صورة التحويل قبل تأكيد الطلب."}, checkoutAddressDetails:{en:"Enter your building, floor and apartment number.",ar:"اكتب رقم المبنى والدور ورقم الشقة."}, checkoutProofBadFile:{en:"Choose a PNG, JPG or WebP image up to 5 MB.",ar:"اختر صورة PNG أو JPG أو WebP حتى 5 ميجا."},
     orderWaBtn:{en:"Continue on WhatsApp",ar:"كمّل على واتساب"}, orderShopMore:{en:"Continue shopping",ar:"كمّل تسوق"},
     toastView:{en:"View cart",ar:"عرض العربة"},
     ckNamePh:{en:"Full name",ar:"الاسم بالكامل"}, ckMobilePh:{en:"Mobile number (e.g. 01012345678)",ar:"رقم الموبايل (مثال: 01012345678)"},
     ckGovPh:{en:"Choose a governorate above",ar:"اختر المحافظة أعلاه"}, ckAddressPh:{en:"Street / area",ar:"الشارع / المنطقة"},
-    ckBuildingPh:{en:"Building",ar:"المبنى"}, ckFloorPh:{en:"Floor",ar:"الدور"}, ckAptPh:{en:"Apt",ar:"الشقة"},
+    ckBuildingPh:{en:"Building number",ar:"رقم المبنى"}, ckFloorPh:{en:"Floor",ar:"الدور"}, ckAptPh:{en:"Apartment number",ar:"رقم الشقة"}, ckBuildingLabel:{en:"Building *",ar:"المبنى *"}, ckFloorLabel:{en:"Floor *",ar:"الدور *"}, ckAptLabel:{en:"Apartment *",ar:"الشقة *"},
     ckNotesPh:{en:"Delivery notes (optional)",ar:"ملاحظات التوصيل (اختياري)"}, ckMoreDetails:{en:"Add apartment or delivery notes (optional)",ar:"أضف رقم الشقة أو ملاحظات التوصيل (اختياري)"}, checkoutProofPending:{en:"Payment screenshot received — your payment is awaiting review.",ar:"تم استلام صورة التحويل — الدفع في انتظار المراجعة."}, receiptHelp:{en:"Questions about your order?",ar:"عندك سؤال عن طلبك؟"}, receiptWhatsApp:{en:"Message PRINTFY on WhatsApp",ar:"راسل PRINTFY على واتساب"}, receiptEmail:{en:"Email PRINTFY",ar:"راسل PRINTFY بالبريد"},
     instapayBtn:{en:"Pay via InstaPay",ar:"ادفع عبر إنستاباي"},
     cartNote:{en:"Choose Cash on delivery, InstaPay or Vodafone Cash above. We'll confirm your order on WhatsApp either way.", ar:"اختار الدفع عند الاستلام أو إنستاباي أو فودافون كاش فوق. هنأكد طلبك على واتساب في الحالتين."},
@@ -2387,6 +2387,10 @@
     ['ckName','ckMobile'].forEach(id => markInvalid($(id), false));
     if(name.length < 2){ markInvalid($('ckName'), true); setCheckoutMsg('error', lang==='ar' ? 'اكتب اسمك.' : 'Please enter your name.'); $('ckName').focus(); return; }
     if(!validPhone(mobile)){ markInvalid($('ckMobile'), true); setCheckoutMsg('error', lang==='ar' ? 'اكتب رقم موبايل صحيح.' : 'Please enter a valid mobile number.'); $('ckMobile').focus(); return; }
+    const addressPartIds=['ckBuilding','ckFloor','ckApartment'];
+    const missingAddressPart=addressPartIds.map(id=>$(id)).find(el=>!el.value.trim());
+    if(missingAddressPart){markInvalid(missingAddressPart,true);setCheckoutMsg('error',T('checkoutAddressDetails'));missingAddressPart.focus();missingAddressPart.scrollIntoView({block:'center',behavior:'smooth'});return;}
+    addressPartIds.forEach(id=>markInvalid($(id),false));
 
     // The names always come first so the server's 500-character limit can only ever cut the customer's own note
     let deliveryNotes = $('ckNotes').value.trim();
@@ -2497,8 +2501,8 @@
         }else{
           cart={...checkoutCartSnapshot};saveCart();updateCartBadge();
           surfaceCheckoutError(lang==='ar'
-            ? `تم تسجيل طلب التحويل رقم ${confirmedOrderNumber}. الطلب غير مدفوع بعد. افتح شريط الدفع أعلى الصفحة لرفع صورة التحويل، أو راسلنا على واتساب.`
-            : `Transfer order ${confirmedOrderNumber} was received but is not paid yet. Open the payment notice at the top of the page to upload your screenshot, or contact us on WhatsApp.`);
+            ? `طلب التحويل رقم ${confirmedOrderNumber} موجود بالفعل لكنه غير مدفوع. أكمل بيانات المبنى والدور والشقة، اختر صورة التحويل، ثم اضغط «إتمام الطلب» مرة أخرى لفتح نفس الطلب دون إنشاء طلب مكرر.`
+            : `Transfer order ${confirmedOrderNumber} already exists but is not paid. Complete the building, floor and apartment fields, choose your screenshot, then press Place Order again to reopen this same order without creating a duplicate.`);
         }
       } else if(confirmedOrderNumber){
         // The server confirmed COD; never tell the customer the request failed.
