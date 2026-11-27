@@ -162,10 +162,7 @@
   .qty-btn{width:44px; height:44px; border-radius:999px; border:1px solid var(--line-field); display:inline-flex; align-items:center; justify-content:center; font-weight:700; background:#fff;}
   .qty-btn:hover{background:var(--bg);}
 
-  /* Mobile cart bar, toast, floating WhatsApp */
-  .cart-bar{display:none; position:fixed; inset-inline:0; bottom:0; z-index:45; padding:.6rem 1rem calc(.6rem + env(safe-area-inset-bottom,0px)); background:var(--surface-2); border-top:1px solid var(--line-soft); box-shadow:0 -6px 20px rgba(27,20,13,.08);}
-  .cart-bar.show{display:block;}
-  @media(min-width:768px){.cart-bar,.cart-bar.show{display:none!important;}}
+  /* Toast and floating WhatsApp */
   #toast{position:fixed; inset-inline:0; bottom:1.25rem; z-index:75; display:flex; justify-content:center; padding-inline:1rem; pointer-events:none; opacity:0; transform:translateY(16px); transition:opacity .25s, transform .25s;}
   #toast.show{opacity:1; transform:none;}
   #toast .toast-inner{pointer-events:none; visibility:hidden; transition:visibility 0s .25s;}
@@ -174,11 +171,6 @@
   #toast .toast-inner span{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   #toast button{font-weight:700; color:var(--gold); white-space:nowrap; text-decoration:underline;}
   #socialFabs{position:fixed; bottom:1.25rem; inset-inline-end:1.25rem; z-index:40;}
-  @media(max-width:767px){
-    body.has-cart-bar #socialFabs{bottom:5.5rem;}
-    body.has-cart-bar #toast{bottom:5.25rem;}
-  }
-
   /* Payment method choice + InstaPay status banner */
   .pay-opt{display:flex; gap:.7rem; align-items:flex-start; padding:.7rem .8rem; border:1.5px solid var(--line-field); border-radius:12px; background:#fff; cursor:pointer;}
   .pay-opt input{margin-top:.2rem; accent-color:var(--brand); width:18px; height:18px; flex-shrink:0;}
@@ -1065,13 +1057,6 @@
   <div class="toast-inner"><span id="toastMsg"></span><button id="toastView" type="button" data-i18n="toastView">View cart</button></div>
 </div>
 
-<!-- MOBILE CART BAR -->
-<div id="cartBar" class="cart-bar">
-  <button id="cartBarBtn" type="button" class="btn-primary w-full px-5 text-sm justify-between" style="min-height:50px;">
-    <span id="cartBarLabel">View cart</span><span id="cartBarTotal"></span>
-  </button>
-</div>
-
 <nav class="mobile-bottom-nav" aria-label="Quick navigation"><a href="/#shop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10h18M5 10l1 11h12l1-11M9 10V6a3 3 0 016 0v4"></path></svg><span data-i18n="navShop">Shop</span></a><button id="bottomCartBtn" type="button" aria-label="Open cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.5 3h2l2.4 12.4a2 2 0 002 1.6h8.6a2 2 0 002-1.6L21 8H6"></path></svg><span data-i18n="bottomCart">Cart</span><span id="bottomCartCount" class="bottom-cart-count hidden" aria-live="polite">0</span></button><a href="https://wa.me/201063870873" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 01-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1121 11.5z"></path></svg><span data-i18n="bottomWhatsApp">WhatsApp</span></a></nav>
 <!-- STORAGE / COOKIE CONSENT BANNER -->
 <div id="consentBanner" class="hidden fixed bottom-0 inset-x-0 z-[80] surface-2 border-t ink-line px-5 py-3" style="padding-bottom:calc(.75rem + env(safe-area-inset-bottom,0px)); box-shadow:0 -6px 20px rgba(27,20,13,.1);">
@@ -1686,14 +1671,7 @@
     const mobileBadge = $('bottomCartCount'); if(mobileBadge){ mobileBadge.textContent=n; mobileBadge.classList.toggle('hidden',n===0); }
     updateCartBar();
   }
-  function updateCartBar(){
-    const n = cartCount(), show = n>0 && !cartOpen;
-    $('cartBar').classList.toggle('show', show);
-    document.body.classList.toggle('has-cart-bar', show);
-    $('cartBarLabel').textContent = (getLang()==='ar' ? 'عرض العربة' : 'View cart') + ` · ${n}`;
-    const t = cartTotal();
-    $('cartBarTotal').textContent = t>0 ? cartTotalText() : '';
-  }
+  function updateCartBar() {}
 
   let toastTimer;
   function showToast(name){
@@ -1710,7 +1688,6 @@
     toastTimer = setTimeout(()=>$('toast').classList.remove('show'), 6000);
   }
   $('toastView').addEventListener('click', openCart);
-  $('cartBarBtn').addEventListener('click', openCart);
   $('bottomCartBtn').addEventListener('click', openCart);
 
   function addToCart(id, qty, names){
@@ -1905,7 +1882,7 @@
   document.querySelectorAll('.field').forEach(el => el.addEventListener('input', () => markInvalid(el,false)));
   function validPhone(p){ const d = p.replace(/\D/g,''); return /^[0-9+\s-]{7,20}$/.test(p) && d.length >= 7 && d.length <= 15; }
   const MSG = {
-    network:{en:"Couldn't reach the server. Check your connection and try again — your cart is saved, and retrying won't create a duplicate order.", ar:"تعذر الاتصال بالخادم. تأكد من الإنترنت وحاول تاني — عربتك محفوظة، ولن يتكرر الطلب لو أعدت المحاولة."},
+    network:{en:"We couldn’t confirm whether your order went through. Your cart is saved. Retry safely or contact us on WhatsApp.", ar:"لم نتمكن من تأكيد ما إذا كان طلبك قد تم. عربتك محفوظة. أعد المحاولة بأمان أو تواصل معنا على واتساب."},
     generic:{en:"Something went wrong placing the order. Please try again or message us on WhatsApp.", ar:"حصل خطأ أثناء إرسال الطلب. جرّب تاني أو تواصل معنا على واتساب."},
     limit:{en:"Too many attempts. Please wait a few minutes and try again, or message us on WhatsApp.", ar:"محاولات كتيرة. استنى شوية وجرّب تاني، أو كلمنا على واتساب."},
     unavailable:{en:"Some items are no longer available and were removed from your cart. Please review it and check out again.", ar:"بعض المنتجات لم تعد متاحة وتم حذفها من عربتك. راجع العربة وكمّل الطلب."},
@@ -2138,7 +2115,18 @@
   function cartSig(){return Object.keys(cart).sort().map(id=>id+':'+cart[id]).join(',')+'|'+selectedMethod()+'|'+JSON.stringify(cartNames)+'|'+selectedDelivery.slug;}
   function selectedMethod(){ const r = document.querySelector('input[name="payMethod"]:checked'); return r && (r.value === 'instapay' || r.value === 'vodafone') ? 'instapay' : 'cod'; }
   function selectedWallet(){ const r = document.querySelector('input[name="payMethod"]:checked'); return r && r.value === 'vodafone' ? 'vodafone' : 'instapay'; }
-  function keyForCart(){ const sig = cartSig(); if(!checkoutKey || sig !== checkoutKeySig){ checkoutKey = newKey(); checkoutKeySig = sig; } return checkoutKey; }
+  const CHECKOUT_KEY_STORAGE = 'printify3d_checkout_request';
+  function keyForCart(){
+    const sig = cartSig();
+    if(!checkoutKey || sig !== checkoutKeySig){
+      let saved = null;
+      try { const stored = JSON.parse(localStorage.getItem(CHECKOUT_KEY_STORAGE) || 'null'); if(stored && stored.sig === sig && /^[A-Za-z0-9_-]{8,64}$/.test(stored.key || '')) saved = stored.key; } catch(e) {}
+      checkoutKey = saved || newKey(); checkoutKeySig = sig;
+      try { localStorage.setItem(CHECKOUT_KEY_STORAGE, JSON.stringify({sig, key:checkoutKey})); } catch(e) {}
+    }
+    return checkoutKey;
+  }
+  function clearCheckoutKey(){ checkoutKey = null; checkoutKeySig = ''; try { localStorage.removeItem(CHECKOUT_KEY_STORAGE); } catch(e) {} }
 
   $('checkoutFields').addEventListener('keydown', e => { if(e.key==='Enter' && e.target.tagName==='INPUT'){ e.preventDefault(); $('cartCheckout').click(); } });
   $('cartCheckout').addEventListener('click', async function(){
@@ -2204,10 +2192,12 @@
     checkoutBusy = true; btn.disabled = true;
     $('cartCheckoutLabel').textContent = lang==='ar' ? 'جاري الإرسال…' : 'Placing order…';
     setCheckoutMsg(null, '');
+    let confirmedOrderNumber = null;
     try{
       const r = await postFn('create-order', payload, 25000);
       if(r.ok && r.data.order_number){
         const d = r.data;
+        confirmedOrderNumber = String(d.order_number);
         // 1) The order exists → build the WhatsApp text from the SERVER's items and total
         const waLabel = lang==='ar' ? 'طلب جديد من الموقع' : 'New order from website';
         const totalLabel = lang==='ar' ? 'الإجمالي' : 'Total';
@@ -2234,7 +2224,7 @@
           const ipText = [waLabel, '', `${orderLabel}: ${d.order_number}`, 'Payment: ' + (wallet === 'vodafone' ? 'Vodafone Cash' : 'InstaPay'), '', ...lines, ...nameWa, '', `${totalLabel}: ${amt} EGP`].join('\n');
           addOrder({ number: String(d.order_number), token: String(d.payment.order_token), amount: amt, wallet: wallet, state: 'awaiting_proof', receipt:{items:receiptItems,total:amt,method:'instapay',wallet},
                      wa: `https://wa.me/${WHATSAPP_ORDER}?text=${encodeURIComponent(ipText)}` });
-          cart = {}; cartStep = 'cart'; cartNotice = ''; checkoutKey = null; saveCart(); updateCartBadge();
+          cart = {}; cartStep = 'cart'; cartNotice = ''; clearCheckoutKey(); saveCart(); updateCartBadge();
           viewOrder = String(d.order_number); renderCart(); renderBanner();
           $('cartBody').scrollTo({top:0});
           showReceipt({number:String(d.order_number),items:receiptItems,total:amt,method:'instapay',wallet},false);
@@ -2242,7 +2232,7 @@
         }
         // 2) Show the confirmation + clear the cart (only now that the order really exists)
         lastOrder = { number: String(d.order_number), url: waUrl };
-        cart = {}; cartStep = 'cart'; cartNotice = ''; checkoutKey = null; saveCart(); updateCartBadge(); renderCart();
+        cart = {}; cartStep = 'cart'; cartNotice = ''; clearCheckoutKey(); saveCart(); updateCartBadge(); renderCart();
         $('cartBody').scrollTo({top:0});
         // 3) Only then try to open WhatsApp. If it's blocked/fails, the confirmation already has the button.
         openWhatsApp(waUrl);
@@ -2265,7 +2255,13 @@
       }
     }catch(err){
       console.error(err);
-      setCheckoutMsg('error', M('network'));            // offline / timeout — same key on retry = no duplicate
+      if(confirmedOrderNumber){
+        // The server confirmed the order; a browser-side UI error must never tell the customer to place it again.
+        cart = {}; cartStep = 'cart'; cartNotice = ''; clearCheckoutKey(); saveCart();
+        setCheckoutMsg('success', lang==='ar' ? `تم استلام طلبك رقم ${confirmedOrderNumber}. لو لم يظهر التأكيد، تواصل معنا على واتساب.` : `Order ${confirmedOrderNumber} was received. If the confirmation didn’t appear, contact us on WhatsApp.`);
+      } else {
+        setCheckoutMsg('error', M('network'));       // retries reuse the persisted request key
+      }
     }finally{
       checkoutBusy = false; btn.disabled = false; applyCartStep();   // never leave the button stuck
     }
