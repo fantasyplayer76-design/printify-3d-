@@ -1669,9 +1669,7 @@
     badge.classList.toggle('hidden', n===0);
     badge.classList.toggle('flex', n>0);
     const mobileBadge = $('bottomCartCount'); if(mobileBadge){ mobileBadge.textContent=n; mobileBadge.classList.toggle('hidden',n===0); }
-    updateCartBar();
   }
-  function updateCartBar() {}
 
   let toastTimer;
   function showToast(name){
@@ -2112,7 +2110,7 @@
   // One idempotency key per cart contents: if the request is retried or double-submitted (or the
   // response is lost), the server returns the SAME order instead of creating another one.
   let checkoutKey = null, checkoutKeySig = '', checkoutBusy = false;
-  function cartSig(){return Object.keys(cart).sort().map(id=>id+':'+cart[id]).join(',')+'|'+selectedMethod()+'|'+JSON.stringify(cartNames)+'|'+selectedDelivery.slug;}
+  function cartSig(){return Object.keys(cart).sort().map(id=>id+':'+cart[id]).join(',')+'|'+selectedMethod()+'|'+JSON.stringify(cartNames);}
   function selectedMethod(){ const r = document.querySelector('input[name="payMethod"]:checked'); return r && (r.value === 'instapay' || r.value === 'vodafone') ? 'instapay' : 'cod'; }
   function selectedWallet(){ const r = document.querySelector('input[name="payMethod"]:checked'); return r && r.value === 'vodafone' ? 'vodafone' : 'instapay'; }
   const CHECKOUT_KEY_STORAGE = 'printify3d_checkout_request';
