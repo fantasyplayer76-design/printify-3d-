@@ -1998,6 +1998,15 @@
     if(kind==='error'){ errEl.textContent = msg; errEl.classList.remove('hidden'); }
     if(kind==='success'){ okEl.textContent = msg; okEl.classList.remove('hidden'); }
   }
+  function surfaceCheckoutError(msg){
+    cartNotice=msg;
+    cartStep='details';
+    viewOrder=null;
+    setCheckoutMsg('error',msg);
+    renderCart();
+    applyCartStep();
+    requestAnimationFrame(()=>{const body=$('cartBody');if(body)body.scrollTo({top:0,behavior:'smooth'});});
+  }
 
   // ---- Shared request helpers ----
   function newKey(){
@@ -2387,9 +2396,10 @@
     checkoutBusy = true; btn.disabled = true;
     $('cartCheckoutLabel').textContent = lang==='ar' ? 'جاري الإرسال…' : 'Placing order…';
     setCheckoutMsg(null, '');
+    const checkoutCartSnapshot = {...cart};
     let confirmedOrderNumber = null;
     try{
-      const r = await postFn('create-order', payload, 25000);
+      const r = await postFn('create-order', payload, 60000);
       if(r.ok && r.data.order_number){
         const d = r.data;
         confirmedOrderNumber = String(d.order_number);
@@ -2420,10 +2430,13 @@
           const ipText = [waLabel, '', `${orderLabel}: ${d.order_number}`, 'Payment: ' + (transferWallet === 'vodafone' ? 'Vodafone Cash' : 'InstaPay'), transferPlan==='half'?'Payment plan: 50% deposit':'Payment plan: full payment', '', ...lines, ...nameWa, '', `${lang==='ar'?'إجمالي الطلب':'Order total'}: ${fmt(transferTotal)}`, `${lang==='ar'?'المطلوب الآن':'Pay now'}: ${fmt(amt)}`, ...(transferPlan==='half'?[ `${lang==='ar'?'المتبقي عند الاستلام':'Remaining due on delivery'}: ${fmt(transferTotal-amt)}`]:[])].join('\n');
           addOrder({ number: String(d.order_number), token: String(d.payment.order_token), amount: amt, wallet: transferWallet, paymentPlan:transferPlan, state: 'awaiting_proof', receipt:{items:receiptItems,total:transferTotal,amountDue:amt,plan:transferPlan,method:transferWallet},
                      wa: `https://wa.me/${WHATSAPP_ORDER}?text=${encodeURIComponent(ipText)}` });
-          cart = {}; cartStep = 'cart'; cartNotice = ''; clearCheckoutKey(); saveCart(); updateCartBadge();
-          viewOrder = String(d.order_number); renderCart(); renderBanner();
-          $('cartBody').scrollTo({top:0});
+          // Present the proof uploader first. Keep the idempotency key until that screen renders,
+          // so a browser-side failure can safely replay this same server order instead of duplicating it.
+          viewOrder = String(d.order_number);
+          renderCart(); renderBanner();
           showReceipt({number:String(d.order_number),items:receiptItems,total:transferTotal,amountDue:amt,plan:transferPlan,method:transferWallet,wallet:transferWallet},false);
+          cart = {}; cartStep = 'cart'; cartNotice = ''; saveCart(); updateCartBadge();
+          clearCheckoutKey();
           return;
         }
         // 2) Show the confirmation + clear the cart (only now that the order really exists)
@@ -2443,20 +2456,28 @@
       } else if(r.status === 400 && code === 'invalid_items'){
         cart = sanitizeCart(cart); saveCart(); updateCartBadge(); cartStep = 'cart'; cartNotice = M('invalid'); renderCart(); loadCatalogData(true);
       } else if(r.status === 429){
-        setCheckoutMsg('error', M('limit'));
+        surfaceCheckoutError(M('limit'));
       } else if(r.status === 400 && r.data.error){
-        setCheckoutMsg('error', lang==='ar' ? 'راجع بياناتك وحاول تاني.' : String(r.data.error));   // validation message from the server
+        surfaceCheckoutError(lang==='ar' ? 'راجع بياناتك وحاول تاني.' : String(r.data.error));   // validation message from the server
       } else {
-        setCheckoutMsg('error', M('generic'));
+        surfaceCheckoutError(M('generic'));
       }
     }catch(err){
       console.error(err);
-      if(confirmedOrderNumber){
-        // The server confirmed the order; a browser-side UI error must never tell the customer to place it again.
+      if(confirmedOrderNumber && selectedMethod() !== 'cod'){
+        // A transfer order may already exist even if rendering failed. Restore the cart and preserve
+        // its request key: the next attempt replays the same order and brings the proof screen back.
+        cart = {...checkoutCartSnapshot}; saveCart(); updateCartBadge();
+        surfaceCheckoutError(lang==='ar'
+          ? `تم تسجيل طلب التحويل رقم ${confirmedOrderNumber} لكنه لم يُعرض. الطلب غير مدفوع. اضغط «تأكيد الطلب» مرة أخرى لفتح رفع الإثبات بأمان دون إنشاء طلب مكرر.`
+          : `Transfer order ${confirmedOrderNumber} was received, but its payment screen did not open. It is not paid. Press Place Order again to reopen proof upload safely; the saved request key prevents a duplicate.`);
+      } else if(confirmedOrderNumber){
+        // The server confirmed COD; never tell the customer the request failed.
         cart = {}; cartStep = 'cart'; cartNotice = ''; clearCheckoutKey(); saveCart();
         setCheckoutMsg('success', lang==='ar' ? `تم استلام طلبك رقم ${confirmedOrderNumber}. لو لم يظهر التأكيد، تواصل معنا على واتساب.` : `Order ${confirmedOrderNumber} was received. If the confirmation didn’t appear, contact us on WhatsApp.`);
       } else {
-        setCheckoutMsg('error', M('network'));       // retries reuse the persisted request key
+        // Keep the details screen visible and explain the timeout at the top of the drawer.
+        surfaceCheckoutError(M('network')); // the persisted request key makes retry safe
       }
     }finally{
       checkoutBusy = false; btn.disabled = false; applyCartStep();   // never leave the button stuck
