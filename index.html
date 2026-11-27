@@ -237,10 +237,10 @@
   .receipt-price-count{font-variant-numeric:tabular-nums;color:var(--brand-text);}
   .receipt-row{font-size:.9rem;}
   #receiptPaper .receipt-action{opacity:1;animation:receipt-ink .35s ease 1.25s both;}
-  #receiptUploadProof{box-shadow:0 8px 20px rgba(160,70,58,.22);}
+  #receiptProofSubmit{box-shadow:0 8px 20px rgba(160,70,58,.22);}
   @keyframes receipt-check-pop{0%{opacity:0;scale:.45}72%{opacity:1;scale:1.14}100%{opacity:1;scale:1}}
   @media(max-width:480px){#receiptPaper{padding:1.3rem 1rem 1.5rem;border-radius:20px 20px 16px 16px}.receipt-confirmation{padding-inline:.8rem}.receipt-confirmation p{font-size:.92rem}}
-  @media print{.receipt-success-mark{animation:none!important}#receiptUploadProof{display:none!important}}
+  @media print{.receipt-success-mark{animation:none!important}#receiptProofSubmit{display:none!important}}
   /* Footer */
   .foot-link{font-size:.9rem; color:var(--sub);} .foot-link:hover{color:var(--brand-text);}
   #footer .sub,#footer .foot-link,#footer nav[aria-label="SEO pages"] a{color:#51473F!important;}
@@ -2122,7 +2122,7 @@
       ${remaining>0?`<div class="receipt-row text-sm"><span>${RT('remaining')}</span><span>${fmt(remaining)}</span></div>`:''}
       <div class="receipt-row text-xs sub"><span>${method==='vodafone'?RT('vodafone'):method==='instapay'?RT('instapay'):RT('cod')}</span><span></span></div>
       <hr class="receipt-rule"><p class="text-center font-extrabold text-xl tracking-wide mt-5">${RT('thanks')}</p><div class="receipt-barcode" aria-hidden="true"></div>
-      ${method!=='cod'&&!isPaid?`<button id="receiptUploadProof" type="button" class="btn-primary btn-lg w-full mt-5 receipt-action">${RT('uploadProof')}</button>`:''}
+      ${method!=='cod'&&!isPaid?`<section id="receiptProofUploadCard" class="proof-upload-card space-y-3 mt-5" aria-labelledby="receiptProofTitle"><div><p id="receiptProofTitle" class="field-label mb-1">${RT('uploadProof')}</p><p class="text-sm sub">${P('uploadHint')}</p></div><input id="receiptProofFile" type="file" accept="image/png,image/jpeg,image/webp" class="proof-file-input" aria-label="${RT('uploadProof')}" aria-describedby="receiptProofError"><div class="proof-preview hidden" aria-live="polite"><img alt=""><p class="text-sm"><span class="sub">${P('selectedFile')}:</span> <strong></strong></p></div><p id="receiptProofError" role="alert" aria-live="assertive" class="hidden text-sm font-medium" style="color:var(--brand-text);"></p><p data-proof-success role="status" class="hidden text-sm font-semibold" style="color:var(--ok);"></p><button id="receiptProofSubmit" type="button" class="btn-primary btn-lg w-full" data-number="${esc(data.number||'')}">${P('submit')}</button></section>`:''}
       <button id="receiptPrint" type="button" class="btn-outline btn-lg w-full mt-3 receipt-action">${RT('printReceipt')}</button>
       <button id="receiptContinue" type="button" class="btn-outline btn-lg w-full mt-3 receipt-action">${RT('close')}</button>
       </div>
@@ -2132,7 +2132,7 @@
     const close = () => { overlay.classList.add('hidden'); overlay.classList.remove('flex'); overlay.setAttribute('aria-hidden','true'); document.body.classList.remove('receipt-open'); syncLock(); if(returnFocus && returnFocus.focus) returnFocus.focus(); };
     $('receiptClose').addEventListener('click', close); $('receiptContinue').addEventListener('click', close);
     $('receiptPrint').addEventListener('click', () => window.print());
-    const proofCta=$('receiptUploadProof'); if(proofCta) proofCta.addEventListener('click',()=>{close();viewOrder=String(data.number||'');if(!cartOpen)openCart();else renderCart();requestAnimationFrame(()=>{$('cartBody').scrollTo({top:0,behavior:'smooth'});$('proofFile')?.focus({preventScroll:true});});});
+    const receiptProofSubmit=$('receiptProofSubmit'); if(receiptProofSubmit) receiptProofSubmit.addEventListener('click',()=>onProofSubmit(receiptProofSubmit));
     dialog.querySelectorAll('[data-count-up]').forEach(node=>{const final=Number(node.dataset.countUp)||0;if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){node.textContent=fmt(final);return;}const start=performance.now(),duration=680;const tick=now=>{const p=Math.min(1,(now-start)/duration),ease=1-Math.pow(1-p,3);node.textContent=fmt(final*ease);if(p<1)requestAnimationFrame(tick);};requestAnimationFrame(tick);});
     overlay.onclick = e => { if(e.target === overlay) close(); };
     $('receiptClose').focus();
@@ -2254,39 +2254,36 @@
   }
   let proofBusy = false;
   async function onProofSubmit(btn){
-    if(proofBusy) return;
-    const o = orders.find(x => x.number === btn.dataset.number); if(!o) return;
-    const input = $('proofFile'), err = $('proofError'), f = input && input.files && input.files[0];
-    const fail = m => { err.textContent = m; err.classList.remove('hidden'); markInvalid(input, true); input.focus(); };
-    err.classList.add('hidden'); markInvalid(input, false);
-    if(!f || f.size === 0) return fail(P('errNone'));
-    const okType = /^image\/(png|jpeg|webp)$/.test(f.type) || (!f.type && /\.(png|jpe?g|webp)$/i.test(f.name));   // the server re-checks the real bytes
-    if(!okType) return fail(P('errType'));
-    if(f.size > MAX_PROOF_BYTES) return fail(P('errSize'));
-    proofBusy = true; btn.disabled = true; const label = btn.textContent; btn.textContent = P('sending');
+    if(proofBusy)return;
+    const o=orders.find(x=>x.number===btn.dataset.number);if(!o)return;
+    const card=btn.closest('.proof-upload-card'),input=card&&card.querySelector('input[type="file"]'),err=card&&card.querySelector('[role="alert"]'),success=card&&card.querySelector('[data-proof-success]'),f=input&&input.files&&input.files[0];
+    const fail=m=>{if(!err)return;err.textContent=m;err.classList.remove('hidden');markInvalid(input,true);input.focus();};
+    if(err)err.classList.add('hidden');markInvalid(input,false);
+    if(!f||f.size===0)return fail(P('errNone'));
+    const okType=['image/png','image/jpeg','image/webp'].includes(f.type)||(!f.type&&/\.(png|jpe?g|webp)$/i.test(f.name));
+    if(!okType)return fail(P('errType'));if(f.size>MAX_PROOF_BYTES)return fail(P('errSize'));
+    proofBusy=true;btn.disabled=true;const label=btn.textContent;btn.textContent=P('sending');
+    const submitted=()=>{if(success){success.textContent=getLang()==='ar'?'تم استلام صورة التحويل. الدفع قيد المراجعة ولن يتم تأكيده حتى نتحقق منها.':'Transfer proof received. Payment is under review and will be confirmed after verification.';success.classList.remove('hidden');}if(input)input.disabled=true;btn.classList.add('hidden');};
     try{
-      const r = await uploadProof(o, f);
-      if(r.ok){ o.state = stateFromStatus(r.data); o.reason = ''; saveOrders(); renderBanner(); renderCart(); if(o.state === 'paid' && o.receipt) showReceipt({number:o.number,...o.receipt},true); return; }
-      const code = r.data && r.data.code;
-      if(r.status === 409 && code === 'already_submitted'){ await refreshOrder(o); saveOrders(); renderBanner(); renderCart(); return; }   // double-click / retry: it IS submitted
-      if(r.status === 409 && code === 'already_paid'){ o.state = 'paid'; saveOrders(); renderBanner(); renderCart(); if(o.receipt) showReceipt({number:o.number,...o.receipt},true); return; }
-      fail(code === 'invalid_file_type' ? P('errType') : code === 'file_too_large' ? P('errSize')
-        : (r.status === 429 || code === 'rate_limited' || code === 'too_many_proofs') ? P('errLimit')
-        : code === 'not_found' ? P('errGone') : P('errGeneric'));
-    }catch(e){ console.error(e); fail(P('errNet')); }
-    finally{ proofBusy = false; if(document.contains(btn)){ btn.disabled = false; btn.textContent = label; } }
+      const r=await uploadProof(o,f);
+      if(r.ok){o.state=stateFromStatus(r.data);o.reason='';saveOrders();renderBanner();renderCart();if(['under_review','awaiting_proof'].includes(o.state))submitted();if(o.state==='paid'&&o.receipt)showReceipt({number:o.number,...o.receipt},true);return;}
+      const code=r.data&&r.data.code;
+      if(r.status===409&&code==='already_submitted'){await refreshOrder(o);saveOrders();renderBanner();renderCart();submitted();return;}
+      if(r.status===409&&code==='already_paid'){o.state='paid';saveOrders();renderBanner();renderCart();if(o.receipt)showReceipt({number:o.number,...o.receipt},true);return;}
+      fail(code==='invalid_file_type'?P('errType'):code==='file_too_large'?P('errSize'):(r.status===429||code==='rate_limited'||code==='too_many_proofs')?P('errLimit'):code==='not_found'?P('errGone'):P('errGeneric'));
+    }catch(e){console.error(e);fail(P('errNet'));}
+    finally{proofBusy=false;if(document.contains(btn)){btn.disabled=false;btn.textContent=label;}}
   }
   let proofPreviewUrl = '';
-  document.addEventListener('change', e => {
-    if(e.target && e.target.id === 'proofFile'){
-      const input=e.target, file=input.files && input.files[0], preview=$('proofPreview'), image=$('proofPreviewImage'), name=$('proofFileName');
-      if(proofPreviewUrl){ URL.revokeObjectURL(proofPreviewUrl); proofPreviewUrl=''; }
-      if(!file || !preview || !image || !name) return;
-      const okType=/^image\/(png|jpeg|webp)$/.test(file.type) || (!file.type && /\.(png|jpe?g|webp)$/i.test(file.name));
-      if(!okType || file.size > MAX_PROOF_BYTES){ preview.classList.add('hidden'); return; }
-      proofPreviewUrl=URL.createObjectURL(file); image.src=proofPreviewUrl; image.alt=P('selectedFile')+': '+file.name; name.textContent=file.name; preview.classList.remove('hidden');
-      const err=$('proofError'); if(err) err.classList.add('hidden');
-    }
+  document.addEventListener('change',e=>{
+    const input=e.target;if(!input||!input.matches('.proof-file-input'))return;
+    const file=input.files&&input.files[0],card=input.closest('.proof-upload-card'),preview=card&&card.querySelector('.proof-preview'),image=preview&&preview.querySelector('img'),name=preview&&preview.querySelector('strong');
+    if(proofPreviewUrl){URL.revokeObjectURL(proofPreviewUrl);proofPreviewUrl='';}
+    if(!file||!preview||!image||!name)return;
+    const okType=['image/png','image/jpeg','image/webp'].includes(file.type)||(!file.type&&/\.(png|jpe?g|webp)$/i.test(file.name));
+    if(!okType||file.size>MAX_PROOF_BYTES){preview.classList.add('hidden');return;}
+    proofPreviewUrl=URL.createObjectURL(file);image.src=proofPreviewUrl;image.alt=P('selectedFile')+': '+file.name;name.textContent=file.name;preview.classList.remove('hidden');
+    const err=card.querySelector('[role="alert"]');if(err)err.classList.add('hidden');const success=card.querySelector('[data-proof-success]');if(success)success.classList.add('hidden');
   });
   $('cartItems').addEventListener('click', async e => {
     const copy = e.target.closest('#ipCopy');
