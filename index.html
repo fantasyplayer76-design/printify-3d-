@@ -219,6 +219,28 @@
   @keyframes barcode-print{0%{opacity:0;transform:scaleX(.08)}100%{opacity:1;transform:scaleX(1)}}
   @keyframes status-glow{50%{box-shadow:0 0 2px rgba(74,159,98,.4);opacity:.65}}
   @media(prefers-reduced-motion:reduce){.receipt-printer,.receipt-status-light,#receiptPaper,.receipt-row,.receipt-barcode,.receipt-action{animation:none!important;opacity:1!important;clip-path:none!important;filter:none!important;transform:none!important;}}
+  /* PRINTFY payment ticket */
+  #receiptOverlay{background:rgba(31,24,20,.72);backdrop-filter:blur(8px);}
+  .receipt-printer{display:none;}
+  .receipt-machine{width:min(100%,500px);filter:drop-shadow(0 24px 36px rgba(30,22,17,.28));}
+  #receiptPaper{width:100%;margin:0 auto;padding:1.4rem clamp(1rem,5vw,1.7rem) 1.6rem;border:1px solid #e7d9cb;border-radius:24px 24px 18px 18px;background:linear-gradient(180deg,#fffdf9 0%,#f8f1e8 100%);color:#211713;box-shadow:0 18px 50px rgba(28,19,14,.2);}
+  #receiptPaper:after{height:10px;bottom:-9px;background:radial-gradient(circle at 8px 0,transparent 7px,#f8f1e8 7.5px) 0 0/16px 10px repeat-x;}
+  .receipt-confirmation{position:relative;margin:1.6rem 0 1.15rem;padding:3.2rem 1rem 1.2rem;border:1px solid #ead8c7;border-radius:18px;background:linear-gradient(145deg,#f6ede2,#fffaf4);color:#211713;overflow:visible;}
+  .receipt-confirmation>span:first-child:not(.receipt-success-mark){display:none;}
+  .receipt-confirmation p{max-width:34rem;margin-inline:auto;color:#61564e;line-height:1.6;}
+  .receipt-success-mark{position:absolute;top:-29px;left:50%;display:grid;place-items:center;width:58px;height:58px;transform:translateX(-50%);border:4px solid #fffdf9;border-radius:50%;background:var(--brand);color:#fff;box-shadow:0 0 0 2px var(--brand),0 8px 18px rgba(144,62,49,.22);animation:receipt-check-pop .55s cubic-bezier(.2,.9,.25,1.2) .45s both;}
+  .receipt-success-mark svg{width:28px;height:28px;stroke-width:3;}
+  .receipt-confirmation-transfer{border-color:rgba(193,80,46,.26);}
+  .receipt-confirmation-cod{border-color:#e4ddd2;}
+  .receipt-confirmation-cod .receipt-success-mark{background:#28734D;box-shadow:0 0 0 2px #28734D,0 8px 18px rgba(40,115,77,.2);}
+  .receipt-rule{border-color:#cdbcae;}
+  .receipt-price-count{font-variant-numeric:tabular-nums;color:var(--brand-text);}
+  .receipt-row{font-size:.9rem;}
+  #receiptPaper .receipt-action{opacity:1;animation:receipt-ink .35s ease 1.25s both;}
+  #receiptUploadProof{box-shadow:0 8px 20px rgba(160,70,58,.22);}
+  @keyframes receipt-check-pop{0%{opacity:0;scale:.45}72%{opacity:1;scale:1.14}100%{opacity:1;scale:1}}
+  @media(max-width:480px){#receiptPaper{padding:1.3rem 1rem 1.5rem;border-radius:20px 20px 16px 16px}.receipt-confirmation{padding-inline:.8rem}.receipt-confirmation p{font-size:.92rem}}
+  @media print{.receipt-success-mark{animation:none!important}#receiptUploadProof{display:none!important}}
   /* Footer */
   .foot-link{font-size:.9rem; color:var(--sub);} .foot-link:hover{color:var(--brand-text);}
   #footer .sub,#footer .foot-link,#footer nav[aria-label="SEO pages"] a{color:#51473F!important;}
@@ -1967,7 +1989,7 @@
     payNow:{en:'PAYMENT SENT FOR REVIEW',ar:'المبلغ المحول للمراجعة'}, remaining:{en:'Remaining on delivery',ar:'المتبقي عند الاستلام'},
     depositPaid:{en:'50% DEPOSIT CONFIRMED',ar:'تم تأكيد مقدم 50٪'},
     received:{en:'Thank you! Your order is in.',ar:'شكراً لك! استلمنا طلبك.'},
-    receivedBody:{en:"We’ve received your order. We’ll confirm the next steps shortly.",ar:'وصلنا طلبك وسنؤكد معك الخطوات التالية قريباً.'},
+    receivedBody:{en:"Next: upload your transfer screenshot so we can verify payment. Your order is not marked paid until we review it.",ar:'الخطوة التالية: ارفع صورة التحويل لمراجعة الدفع. لن يتم تسجيل الطلب كمدفوع إلا بعد مراجعة الإيصال.'}, codReceivedBody:{en:"We’ve received your order. We’ll confirm delivery details shortly.",ar:'وصلنا طلبك وسنؤكد معك تفاصيل التوصيل قريباً.'}, uploadProof:{en:"Upload transfer proof",ar:"ارفع إثبات التحويل"},
     printReceipt:{en:'Print / Save receipt',ar:'طباعة / حفظ الإيصال'},
     placed:{en:'ORDER PLACED',ar:'تم استلام الطلب'}, paid:{en:'PAYMENT CONFIRMED',ar:'تم تأكيد الدفع'},
     pending:{en:'PAYMENT PENDING',ar:'في انتظار تأكيد الدفع'}, cod:{en:'Cash on delivery',ar:'الدفع عند الاستلام'}, instapay:{en:'InstaPay',ar:'إنستاباي'}, vodafone:{en:'Vodafone Cash',ar:'فودافون كاش'},
@@ -1996,18 +2018,19 @@
       <div id="receiptPaper">
       <button id="receiptClose" type="button" class="icon-btn" aria-label="${lang==='ar'?'إغلاق':'Close'}" style="position:absolute;top:.45rem;inset-inline-end:.45rem;width:34px;height:34px;background:#fff;">×</button>
       <p class="text-center text-[11px] tracking-[.24em] font-semibold sub mb-2">PRINTFY 3D · CAIRO</p>
-      <div class="receipt-confirmation" role="status"><span class="inline-flex items-center justify-center w-11 h-11 rounded-full" style="background:rgba(255,255,255,.12);color:#f3a089;">${ICON_CHECK}</span><h3>${RT('received')}</h3><p>${RT('receivedBody')}</p></div>
+      <div class="receipt-confirmation ${method==='cod'?'receipt-confirmation-cod':'receipt-confirmation-transfer'}" role="status"><span class="inline-flex items-center justify-center w-11 h-11 rounded-full" style="background:rgba(255,255,255,.12);color:#f3a089;">${ICON_CHECK}</span><span class="receipt-success-mark" aria-hidden="true">${ICON_CHECK}</span><h3>${RT('received')}</h3><p>${method==='cod'?RT('codReceivedBody'):RT('receivedBody')}</p></div>
       <hr class="receipt-rule"><h2 id="receiptTitle" class="text-center text-2xl font-extrabold tracking-wide">${RT('title')}</h2>
       <p class="text-center text-xs sub mt-2">${RT('order')}: <strong dir="ltr">${esc(data.number || '')}</strong></p>
       <p class="text-center text-[11px] font-bold mt-3" style="color:${isPaid?'var(--ok)':method==='instapay'?'#946200':'var(--brand-text)'}">${state}</p>
       <hr class="receipt-rule">${rows || `<p class="text-sm sub text-center">${esc(RT('subtotal'))}</p>`}
-      <hr class="receipt-rule"><div class="receipt-row font-extrabold"><span>${RT('total')}</span><span>${fmt(total)}</span></div>
-      <div class="receipt-row text-sm font-bold"><span>${RT('payNow')}</span><span>${fmt(amountDue)}</span></div>
+      <hr class="receipt-rule"><div class="receipt-row font-extrabold"><span>${RT('total')}</span><span class="receipt-price-count" data-count-up="${total}" aria-label="${esc(fmt(total))}">0 ${cur()}</span></div>
+      <div class="receipt-row text-sm font-bold"><span>${RT('payNow')}</span><span class="receipt-price-count" data-count-up="${amountDue}" aria-label="${esc(fmt(amountDue))}">0 ${cur()}</span></div>
       ${remaining>0?`<div class="receipt-row text-sm"><span>${RT('remaining')}</span><span>${fmt(remaining)}</span></div>`:''}
       <div class="receipt-row text-xs sub"><span>${method==='vodafone'?RT('vodafone'):method==='instapay'?RT('instapay'):RT('cod')}</span><span></span></div>
       <hr class="receipt-rule"><p class="text-center font-extrabold text-xl tracking-wide mt-5">${RT('thanks')}</p><div class="receipt-barcode" aria-hidden="true"></div>
-      <button id="receiptPrint" type="button" class="btn-outline btn-lg w-full mt-5 receipt-action">${RT('printReceipt')}</button>
-      <button id="receiptContinue" type="button" class="btn-primary btn-lg w-full mt-3 receipt-action">${RT('close')}</button>
+      ${method!=='cod'&&!isPaid?`<button id="receiptUploadProof" type="button" class="btn-primary btn-lg w-full mt-5 receipt-action">${RT('uploadProof')}</button>`:''}
+      <button id="receiptPrint" type="button" class="btn-outline btn-lg w-full mt-3 receipt-action">${RT('printReceipt')}</button>
+      <button id="receiptContinue" type="button" class="btn-outline btn-lg w-full mt-3 receipt-action">${RT('close')}</button>
       </div>
     </div>`;
     const overlay = $('receiptOverlay'), returnFocus = document.activeElement; overlay.classList.remove('hidden'); overlay.classList.add('flex'); overlay.setAttribute('aria-hidden','false');
@@ -2015,6 +2038,8 @@
     const close = () => { overlay.classList.add('hidden'); overlay.classList.remove('flex'); overlay.setAttribute('aria-hidden','true'); document.body.classList.remove('receipt-open'); syncLock(); if(returnFocus && returnFocus.focus) returnFocus.focus(); };
     $('receiptClose').addEventListener('click', close); $('receiptContinue').addEventListener('click', close);
     $('receiptPrint').addEventListener('click', () => window.print());
+    const proofCta=$('receiptUploadProof'); if(proofCta) proofCta.addEventListener('click',()=>{close();viewOrder=String(data.number||'');if(!cartOpen)openCart();else renderCart();requestAnimationFrame(()=>{$('cartBody').scrollTo({top:0,behavior:'smooth'});$('proofFile')?.focus({preventScroll:true});});});
+    dialog.querySelectorAll('[data-count-up]').forEach(node=>{const final=Number(node.dataset.countUp)||0;if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){node.textContent=fmt(final);return;}const start=performance.now(),duration=680;const tick=now=>{const p=Math.min(1,(now-start)/duration),ease=1-Math.pow(1-p,3);node.textContent=fmt(final*ease);if(p<1)requestAnimationFrame(tick);};requestAnimationFrame(tick);});
     overlay.onclick = e => { if(e.target === overlay) close(); };
     $('receiptClose').focus();
   }
