@@ -2399,7 +2399,7 @@
     const checkoutCartSnapshot = {...cart};
     let confirmedOrderNumber = null;
     try{
-      const r = await postFn('create-order', payload, 60000);
+      const r = await postFn('create-order', payload, 25000);
       if(r.ok && r.data.order_number){
         const d = r.data;
         confirmedOrderNumber = String(d.order_number);
