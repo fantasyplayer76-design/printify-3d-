@@ -7,7 +7,7 @@ const xml=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const ld=v=>JSON.stringify(v).replace(/</g,"\\u003c");
 const absolute=p=>SITE+p, route=(slug,lang)=>"/"+(lang==="ar"?"ar/":"")+"shop/"+encodeURIComponent(slug)+"/";
 const local=(p,lang,a,b)=>lang==="ar"?(p[a]||p[b]||""):(p[b]||p[a]||"");
-function imageFor(p,assets){const base=p.slug.startsWith("spring-lizard-")?"spring-lizard":p.slug;const ext=assets.find(n=>n.replace(/\.(avif|webp|jpe?g|png)$/i,"")===base);if(ext)return "/assets/products/"+encodeURIComponent(ext);const src=String(p.image_url||"");return /^(https:\/\/|data:image\/)/i.test(src)?src:"";}
+function imageFor(p,assets){const base=p.slug.startsWith("spring-lizard-")?"spring-lizard":p.slug;const candidates=assets.filter(n=>n.replace(/\.(avif|webp|jpe?g|png)$/i,"")===base);const rank=n=>/\.avif$/i.test(n)?0:/\.webp$/i.test(n)?1:/\.jpe?g$/i.test(n)?2:3;candidates.sort((a,b)=>rank(a)-rank(b));if(candidates[0])return "/assets/products/"+encodeURIComponent(candidates[0]);const src=String(p.image_url||"");return /^(https:\/\/|data:image\/)/i.test(src)?src:"";}
 function renderStaticFallback(p,c,lang,image){
  const name=local(p,lang,"name_ar","name_en")||p.name||p.slug, desc=local(p,lang,"desc_ar","desc_en")||p.description||"";
  const available=!!p.available&&Number(p.stock||0)>0, price=new Intl.NumberFormat(lang==="ar"?"ar-EG":"en-EG",{maximumFractionDigits:2}).format(Number(p.price||0));
@@ -72,6 +72,30 @@ export function prerenderArabicCatalog(src,products,categories,assets){
 function refreshItemLists(markup,products,categories,assets,lang){
  return markup.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi,(whole,body)=>{try{const data=JSON.parse(body);let changed=false;const items=products.filter(p=>p.available&&Number(p.stock||0)>0).map((p,i)=>{const n=local(p,lang,"name_ar","name_en")||p.name||p.slug,c=absolute(route(p.slug,lang)),img=imageFor(p,assets),category=categories.find(x=>x.slug===p.category);return {"@type":"ListItem",position:i+1,item:{"@type":"Product",name:n,category:lang==="ar"?(category?.name_ar||category?.name_en):category?.name_en,image:img?(img.startsWith("/")?absolute(img):img):undefined,url:c,offers:{"@type":"Offer",price:Number(p.price||0),priceCurrency:"EGP",availability:Number(p.stock||0)>0?"https://schema.org/InStock":"https://schema.org/OutOfStock"}}};});const visit=o=>{if(!o||typeof o!=="object")return;if(o["@type"]==="ItemList"){o.itemListElement=items;changed=true;}Object.values(o).forEach(visit);};visit(data);return changed?'<script type="application/ld+json">'+ld(data)+'</script>':whole;}catch{return whole;}});
 }
+function renderShopCatalog(src,products,categories,assets,lang){
+ const ar=lang==="ar",rows=products.filter(p=>p.available&&Number(p.stock||0)>0);
+ const cards=rows.map(p=>{const name=local(p,lang,"name_ar","name_en")||p.name||p.slug,category=categories.find(x=>x.slug===p.category),image=imageFor(p,assets),url=route(p.slug,lang),price=new Intl.NumberFormat(ar?"ar-EG":"en-EG",{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(p.price||0)),categoryName=ar?(category?.name_ar||category?.name_en||p.category||""):(category?.name_en||p.category||""),photo=image?'<a href="'+esc(url)+'" aria-label="'+(ar?"عرض ":"View ")+esc(name)+'"><img src="'+esc(image)+'" alt="'+esc(name)+' — PRINTFY 3D" width="640" height="480" loading="lazy" decoding="async"></a>':'<a href="'+esc(url)+'" aria-label="'+(ar?"عرض ":"View ")+esc(name)+'"><div role="img" aria-label="'+(ar?"الصورة غير متاحة":"Product photo unavailable")+'"></div></a>';return '<article class="card">'+photo+'<div class="card-body"><p class="eyebrow">'+esc(categoryName)+'</p><h2><a href="'+esc(url)+'">'+esc(name)+'</a></h2><p class="price">'+price+(ar?" جنيه مصري":" EGP")+'</p></div></article>';}).join("\n");
+ const start="<!-- GENERATED_SHOP_GRID_START -->",end="<!-- GENERATED_SHOP_GRID_END -->";
+ let a=src.indexOf(start),b=src.indexOf(end,a);
+ if(a>=0&&b>a)src=src.slice(0,a+start.length)+"\n"+cards+"\n"+src.slice(b);
+ else{
+  const open=src.indexOf('<div class="grid"'),openEnd=src.indexOf(">",open)+1;
+  if(open<0||openEnd<=0)throw new Error("Shop catalog grid missing");
+  let depth=1;const re=/<\/?div\b[^>]*>/gi;re.lastIndex=openEnd;let m,close=-1;
+  while((m=re.exec(src))){if(m[0].startsWith("</"))depth--;else depth++;if(depth===0){close=m.index;break;}}
+  if(close<0)throw new Error("Shop catalog grid close missing");
+  src=src.slice(0,openEnd)+"\n"+start+"\n"+cards+"\n"+end+"\n"+src.slice(close);
+ }
+ const description=ar?"تسوق "+rows.length+" منتجًا متاحًا من PRINTFY 3D في القاهرة. شاهد صور المنتجات وتفاصيلها وأسعارها بالجنيه المصري.":"Browse "+rows.length+" available 3D-printed products from PRINTFY 3D in Cairo. View product photos, details and EGP prices.";
+ src=src.replace(/<meta name="description" content="[^"]*">/i,'<meta name="description" content="'+esc(description)+'">')
+   .replace(/(<meta property="og:description" content=")[^"]*(")/i,"$1"+esc(description)+"$2")
+   .replace(/(<meta name="twitter:description" content=")[^"]*(")/i,"$1"+esc(description)+"$2");
+ src=src.replace('href="/faq/>','href="'+(ar?"/ar/faq/":"/faq/")+'">');
+ if(ar)src=src.replace('href="/>English','href="/">English');
+ else src=src.replace('href="/ar/>العربية','href="/ar/">العربية');
+ return src;
+}
+
 export function buildSitemap(old,products){
  const landingPaths=new Set(LANDINGS.flatMap(x=>["/"+x.slug+"/","/ar/"+x.slug+"/"]));
  const slugs=new Set(products.map(p=>p.slug)),blocks=[...old.matchAll(/<url>[\s\S]*?<\/url>/g)].map(m=>m[0]).filter(x=>{const loc=(x.match(/<loc>(.*?)<\/loc>/)||[])[1]||"";try{const u=new URL(loc),p=u.pathname.split("/").filter(Boolean),idx=p[0]==="ar"?2:1;if(landingPaths.has(u.pathname))return false;if(u.pathname==="/product.html"&&u.searchParams.has("slug"))return false;return !(p.length>=2&&(p[0]==="shop"||p[0]==="ar"&&p[1]==="shop")&&slugs.has(p[idx]));}catch{return true;}});
@@ -88,9 +112,10 @@ async function main(){
  if(!Array.isArray(products)||!products.length)throw new Error("No available Supabase products; refusing to overwrite existing storefront pages.");
  const assets=fs.existsSync(path.join(ROOT,"assets/products"))?fs.readdirSync(path.join(ROOT,"assets/products")):[],homePath=path.join(ROOT,"index.html");
  fs.writeFileSync(homePath,prerenderCatalog(home,products,cats,assets));
+ for(const lang of ["en","ar"]){const shopPath=path.join(ROOT,lang==="ar"?"ar":"","shop","index.html");if(!fs.existsSync(shopPath))throw new Error("Shop page template missing: "+shopPath);const shopSource=fs.readFileSync(shopPath,"utf8");fs.writeFileSync(shopPath,renderShopCatalog(shopSource,products,cats,assets,lang));}
  for(const spec of LANDINGS){for(const lang of ["en","ar"]){const dest=path.join(ROOT,lang==="ar"?"ar":"",""+spec.slug,"index.html");fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,renderLandingPage(spec,products,assets,lang));}}
  for(const p of products){if(!/^[a-z0-9][a-z0-9-]*$/.test(p.slug))throw new Error("Unsafe product slug: "+p.slug);for(const lang of ["en","ar"]){const dest=path.join(ROOT,lang==="ar"?"ar":"","shop",p.slug,"index.html");fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,renderProductPage(p,cats,assets,lang));}}
  const sp=path.join(ROOT,"sitemap.xml");fs.writeFileSync(sp,buildSitemap(fs.readFileSync(sp,"utf8"),products));console.log("Pre-rendered "+products.length+" Supabase products in EN/AR; refreshed catalog and sitemap.");
 }
-if(process.argv.includes("--self-test")){const p={id:1,slug:"sample-widget",name_en:"Sample widget",name_ar:"قطعة",desc_en:"Sample description",desc_ar:"وصف",category:"test",price:120,stock:3,available:true,material:"PLA",dims:"10 x 5 cm"};const page=renderProductPage(p,[{slug:"test",name_en:"Test",name_ar:"اختبار"}],["sample-widget.webp"],"en"),ar=renderProductPage(p,[],["sample-widget.webp"],"ar"),map=buildSitemap("<urlset></urlset>",[p]);if(!page.includes("Sample widget | PRINTFY 3D")||!page.includes("120")||!page.includes("/assets/products/sample-widget.webp")||!ar.includes('dir="rtl"')||!map.includes("hreflang=\"ar-EG\""))throw new Error("Template self-test failed");console.log("Product template self-test passed.");}
+if(process.argv.includes("--self-test")){const p={id:1,slug:"sample-widget",name_en:"Sample widget",name_ar:"قطعة",desc_en:"Sample description",desc_ar:"وصف",category:"test",price:120,stock:3,available:true,material:"PLA",dims:"10 x 5 cm"};const page=renderProductPage(p,[{slug:"test",name_en:"Test",name_ar:"اختبار"}],["sample-widget.jpg","sample-widget.webp"],"en"),ar=renderProductPage(p,[],["sample-widget.jpg","sample-widget.webp"],"ar"),map=buildSitemap("<urlset></urlset>",[p]),shop=renderShopCatalog('<html><head><meta name="description" content="old"></head><body><div class="grid"><article><div>old</div></article></div><a href="/faq/>FAQ</a><a href="/ar/>العربية</a></body></html>',[p],[],["sample-widget.jpg","sample-widget.webp"],"en");if(!page.includes("Sample widget | PRINTFY 3D")||!page.includes("120")||!page.includes("/assets/products/sample-widget.webp")||!ar.includes('dir="rtl"')||!map.includes("hreflang=\"ar-EG\"")||!shop.includes('loading="lazy"')||!shop.includes('href="/faq/">FAQ')||!shop.includes('Browse 1 available'))throw new Error("Template self-test failed");console.log("Product template self-test passed.");}
 else if(process.argv[1]&&import.meta.url===pathToFileURL(path.resolve(process.argv[1])).href)main().catch(e=>{console.error(e);process.exitCode=1;});
