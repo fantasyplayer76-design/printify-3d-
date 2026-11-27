@@ -416,10 +416,10 @@
   .site-header .wordmark .brand{color:#b85351}.site-header>a>span:last-child{display:none}
   .site-header nav a:not([href="#shop"]):not([href="#custom"]):not([href="#faq"]){display:none}
   .site-header nav{gap:2.1rem}.site-header nav a{font-size:.91rem;color:#625d57}.site-header nav a:hover{color:#a34240}
-  #home{background:#f7f2e9;color:#211d1a;min-height:min(760px,calc(100svh - 62px));display:flex;align-items:center}
-  .hero-inner{width:100%;padding-block:4.2rem 5rem;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(2.5rem,6vw,6rem)}
+  #home{background:#f7f2e9;color:#211d1a;min-height:0;display:flex;align-items:center}
+  .hero-inner{width:100%;max-width:56rem;margin-inline:auto;padding-block:clamp(3rem,8vw,5rem)}
   .hero-eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.23em;font-weight:700;color:#a34240;margin:0 0 1.45rem}
-  .hero h1.hero-title{font-size:clamp(3.8rem,7vw,6.75rem);font-weight:600;line-height:.9;letter-spacing:-.045em;max-width:9ch;margin:0}
+  .hero h1.hero-title{font-size:clamp(3.2rem,6.2vw,5.25rem);font-weight:600;line-height:.98;letter-spacing:-.045em;max-width:13ch;margin:0}
   .hero h1 em{font-style:italic;color:#b85351;font-weight:500}
   .hero-sub{font-size:clamp(1rem,1.35vw,1.18rem);line-height:1.65;color:#746e68;max-width:31rem;margin:1.6rem 0 0}
   .hero-actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem}.hero-actions .btn-primary,.hero-actions .btn-outline{border-radius:999px;min-height:52px;padding:.85rem 1.65rem;font-size:.95rem}
@@ -532,17 +532,16 @@
 <main id="main">
 <!-- HERO -->
 <section id="home" class="hero">
-  <div class="hero-inner max-w-6xl mx-auto px-5 sm:px-6 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+  <div class="hero-inner max-w-6xl mx-auto px-5 sm:px-6">
     <div class="hero-copy">
       <p class="hero-eyebrow" data-i18n="heroEyebrow">Printed layer by layer in Cairo</p>
       <h1 class="hero-title" data-i18n="heroTitle">3D Printing in Cairo,<br><em>made personal.</em></h1>
-      <p class="hero-sub" data-i18n="heroSub">Handmade 3D-printed incense holders, figurines, wall art and custom pieces. Printed in Cairo, delivered across Egypt.</p>
+      <p class="hero-sub" data-i18n="heroSub">Custom 3D prints and gifts, made in Cairo.</p>
       <div class="hero-actions">
         <a href="/#shop" class="btn-primary btn-lg" data-i18n="heroBtn1">Shop the collection</a>
         <a href="/#custom" class="btn-outline btn-lg" data-i18n="heroBtn2">Print my idea</a>
       </div>
     </div>
-    <div id="heroVisual" aria-label="Featured products"><img class="hero-visual-placeholder" src="/assets/products/low-poly-wolf-800.jpg" alt="Low-poly wolf — 3D printed by PRINTFY 3D" width="800" height="533" fetchpriority="high" decoding="async"></div>
   </div>
 </section>
 <section id="shopReviews" class="section border-b ink-line hidden" aria-labelledby="shopReviewsTitle"><div class="max-w-6xl mx-auto px-5 sm:px-6"><h2 id="shopReviewsTitle" class="section-title text-center mb-5" data-i18n="testimonialsEyebrow">Customer reviews</h2><div id="shopReviewGrid" class="grid md:grid-cols-3 gap-4"></div></div></section>
@@ -1206,7 +1205,7 @@
     sortLabel:{en:"Sort by",ar:"ترتيب حسب"}, sortNewest:{en:"Newest",ar:"الأحدث"}, sortLow:{en:"Price: low to high",ar:"السعر: من الأقل للأعلى"}, sortHigh:{en:"Price: high to low",ar:"السعر: من الأعلى للأقل"}, priceMinLabel:{en:"Min price (EGP)",ar:"أقل سعر (جنيه)"}, priceMaxLabel:{en:"Max price (EGP)",ar:"أعلى سعر (جنيه)"}, clearFilters:{en:"Clear filters",ar:"مسح الفلاتر"}, navShopNow:{en:"Shop Now",ar:"تسوق الآن"}, mmWhatsApp:{en:"Chat on WhatsApp",ar:"كلمنا على واتساب"},
     heroEyebrow:{en:"PRINTED LAYER BY LAYER IN CAIRO",ar:"طباعة طبقة فوق طبقة في القاهرة"},
     heroTitle:{en:'3D Printing in Cairo,<br><em>made personal.</em>',ar:'طباعة ثلاثية الأبعاد في القاهرة،<br><em>بتصميمك.</em>'},
-    heroSub:{en:"Handmade 3D-printed incense holders, figurines, wall art and custom pieces. Printed in Cairo, delivered across Egypt.",ar:"حوامل بخور ومجسمات ولوحات حائط وقطع مخصصة مطبوعة ثلاثيّاً بعناية. نطبع في القاهرة ونوصل لكل أنحاء مصر."},
+    heroSub:{en:"Custom 3D prints and gifts, made in Cairo.",ar:"طباعة ثلاثية الأبعاد وهدايا مخصصة، نصنعها في القاهرة."},
     heroBtn1:{en:"Shop Now",ar:"تسوق الآن"}, heroBtn2:{en:"Create Your Own",ar:"صمّم قطعتك"},    heroBadge:{en:"Printed to order · 24–72h",ar:"يُطبع عند الطلب · 24-72 ساعة"},
     heroPoint2:{en:"Delivered across Egypt",ar:"توصيل لكل أنحاء مصر"},
     heroPoint3:{en:"Cash on delivery · InstaPay · Vodafone Cash",ar:"الدفع عند الاستلام · إنستاباي · فودافون كاش"},
@@ -1426,23 +1425,7 @@
   }
 
   // ---- Hero: editorial product photography ----
-  function renderHero(){
-    const wrap = $('heroVisual'); if(!wrap) return;
-    const lang = getLang();
-    const wolf = products.find(p=>p.slug==='low-poly-wolf');
-    const incense = products.find(p=>p.slug==='incense-water-drop');
-    if(!wolf || !incense){ wrap.className=''; wrap.innerHTML=''; return; }
-    wrap.className = 'ready';
-    wrap.innerHTML = `
-      <button type="button" class="hero-featured-main" data-id="${esc(wolf.id)}" aria-label="${esc(wolf[lang].name)}">
-        <span class="art">${productMedia(wolf,72,'',true)}</span>
-        <span class="hero-featured-badge">${lang==='ar'?'يبدأ من ٥٠ ج.م':'From 50 EGP'}</span>
-      </button>
-      <button type="button" class="hero-featured-inset" data-id="${esc(incense.id)}" aria-label="${esc(incense[lang].name)}">
-        <span class="art">${productMedia(incense,48,'',false)}</span>
-      </button>`;
-  }
-  $('heroVisual').addEventListener('click', e => { const b = e.target.closest('button[data-id]'); if(b) openPreview(b.dataset.id); });
+  function renderHero() {}
 
   // ---- Full catalog (price list) ----
   function renderCatalog(){
