@@ -77,7 +77,7 @@
   button:disabled{opacity:.6; cursor:not-allowed;}
   button:disabled:hover{transform:none!important; box-shadow:none!important;}
   a,button{outline-offset:3px;}
-  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--brand);}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--brand); outline-offset:3px;}
 
   /* Surfaces */
   .card{border:1px solid var(--line-soft)}
@@ -504,8 +504,24 @@
 @keyframes imgShimmer{from{background-position:200% 0}to{background-position:-200% 0}}
 @media (prefers-reduced-motion:reduce){#productGrid img,.hero-visual-placeholder{animation:none}}
 
-/* cart: keep the form visible while the phone keyboard is open */
-@media (max-width:639px){#cartDrawer:focus-within #cartFooter [data-i18n="cartDeliveryNote"],#cartDrawer:focus-within #cartStepsNote,#cartDrawer:focus-within #cartNote{display:none!important}#cartDrawer:focus-within #cartFooter{padding-top:.5rem}}
+/* Mobile checkout: keep the focused field clear of the fixed order controls while the keyboard is open. */
+@media (max-width:639px){
+  #checkoutFields input.field,#checkoutFields select.field{font-size:16px;min-height:52px;}
+  #checkoutFields textarea.field{font-size:16px;min-height:88px;}
+  #checkoutFields .pay-opt{min-height:64px;padding:.85rem;}
+  #checkoutFields .pay-opt input{width:22px;height:22px;margin-top:.05rem;}
+  #cartDrawer:focus-within #cartFooter [data-i18n="cartDeliveryNote"],
+  #cartDrawer:focus-within #cartFooter #cartDeliveryFeeLine,
+  #cartDrawer:focus-within #cartFooter > .flex.justify-between,
+  #cartDrawer:focus-within #cartStepsNote,
+  #cartDrawer:focus-within #cartNote{display:none!important}
+  #cartDrawer:focus-within #cartFooter{padding-top:.5rem}
+  #cartCheckout{min-height:52px}
+}
+#cartCheckout[aria-busy="true"]{cursor:progress}
+#cartCheckout[aria-busy="true"] #cartCheckoutLabel::before{content:"";display:inline-block;width:1em;height:1em;margin-inline-end:.55em;vertical-align:-.15em;border:2px solid currentColor;border-inline-end-color:transparent;border-radius:50%;animation:checkoutSpin .7s linear infinite}
+@keyframes checkoutSpin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){#cartCheckout[aria-busy="true"] #cartCheckoutLabel::before{animation:none}}
 
   /* PRINTFY clean storefront layout */
   body{background:#f2f2f0;color:#241f1d}
@@ -1110,18 +1126,18 @@
         <h3 class="font-bold text-sm" data-i18n="cartDetailsTitle">Delivery details</h3>
         <button id="cartBack" type="button" class="text-xs underline sub" data-i18n="cartEdit">Edit cart</button>
       </div>
-      <input id="ckName" autocomplete="name" maxlength="120" aria-describedby="checkoutError" data-i18n-placeholder="ckNamePh" placeholder="Full name" aria-label="Full name" class="field">
-      <input id="ckMobile" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" aria-describedby="checkoutError" data-i18n-placeholder="ckMobilePh" placeholder="Mobile number (e.g. 01012345678)" aria-label="Mobile number" class="field">
-      <div class="grid grid-cols-2 gap-3">
-        <input id="ckGovernorate" data-i18n-placeholder="ckGovPh" placeholder="Choose a governorate above" aria-label="Governorate" class="field" readonly required>
-        <input id="ckAddress" autocomplete="street-address" data-i18n-placeholder="ckAddressPh" placeholder="Street / area" aria-label="Street or area" class="field">
+      <label class="block"><span class="field-label block mb-1" data-i18n="ckNameLabel">Full name *</span><input id="ckName" autocomplete="name" maxlength="120" aria-describedby="checkoutError" data-i18n-placeholder="ckNamePh" placeholder="Full name" aria-label="Full name" class="field" required aria-required="true"></label>
+      <label class="block"><span class="field-label block mb-1" data-i18n="ckMobileLabel">Mobile number *</span><input id="ckMobile" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" aria-describedby="checkoutError" data-i18n-placeholder="ckMobilePh" placeholder="Mobile number (e.g. 01012345678)" aria-label="Mobile number" class="field" required aria-required="true"></label>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <label class="block"><span class="field-label block mb-1" data-i18n="ckGovernorateLabel">Governorate *</span><input id="ckGovernorate" data-i18n-placeholder="ckGovPh" placeholder="Choose a governorate above" aria-label="Governorate" class="field" readonly required aria-required="true"></label>
+        <label class="block"><span class="field-label block mb-1" data-i18n="ckAddressLabel">Street / area *</span><input id="ckAddress" autocomplete="address-line1" data-i18n-placeholder="ckAddressPh" placeholder="Street / area" aria-label="Street or area" class="field" required aria-required="true"></label>
       </div>
       <div class="grid gap-3 sm:grid-cols-3">
         <label class="block"><span class="field-label block mb-1" data-i18n="ckBuildingLabel">Building *</span><input id="ckBuilding" data-i18n-placeholder="ckBuildingPh" placeholder="Building number" aria-label="Building" class="field" required aria-required="true" maxlength="40"></label>
         <label class="block"><span class="field-label block mb-1" data-i18n="ckFloorLabel">Floor *</span><input id="ckFloor" data-i18n-placeholder="ckFloorPh" placeholder="Floor" aria-label="Floor" class="field" required aria-required="true" maxlength="40"></label>
         <label class="block"><span class="field-label block mb-1" data-i18n="ckAptLabel">Apartment *</span><input id="ckApartment" data-i18n-placeholder="ckAptPh" placeholder="Apartment number" aria-label="Apartment" class="field" required aria-required="true" maxlength="40"></label>
       </div>
-      <textarea id="ckNotes" rows="2" data-i18n-placeholder="ckNotesPh" placeholder="Delivery notes (optional)" aria-label="Delivery notes" class="field"></textarea>
+      <label class="block"><span class="field-label block mb-1" data-i18n="ckNotesLabel">Delivery notes (optional)</span><textarea id="ckNotes" rows="2" data-i18n-placeholder="ckNotesPh" placeholder="Delivery notes (optional)" aria-label="Delivery notes" class="field"></textarea></label>
       <fieldset class="pt-1">
         <legend class="field-label" data-i18n="payTitle">Payment method</legend>
         <div class="grid gap-2">
@@ -1365,7 +1381,7 @@
     consentText:{en:'We use browser storage for your cart, language preference, privacy notice choice, and InstaPay order status. We use privacy-friendly, cookieless Plausible Analytics to measure aggregate site visits and key actions. We do not send names, phone numbers, order details or selected product options to analytics. See our <a href="/privacy/" class="underline brand">Privacy Policy</a> for details.', ar:'بنستخدم التخزين المحلي للمتصفح لحفظ عربة التسوق واللغة وإشعار الخصوصية وحالة طلب إنستاباي. نستخدم تحليلات Plausible بدون كوكيز لقياس الزيارات والإجراءات بشكل إجمالي، ولا نرسل الاسم أو الهاتف أو تفاصيل الطلب أو الخيارات. راجع <a href="/privacy/" class="underline brand">سياسة الخصوصية</a>.'},
     consentAccept:{en:"Got it",ar:"تمام"},
     cartTitle:{en:"Your Cart",ar:"عربة التسوق"}, cartTotalLabel:{en:"Total",ar:"الإجمالي"},
-    cartCheckoutBtn:{en:"Place Order",ar:"إتمام الطلب"}, cartContinueBtn:{en:"Checkout",ar:"متابعة الدفع"},
+    cartCheckoutBtn:{en:"Place Order",ar:"إتمام الطلب"}, cartContinueBtn:{en:"Continue to checkout",ar:"متابعة إلى الدفع"},
     cartEdit:{en:"Edit cart",ar:"تعديل العربة"}, cartDetailsTitle:{en:"Delivery details",ar:"بيانات التوصيل"},
     cartDeliveryNote:{en:"Delivery fee is included in the total and shown separately above.",ar:"رسوم التوصيل مضافة للإجمالي وموضحة بشكل منفصل بالأعلى."},
     cartEmptyTitle:{en:"Your cart is empty",ar:"عربة التسوق فاضية"}, cartEmptySub:{en:"Pick a piece from the shop to get started.",ar:"اختار قطعة من المتجر عشان تبدأ."},
@@ -1383,6 +1399,8 @@
     transferAmountSummary:{en:"Pay now: {due} · Order total: {total} · Remaining: {balance}",ar:"المطلوب الآن: {due} · إجمالي الطلب: {total} · المتبقي: {balance}"}, transferChooseWallet:{en:"Choose InstaPay or Vodafone Cash above to activate these transfer amounts.",ar:"اختار إنستاباي أو فودافون كاش بالأعلى لتفعيل مبلغ التحويل."}, checkoutProofTitle:{en:"Payment transfer details and proof",ar:"بيانات التحويل وإثبات الدفع"}, checkoutProofInstructions:{en:"Transfer the amount shown above, then attach your payment screenshot before placing the order.",ar:"حوّل المبلغ الموضح بالأعلى ثم أرفق صورة التحويل قبل تأكيد الطلب."}, checkoutProofWallet:{en:"Payment account",ar:"حساب التحويل"}, checkoutProofChoose:{en:"Choose payment screenshot (required)",ar:"اختر صورة إثبات الدفع (مطلوب)"}, checkoutProofLimit:{en:"PNG, JPG or WebP · maximum 5 MB",ar:"PNG أو JPG أو WebP · بحد أقصى 5 ميجا"}, checkoutProofOpen:{en:"Open InstaPay",ar:"افتح إنستاباي"}, checkoutProofNoFile:{en:"Attach the payment screenshot before placing your order.",ar:"أرفق صورة التحويل قبل تأكيد الطلب."}, checkoutAddressDetails:{en:"Enter your building, floor and apartment number.",ar:"اكتب رقم المبنى والدور ورقم الشقة."}, checkoutProofBadFile:{en:"Choose a PNG, JPG or WebP image up to 5 MB.",ar:"اختر صورة PNG أو JPG أو WebP حتى 5 ميجا."},
     orderWaBtn:{en:"Continue on WhatsApp",ar:"كمّل على واتساب"}, orderShopMore:{en:"Continue shopping",ar:"كمّل تسوق"},
     toastView:{en:"View cart",ar:"عرض العربة"},
+    ckNameLabel:{en:"Full name *",ar:"الاسم بالكامل *"}, ckMobileLabel:{en:"Mobile number *",ar:"رقم الموبايل *"},
+    ckGovernorateLabel:{en:"Governorate *",ar:"المحافظة *"}, ckAddressLabel:{en:"Street / area *",ar:"الشارع / المنطقة *"}, ckNotesLabel:{en:"Delivery notes (optional)",ar:"ملاحظات التوصيل (اختياري)"},
     ckNamePh:{en:"Full name",ar:"الاسم بالكامل"}, ckMobilePh:{en:"Mobile number (e.g. 01012345678)",ar:"رقم الموبايل (مثال: 01012345678)"},
     ckGovPh:{en:"Choose a governorate above",ar:"اختر المحافظة أعلاه"}, ckAddressPh:{en:"Street / area",ar:"الشارع / المنطقة"},
     ckBuildingPh:{en:"Building number",ar:"رقم المبنى"}, ckFloorPh:{en:"Floor",ar:"الدور"}, ckAptPh:{en:"Apartment number",ar:"رقم الشقة"}, ckBuildingLabel:{en:"Building *",ar:"المبنى *"}, ckFloorLabel:{en:"Floor *",ar:"الدور *"}, ckAptLabel:{en:"Apartment *",ar:"الشقة *"},
@@ -2417,7 +2435,7 @@
     };
 
     const btn = this;
-    checkoutBusy = true; btn.disabled = true;
+    checkoutBusy = true; btn.disabled = true; btn.setAttribute("aria-busy","true");
     $('cartCheckoutLabel').textContent = lang==='ar' ? 'جاري الإرسال…' : 'Placing order…';
     setCheckoutMsg(null, '');
     const checkoutCartSnapshot = {...cart};
@@ -2512,7 +2530,7 @@
         surfaceCheckoutError(M('network')); // the persisted request key makes retry safe
       }
     }finally{
-      checkoutBusy = false; btn.disabled = false; applyCartStep();   // never leave the button stuck
+      checkoutBusy = false; btn.disabled = false; btn.removeAttribute("aria-busy"); applyCartStep();   // never leave the button stuck
     }
   });
 
