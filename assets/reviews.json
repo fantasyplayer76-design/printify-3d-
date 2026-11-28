@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "approved": true,
+    "customer_name_en": "PRINTFY 3D customer",
+    "customer_name_ar": "عميل PRINTFY 3D",
+    "review_en": "Hello, the product arrived and looks even better than the photos 😍 The material is excellent and the print is very clean. I’ll order again, God willing.",
+    "review_ar": "السلام عليكم، المنتج وصل وشكله أجمل من الصور 😍 الخامة ممتازة والمطبوعة نظيفة جدا. هتطلب تاني إن شاء الله"
+  },
+  {
+    "approved": true,
+    "customer_name_en": "PRINTFY 3D customer",
+    "customer_name_ar": "عميل PRINTFY 3D",
+    "review_en": "Honestly, one of the best experiences! The design details are amazing, and the service was excellent from start to finish. Thank you for your great work 🙌",
+    "review_ar": "من أروع التجارب الصراحة! التفاصيل في التصميم رهيبة، والخدمة كانت ممتازة من البداية للنهاية. تسلم إيدكم على شغلكم الحلو 🙌"
+  },
+  {
+    "approved": true,
+    "customer_name_en": "PRINTFY 3D customer",
+    "customer_name_ar": "عميل PRINTFY 3D",
+    "review_en": "Honestly, I’ve ordered from you several times, and the quality gets better each time. You’re truly great at what you do, and your prices are very reasonable 👏",
+    "review_ar": "بصراحة أنا طلبت منكم كذا مرة وكل مرة الجودة بتكون أفضل من اللي قبلها انتوا فعلاً مميزين في شغلكم وأسعاركم مناسبة جداً 👏"
+  }
+]
