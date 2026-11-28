@@ -2427,44 +2427,43 @@
       if(r.ok && r.data.order_number){
         const d = r.data;
         confirmedOrderNumber = String(d.order_number);
-        // 1) The order exists → build the WhatsApp text from the SERVER's items and total
-        const waLabel = lang==='ar' ? 'طلب جديد من الموقع' : 'New order from website';
-        const totalLabel = lang==='ar' ? 'الإجمالي' : 'Total';
-        const orderLabel = lang==='ar' ? 'رقم الطلب' : 'Order';
-        const lines = Array.isArray(d.items) && d.items.length
-          ? d.items.map(i => `${i.name} x${i.qty} - ${Number(i.price)*Number(i.qty)} EGP`)
-          : ids.map(id => { const p = products.find(x => x.id === id); return `${p[lang].name} x${cart[id]}`; });
-        const productSubtotal = Array.isArray(d.items) && d.items.length
-          ? d.items.reduce((sum, i) => sum + (Number(i.price) || 0) * (Number(i.qty) || 0), 0)
-          : (d.subtotal != null && Number.isFinite(Number(d.subtotal)) ? Number(d.subtotal) : cartTotal());
-        const depositDue = method === 'cod' && (productSubtotal > 300 || ids.some(id => products.some(p => p.id === id && p.customizable)));
-        const depositAmount = depositDue ? productSubtotal * 0.5 : 0;
-        codPaymentLines = method === 'cod' ? [
-          ...(depositDue ? [lang==='ar' ? `مقدم مطلوب (50٪): ${fmt(depositAmount)}` : `Required deposit (50%): ${fmt(depositAmount)}`,lang==='ar' ? `المتبقي عند الاستلام: ${fmt(productSubtotal - depositAmount)}` : `Remaining product balance due on delivery: ${fmt(productSubtotal - depositAmount)}`] : [lang==='ar' ? `لا يلزم مقدم؛ إجمالي المنتجات مستحق عند الاستلام: ${fmt(productSubtotal)}` : `No deposit required; full product total due on delivery: ${fmt(productSubtotal)}`]),
-          lang==='ar' ? `رسوم التوصيل: ${fmt(deliveryAmount)} (مضافة إلى الإجمالي أعلاه)` : `Delivery fee: ${fmt(deliveryAmount)} (included in the total above)`
-        ] : [];
-        const waText=[waLabel,'',`${orderLabel}: ${d.order_number}`,'',...lines,...nameWa,'',`${lang==='ar'?'إجمالي المنتجات':'Products subtotal'}: ${fmt(Number.isFinite(Number(d.subtotal))?Number(d.subtotal):productSubtotal)}`,`${lang==='ar'?'رسوم التوصيل':'Delivery fee'}: ${fmt(deliveryAmount)}`,`${lang==='ar'?'الإجمالي شامل التوصيل':'Total including delivery'}: ${fmt(d.grand_total)}`,...codPaymentLines].join('\\n');
-        const waUrl = `https://wa.me/${WHATSAPP_ORDER}?text=${encodeURIComponent(waText)}`;
-        const receiptItems = Array.isArray(d.items) && d.items.length ? d.items : ids.map(id => { const p=products.find(x=>x.id===id); return {name:p[lang].name,qty:cart[id],price:p.price}; });
-        // InstaPay: the order exists as payment_pending. Show the payment panel (amount comes from the SERVER).
-        // Never auto-open WhatsApp here: the customer should pay and upload proof first.
+        // Handle transfer orders before WhatsApp formatting or other optional presentation work.
+        // Save the server token immediately so a receipt/UI issue cannot lose access to proof upload.
         if(method !== 'cod' && d.payment && d.payment.order_token){
-          const amt = Number(d.payment.amount), transferTotal=Number(d.payment.total)||Number(d.grand_total)||amt;
-          const transferPlan=d.payment.plan==='half'?'half':'full', transferWallet=d.payment.method==='vodafone'?'vodafone':'instapay';
-          const ipText = [waLabel, '', `${orderLabel}: ${d.order_number}`, 'Payment: ' + (transferWallet === 'vodafone' ? 'Vodafone Cash' : 'InstaPay'), transferPlan==='half'?'Payment plan: 50% deposit':'Payment plan: full payment', '', ...lines, ...nameWa, '', `${lang==='ar'?'إجمالي الطلب':'Order total'}: ${fmt(transferTotal)}`, `${lang==='ar'?'المطلوب الآن':'Pay now'}: ${fmt(amt)}`, ...(transferPlan==='half'?[ `${lang==='ar'?'المتبقي عند الاستلام':'Remaining due on delivery'}: ${fmt(transferTotal-amt)}`]:[])].join('\n');
-          addOrder({ number: String(d.order_number), token: String(d.payment.order_token), amount: amt, wallet: transferWallet, paymentPlan:transferPlan, state: 'awaiting_proof', receipt:{items:receiptItems,total:transferTotal,amountDue:amt,plan:transferPlan,method:transferWallet},
-                     wa: `https://wa.me/${WHATSAPP_ORDER}?text=${encodeURIComponent(ipText)}` });
-          // Attach the screenshot selected in checkout using the server-issued order token.
-          // Receipt uploader remains available if this upload needs a retry.
+          const orderNo=String(d.order_number),amt=Number(d.payment.amount),total=Number(d.payment.total)||Number(d.grand_total)||amt;
+          const plan=d.payment.plan==='half'?'half':'full',wallet=d.payment.method==='vodafone'?'vodafone':'instapay';
+          const receiptItems=(Array.isArray(d.items)?d.items:[]).map(it=>({name:String(it.name||'Item'),qty:Math.max(1,Number(it.qty)||1),price:Math.max(0,Number(it.price)||0)})).slice(0,50);
+          const proofOrder={number:orderNo,token:String(d.payment.order_token),amount:amt,wallet,paymentPlan:plan,state:'awaiting_proof',receipt:{items:receiptItems,total,amountDue:amt,plan,method:wallet},wa:'https://wa.me/'+WHATSAPP_ORDER+'?text='+encodeURIComponent((lang==='ar'?'طلب تحويل رقم ':'Transfer order ')+orderNo)};
+          addOrder(proofOrder);
+          // This idempotent order is now saved locally. Clear its cart so refresh/recovery cannot duplicate it.
+          viewOrder=orderNo;cart={};cartStep='cart';cartNotice='';saveCart();updateCartBadge();clearCheckoutKey();
+          $('cartCheckoutLabel').textContent=lang==='ar'?'جاري رفع صورة التحويل…':'Uploading payment screenshot…';
           let proofSubmitted=false;
-          try{const proofResult=await uploadProof({number:String(d.order_number),token:String(d.payment.order_token)},transferProofFile);if(proofResult.ok||(proofResult.status===409&&proofResult.data?.code==='already_submitted')){proofSubmitted=true;const savedProofOrder=orders.find(o=>o.number===String(d.order_number));if(savedProofOrder){savedProofOrder.state='under_review';saveOrders();renderBanner();}}else console.warn('Proof upload needs retry',proofResult.status,proofResult.data?.code);}catch(proofError){console.warn('Proof upload needs retry',proofError);}
-          viewOrder = String(d.order_number);
-          renderCart(); renderBanner();
-          showReceipt({number:String(d.order_number),items:receiptItems,total:transferTotal,amountDue:amt,plan:transferPlan,method:transferWallet,wallet:transferWallet,proofSubmitted},false);
-          cart = {}; cartStep = 'cart'; cartNotice = ''; saveCart(); updateCartBadge();
-          clearCheckoutKey();
+          try{
+            const proofResult=await uploadProof({number:orderNo,token:proofOrder.token},transferProofFile);
+            if(proofResult.ok||(proofResult.status===409&&proofResult.data?.code==='already_submitted')){proofSubmitted=true;proofOrder.state='under_review';saveOrders();}
+            else console.warn('Payment proof upload needs retry',proofResult.status,proofResult.data?.code);
+          }catch(proofError){console.warn('Payment proof upload needs retry',proofError);}
+          try{
+            renderBanner();renderCart();
+            showReceipt({number:orderNo,items:receiptItems,total,amountDue:amt,plan,method:wallet,wallet,proofSubmitted},false);
+          }catch(receiptError){
+            console.error('Receipt display failed; keeping payment proof panel open',receiptError);
+            viewOrder=orderNo;renderCart();renderBanner();
+          }
           return;
         }
+        // COD-only confirmation and WhatsApp text are built after transfer orders have been safely handled.
+        const waLabel=lang==='ar'?'طلب جديد من الموقع':'New order from website';
+        const orderLabel=lang==='ar'?'رقم الطلب':'Order';
+        const lines=Array.isArray(d.items)&&d.items.length?d.items.map(it=>String(it.name||'Item')+' x'+it.qty+' - '+(Number(it.price)*Number(it.qty))+' EGP'):ids.map(id=>{const p=products.find(x=>x.id===id);return p?p[lang].name+' x'+cart[id]:'Item x'+cart[id];});
+        const productSubtotal=Array.isArray(d.items)&&d.items.length?d.items.reduce((sum,it)=>sum+(Number(it.price)||0)*(Number(it.qty)||0),0):(d.subtotal!=null&&Number.isFinite(Number(d.subtotal))?Number(d.subtotal):cartTotal());
+        const depositDue=method==='cod'&&(productSubtotal>300||ids.some(id=>products.some(p=>p.id===id&&p.customizable)));
+        const depositAmount=depositDue?productSubtotal*0.5:0;
+        codPaymentLines=method==='cod'?[...(depositDue?[lang==='ar'?'مقدم مطلوب (50٪): '+fmt(depositAmount):'Required deposit (50%): '+fmt(depositAmount),lang==='ar'?'المتبقي عند الاستلام: '+fmt(productSubtotal-depositAmount):'Remaining product balance due on delivery: '+fmt(productSubtotal-depositAmount)]:[lang==='ar'?'لا يلزم مقدم؛ إجمالي المنتجات مستحق عند الاستلام: '+fmt(productSubtotal):'No deposit required; full product total due on delivery: '+fmt(productSubtotal)]),lang==='ar'?'رسوم التوصيل: '+fmt(deliveryAmount)+' (مضافة إلى الإجمالي أعلاه)':'Delivery fee: '+fmt(deliveryAmount)+' (included in the total above)']:[];
+        const waText=[waLabel,'',orderLabel+': '+d.order_number,'',...lines,...nameWa,'',(lang==='ar'?'إجمالي المنتجات: ':'Products subtotal: ')+fmt(Number.isFinite(Number(d.subtotal))?Number(d.subtotal):productSubtotal),(lang==='ar'?'رسوم التوصيل: ':'Delivery fee: ')+fmt(deliveryAmount),(lang==='ar'?'الإجمالي شامل التوصيل: ':'Total including delivery: ')+fmt(d.grand_total),...codPaymentLines].join('\\n');
+        const waUrl='https://wa.me/'+WHATSAPP_ORDER+'?text='+encodeURIComponent(waText);
+        const receiptItems=Array.isArray(d.items)&&d.items.length?d.items:ids.map(id=>{const p=products.find(x=>x.id===id);return p?{name:p[lang].name,qty:cart[id],price:p.price}:{name:'Item',qty:cart[id],price:0};});
         // 2) Show the confirmation + clear the cart (only now that the order really exists)
         lastOrder = { number: String(d.order_number), url: waUrl };
         cart = {}; cartStep = 'cart'; cartNotice = ''; clearCheckoutKey(); saveCart(); updateCartBadge(); renderCart();
